@@ -194,7 +194,6 @@ namespace automatic_testing.AutomaticTests.ZakladniFunkce
          */
         public void PrihlaseniSeSpatnymWindowsUctem()
         {
-
             ScreenRecorder.StartRecording(TestContext.CurrentContext.Test.Name, "Základní funkce", "AspeEsticon");
             Assert.NotNull(EsticonSession, "Esticon session byla prázdná");
             #region Přihlášení   
@@ -272,7 +271,6 @@ namespace automatic_testing.AutomaticTests.ZakladniFunkce
          */
         public void PrihlaseniDeaktivovanymUctemWindows()
         {
-
             ScreenRecorder.StartRecording(TestContext.CurrentContext.Test.Name, "Základní funkce", "AspeEsticon");
             Assert.NotNull(EsticonSession, "Esticon session byla prázdná");
             #region Přihlášení   
