@@ -345,7 +345,7 @@ namespace automatic_testing.AutomaticTests.ZakladniFunkce
             DisabledDataDialog(loginWindow);
         }
 
-// Hotovo
+        // Hotovo
         [TestCase(TestName = "Přihlášení pomocí deaktivovaného účtu s heslem", Description = "Automatický test kontroluje přihlášení pomocí hesla"), Timeout(180000)]
         public void PrihlaseniDeaktovanymUctemHeslem()
         {
