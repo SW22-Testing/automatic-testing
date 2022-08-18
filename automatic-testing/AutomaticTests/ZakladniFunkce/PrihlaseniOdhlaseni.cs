@@ -67,19 +67,8 @@ namespace automatic_testing.AutomaticTests.ZakladniFunkce
         public void SpravnePrihlaseniWindowsUctem()
         {
             ScreenRecorder.StartRecording(TestContext.CurrentContext.Test.Name, "Základní funkce", Version, "AspeEsticon");
-            Assert.NotNull(EsticonSession, "Esticon session byla prázdná");
-
-            bool login = LoginHelper.TryLogin(EsticonSession, UserHelper.EsticonUser.Login, UserHelper.EsticonUser.Password);
-            Assert.IsTrue(login);
-
-            EsticonSession = Setup.ConnectToRunningProcess(RootSession, "AspeEsticon");
-            Assert.NotNull(EsticonSession, "Nepovedlo se napojit na instance AspeEsticon");
-
-            var adminButton = EsticonSession.FindElementByName("Admin");
-            Assert.NotNull(adminButton);
-            adminButton.Click();
-
-            var adminWindow = SearchHelper.WaitForElementByName("Administrátor", EsticonSession, 5, 100);
+            
+            var adminWindow = GetAdminWindow();
             Assert.NotNull(adminWindow);
 
             var uzivateleTab = SearchHelper.FindElementByName("Uživatelé", adminWindow);
@@ -134,7 +123,7 @@ namespace automatic_testing.AutomaticTests.ZakladniFunkce
             Logout();
 
             var loginWindow = Setup.ConnectToRunningProcess(RootSession, "Přihlášení");
-            login = LoginHelper.TryLogin(loginWindow);
+            bool login = LoginHelper.TryLogin(loginWindow);
             Assert.IsTrue(login);
 
             DisabledDataDialog(loginWindow);
@@ -206,7 +195,7 @@ namespace automatic_testing.AutomaticTests.ZakladniFunkce
             Assert.NotNull(adminButton, "Uživatel není admin, nebo tlačítko Admin není vidět");
             adminButton.Click();
 
-            var adminWindow = SearchHelper.FindElementByName("Administrátor", EsticonSession);
+            var adminWindow = GetAdminWindow();
             while (adminWindow == null)
             {
                 adminWindow = SearchHelper.FindElementByName("Administrátor", EsticonSession);
@@ -272,18 +261,7 @@ namespace automatic_testing.AutomaticTests.ZakladniFunkce
         public void PrihlaseniDeaktivovanymUctemWindows()
         {
             ScreenRecorder.StartRecording(TestContext.CurrentContext.Test.Name, "Základní funkce", "AspeEsticon");
-            Assert.NotNull(EsticonSession, "Esticon session byla prázdná");
-            #region Přihlášení   
-            LoginHelper.TryLogin(EsticonSession, UserHelper.EsticonUser.Login, UserHelper.EsticonUser.Password);
-            #endregion
-            //esticonWindow = (WindowsElement)SearchHelper.WaitForElementByName("AspeEsticon", rootSession, 20, 100);
-            EsticonSession = Setup.ConnectToRunningProcess(RootSession, "AspeEsticon");
-
-            var adminButton = SearchHelper.FindElementByName("Admin", EsticonSession);
-            Assert.NotNull(adminButton, "Uživatel není admin, nebo tlačítko Admin není vidět");
-            adminButton.Click();
-
-            var adminWindow = (WindowsElement)SearchHelper.WaitForElementByName("Administrátor", EsticonSession, 5, 500);
+            WindowsElement adminWindow = GetAdminWindow();
 
             var uzivateleTab = SearchHelper.FindElementByName("Uživatelé", adminWindow);
             Assert.NotNull(uzivateleTab);
@@ -341,6 +319,23 @@ namespace automatic_testing.AutomaticTests.ZakladniFunkce
             Assert.IsTrue(login);
 
             DisabledDataDialog(loginWindow);
+        }
+
+        private WindowsElement GetAdminWindow()
+        {
+            Assert.NotNull(EsticonSession, "Esticon session byla prázdná");
+            #region Přihlášení   
+            LoginHelper.TryLogin(EsticonSession, UserHelper.EsticonUser.Login, UserHelper.EsticonUser.Password);
+            #endregion
+            //esticonWindow = (WindowsElement)SearchHelper.WaitForElementByName("AspeEsticon", rootSession, 20, 100);
+            EsticonSession = Setup.ConnectToRunningProcess(RootSession, "AspeEsticon");
+
+            var adminButton = SearchHelper.FindElementByName("Admin", EsticonSession);
+            Assert.NotNull(adminButton, "Uživatel není admin, nebo tlačítko Admin není vidět");
+            adminButton.Click();
+
+            var adminWindow = (WindowsElement)SearchHelper.WaitForElementByName("Administrátor", EsticonSession, 5, 500);
+            return adminWindow;
         }
 
         // Hotovo
