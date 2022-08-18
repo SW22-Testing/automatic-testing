@@ -34,9 +34,9 @@ namespace automatic_testing.AutomaticTests.ZakladniFunkce
         [SetUp]
         public void SetUp()
         {
-Setup = new WinAppDriverSetup();
-Setup.KillEveryInstance();
-Setup.WinAppDriverProcessStart();
+            Setup = new WinAppDriverSetup();
+            Setup.KillEveryInstance();
+            Setup.WinAppDriverProcessStart();
 
             ScreenRecorder = new ScreenRecorder();
             RootSession = Setup.GetRootSession();
@@ -51,7 +51,7 @@ Setup.WinAppDriverProcessStart();
         {
             Assert.NotNull(EsticonSession, "Esticon session byla prázdná");
             ScreenRecorder.StartRecording(TestContext.CurrentContext.Test.Name, "Základní funkce", Version, "AspeEsticon");
-#region Testovací metodu a data   
+            #region Testovací metodu a data
             LoginHelper.TryLogin(EsticonSession, UserHelper.EsticonUser.Login, UserHelper.EsticonUser.Password);
 
             EsticonSession = Setup.ConnectToRunningProcess(RootSession, "AspeEsticon");
@@ -139,24 +139,24 @@ Setup.WinAppDriverProcessStart();
 
             DisabledDataDialog(loginWindow);
 
-//TODO: Přidat kontrolu pro vytvořeného uživatele
+            //TODO: Přidat kontrolu pro vytvořeného uživatele
 
 
-//esticonWindow = (WindowsElement)SearchHelper.WaitForElementByName("AspeEsticon", rootSession, 20, 100);
-////while (esticonWindow == null)
-////{
-////    esticonWindow = SearchHelper.FindElementByName("AspeEsticon", rootSession);
-////}
-////esticonWindow = SearchHelper.FindElementByName("AspeEsticon", rootSession);
+            //esticonWindow = (WindowsElement)SearchHelper.WaitForElementByName("AspeEsticon", rootSession, 20, 100);
+            ////while (esticonWindow == null)
+            ////{
+            ////    esticonWindow = SearchHelper.FindElementByName("AspeEsticon", rootSession);
+            ////}
+            ////esticonWindow = SearchHelper.FindElementByName("AspeEsticon", rootSession);
 
-//var ucetButton = SearchHelper.FindElementByName("Účet", esticonWindow);
-//Assert.NotNull(ucetButton, "Tlačítko Účet");
-//ucetButton.Click();
-////Finder.GetScreenshot("Kliknutí na tlačítko Účet.png", rootSession);
+            //var ucetButton = SearchHelper.FindElementByName("Účet", esticonWindow);
+            //Assert.NotNull(ucetButton, "Tlačítko Účet");
+            //ucetButton.Click();
+            ////Finder.GetScreenshot("Kliknutí na tlačítko Účet.png", rootSession);
 
-//WindowsElement odhlasitButton = (WindowsElement)SearchHelper.FindElementByName("Odhlásit", esticonWindow);
-//odhlasitButton.Click();
-//Assert.NotNull(odhlasitButton);
+            //WindowsElement odhlasitButton = (WindowsElement)SearchHelper.FindElementByName("Odhlásit", esticonWindow);
+            //odhlasitButton.Click();
+            //Assert.NotNull(odhlasitButton);
         }
 
         // Hotovo
@@ -168,9 +168,9 @@ Setup.WinAppDriverProcessStart();
             Assert.NotNull(EsticonSession, "Esticon session byla prázdná");
             #region Testovací metodu a data
             var login = LoginHelper.TryLogin(EsticonSession, UserHelper.EsticonUser.Login, UserHelper.WrongUserProfile.Password);
-Assert.IsTrue(login);
-WrongDataDialog();
-#endregion
+            Assert.IsTrue(login);
+            WrongDataDialog();
+            #endregion
         }
 
         //Hotovo
@@ -182,10 +182,10 @@ WrongDataDialog();
             Assert.NotNull(EsticonSession, "Esticon session byla prázdná");
             #region Přihlášení
             var login = LoginHelper.TryLogin(EsticonSession, UserHelper.WrongUserProfile.Login, UserHelper.EsticonUser.Password);
-Assert.IsTrue(login);
-WrongDataDialog();
+            Assert.IsTrue(login);
+            WrongDataDialog();
 
-#endregion
+            #endregion
 
         }
         [TestCase(TestName = "Přihlášení pomocí špatného Windows účtu", Description = "Automatický test kontroluje přihlášení pomocí hesla"), Timeout(180000)]
@@ -251,18 +251,18 @@ WrongDataDialog();
             loginColumn = SearchHelper.FindElementByName("RowData.Row.LoginName", usersWindow);
             Assert.NotNull(loginColumn, "Nenašel se element");
 
-//var usernameFilter = Finder.FindElementByName("FilterButton", (WindowsElement)loginColumn);
-//usernameFilter.Click();
-//usernameFilter.SendKeys(Environment.UserName);
+            //var usernameFilter = Finder.FindElementByName("FilterButton", (WindowsElement)loginColumn);
+            //usernameFilter.Click();
+            //usernameFilter.SendKeys(Environment.UserName);
 
-//var ucetButton = Finder.FindElementByName("Účet", esticonWindow);
-//Assert.NotNull(ucetButton, "Tlačítko Účet");
-//ucetButton.Click();
-////Finder.GetScreenshot("Kliknutí na tlačítko Účet.png", rootSession);
+            //var ucetButton = Finder.FindElementByName("Účet", esticonWindow);
+            //Assert.NotNull(ucetButton, "Tlačítko Účet");
+            //ucetButton.Click();
+            ////Finder.GetScreenshot("Kliknutí na tlačítko Účet.png", rootSession);
 
-//WindowsElement odhlasitButton = (WindowsElement)Finder.FindElementByName("Odhlásit", esticonWindow);
-//odhlasitButton.Click();
-//Assert.NotNull(odhlasitButton);
+            //WindowsElement odhlasitButton = (WindowsElement)Finder.FindElementByName("Odhlásit", esticonWindow);
+            //odhlasitButton.Click();
+            //Assert.NotNull(odhlasitButton);
         }
         [TestCase(TestName = "Přihlášení pomocí deaktovaného Windows účtu", Description = "Automatický test kontroluje přihlášení pomocí hesla"), Timeout(180000)]
         [Ignore("Nefunguje, jelikož nemám zapnutou VPN")]
