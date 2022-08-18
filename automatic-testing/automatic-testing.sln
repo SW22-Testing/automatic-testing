@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32616.157
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "automatic-testing", "automatic-testing.csproj", "{99B2EF5F-2A27-45A0-8B7F-695EBB537481}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
+		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{99B2EF5F-2A27-45A0-8B7F-695EBB537481}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{99B2EF5F-2A27-45A0-8B7F-695EBB537481}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{99B2EF5F-2A27-45A0-8B7F-695EBB537481}.Debug|x64.ActiveCfg = Debug|x64
+		{99B2EF5F-2A27-45A0-8B7F-695EBB537481}.Debug|x64.Build.0 = Debug|x64
+		{99B2EF5F-2A27-45A0-8B7F-695EBB537481}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{99B2EF5F-2A27-45A0-8B7F-695EBB537481}.Release|Any CPU.Build.0 = Release|Any CPU
+		{99B2EF5F-2A27-45A0-8B7F-695EBB537481}.Release|x64.ActiveCfg = Release|x64
+		{99B2EF5F-2A27-45A0-8B7F-695EBB537481}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F1C9AAF9-1131-493F-A57F-9B7D78357649}
+	EndGlobalSection
+EndGlobal
