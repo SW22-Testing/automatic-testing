@@ -31,7 +31,7 @@ namespace automatic_web_testing.AutomaticTests.ZakladniFunkce
             Assert.True(status);
             bool roleStatus = RoleHelper.VytvoreniRole(driver, wait, out int indexOfRole, RoleFunkce.Vytvoreni);
             Assert.True(roleStatus);
-            //?Thread.Sleep(2000);
+            //Thread.Sleep(2000);
         }
 
         [TestCase(TestName = "Úprava role", Description = "Upraví roli = přidá do popisku další text. Také pokud role není založí ji"), Order(2)]
