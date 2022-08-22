@@ -17,7 +17,6 @@ namespace automatic_web_testing.AutomaticTests.ZakladniFunkce
         [SetUp]
         public void Setup()
         {
-
             WebDriverWait _wait;
             driver = ChromeDriverSetup.Setup("https://dv1.aspehub.cz/Account", out _wait);
             wait = _wait;
@@ -25,114 +24,26 @@ namespace automatic_web_testing.AutomaticTests.ZakladniFunkce
         [TestCase(TestName = "Přihlášení chybný email", Description = "Test kontroluje přihlášení s chybným uživatelským emailem"), Order(1)]
         public void PrihlaseniChybneJmeno()
         {
-            IWebElement username = SearchHelper.WaitForElementById("Username", driver, 5, 250);
-            IWebElement password = driver.FindElement(By.Id("Password"));
-
-            username.SendKeys(UserHelper.IncorrectUser.Email);
-            Assert.AreEqual(UserHelper.IncorrectUser.Email, username.GetAttribute("value"));
-            password.SendKeys(UserHelper.CorrectUser.Password);
-            Assert.AreEqual(UserHelper.CorrectUser.Password, password.GetAttribute("value"));
-
-            IWebElement prihlasitButton = driver.FindElement(By.Name("button"));
-            prihlasitButton.Click();
-
-            IWebElement errorMessage = driver.FindElement(By.ClassName("alert-danger"));
-            Assert.IsTrue(errorMessage.Displayed);
-
-
+            bool status = LoginHelper.BadLoginUsername(driver,wait);
+            Assert.IsTrue(status);
         }
         [TestCase(TestName = "Přihlášení chybné heslo", Description = "Test kontroluje přihlášení s chybným heslem"), Order(2)]
         public void PrihlaseniChybneHeslo()
         {
-            IWebElement username = SearchHelper.WaitForElementById("Username", driver, 5, 250);
-
-            IWebElement password = driver.FindElement(By.Id("Password"));
-
-            username.SendKeys(UserHelper.CorrectUser.Email);
-            Assert.AreEqual(UserHelper.CorrectUser.Email, username.GetAttribute("value"));
-            password.SendKeys(UserHelper.IncorrectUser.Password);
-            Assert.AreEqual(UserHelper.IncorrectUser.Password, password.GetAttribute("value"));
-
-            IWebElement prihlasitButton = driver.FindElement(By.Name("button"));
-            prihlasitButton.Click();
-
-            wait.Until(e => e.FindElement(By.ClassName("alert")));
-
-            IWebElement errorMessage = driver.FindElement(By.ClassName("alert-danger"));
-            Assert.IsTrue(errorMessage.Displayed);
-
-
+            bool status = LoginHelper.BadLoginPassword(driver, wait);
+            Assert.IsTrue(status);
         }
         [TestCase(TestName = "Přihlášení chybné heslo a email", Description = "Test kontroluje přihlášení s chybným heslem a mailem"), Order(3)]
         public void PrihlaseniObeChybne()
         {
-            IWebElement username = SearchHelper.WaitForElementById("Username", driver, 5, 250);
-
-            IWebElement password = driver.FindElement(By.Id("Password"));
-
-            username.SendKeys(UserHelper.IncorrectUser.Email);
-            Assert.AreEqual(UserHelper.IncorrectUser.Email, username.GetAttribute("value"));
-            password.SendKeys(UserHelper.IncorrectUser.Password);
-            Assert.AreEqual(UserHelper.IncorrectUser.Password, password.GetAttribute("value"));
-
-            IWebElement prihlasitButton = driver.FindElement(By.Name("button"));
-            prihlasitButton.Click();
-
-            IWebElement errorMessage = driver.FindElement(By.ClassName("alert-danger"));
-            Assert.IsTrue(errorMessage.Displayed);
+            bool status = LoginHelper.BadLoginBoth(driver, wait);
+            Assert.IsTrue(status);
         }
-
-        [Ignore("Není dodělaný na hubu")]
-        [TestCase(TestName = "Přihlášení bez vyplněného mailu", Description = "Test kontroluje přihlášení s prázdným mailem"), Order(4)]
-        public void PrazdneJmeno()
-        {
-            IWebElement username = SearchHelper.WaitForElementById("Username", driver, 5, 250);
-
-
-            IWebElement password = driver.FindElement(By.Id("Password"));
-
-            password.SendKeys(UserHelper.CorrectUser.Password);
-            Assert.AreEqual(UserHelper.CorrectUser.Password, password.GetAttribute("value"));
-
-            IWebElement prihlasitButton = driver.FindElement(By.Name("button"));
-            prihlasitButton.Click();
-        }
-
-        [Ignore("Není dodělaný na hubu")]
-        [TestCase(TestName = "Přihlášení bez vyplněného hesla", Description = "Test kontroluje přihlášení s prázdným heslem"), Order(5)]
-        public void PrazdneHeslo()
-        {
-            IWebElement username = SearchHelper.WaitForElementById("Username", driver, 5, 250);
-
-
-            username.SendKeys(UserHelper.CorrectUser.Email);
-            Assert.AreEqual(UserHelper.CorrectUser.Email, username.GetAttribute("value"));
-
-            IWebElement prihlasitButton = driver.FindElement(By.Name("button"));
-            prihlasitButton.Click();
-        }
-
-        [Ignore("Není dodělaný na hubu")]
-        [TestCase(TestName = "Přihlášení bez vyplněného hesla a emailu", Description = "Test kontroluje přihlášení s chybným heslem"), Order(6)]
-        public void PrazdneHesloIJmeno()
-        {
-            IWebElement username = SearchHelper.WaitForElementById("Username", driver, 5, 250);
-
-            IWebElement prihlasitButton = driver.FindElement(By.Name("button"));
-            prihlasitButton.Click();
-        }
-        [TestCase(TestName = "Přihlášení bez chyb", Description = "Test kontroluje přihlášení bez chyb"), Order(7)]
-        public void PrihlaseniSpravne()
-        {
-            bool status = LoginHelper.TryLogin(driver, wait);
-            Assert.True(status, "Něco se nepovedlo");
-        }
-
         [TestCase(TestName = "Externí přihlášení přes Microsoft", Description = "Test kontroluje externí přihlášení přes microsoft přidá ho, přihlásí se přes něj a potom ho i odebere"), Order(8)]
         public void PrihlaseniMicrosoft()
         {
-            bool status = LoginHelper.TryLogin(driver, wait);
-            Assert.True(status);
+            driver = LoginHelper.Login(driver, wait);
+            Assert.NotNull(driver);
 
             wait.Until(e => e.FindElements(By.ClassName("MainModule.Header_action__1YiP5")).Where(e => e.GetAttribute("title") == UserHelper.CorrectUser.Email).FirstOrDefault());
 
@@ -196,12 +107,11 @@ namespace automatic_web_testing.AutomaticTests.ZakladniFunkce
             IWebElement deleteMicrosoft = driver.FindElements(By.ClassName("btn-primary")).Where(e => e.GetAttribute("title") == "Remove this Microsoft login from your account").First();
             deleteMicrosoft.Click();
         }
-
         [TestCase(TestName = "Externí přihlášení přes Google", Description = "Test kontroluje externí přihlášení přes google přidá ho, přihlásí se přes něj a potom ho i odebere"), Order(9)]
         public void PrihlaseniGoogle()
         {
-            bool status = LoginHelper.TryLogin(driver, wait);
-            Assert.True(status);
+            driver = LoginHelper.Login(driver, wait);
+            Assert.NotNull(driver);
 
             wait.Until(e => e.FindElements(By.ClassName("MainModule.Header_action__1YiP5")).Where(e => e.GetAttribute("title") == UserHelper.CorrectUser.Email).FirstOrDefault());
 
