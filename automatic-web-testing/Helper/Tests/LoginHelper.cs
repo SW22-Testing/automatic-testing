@@ -119,9 +119,9 @@ namespace automatic_web_testing.Helper.Tests
         /// Tato třída se přihlašuje špatným heslem.
         /// Taky se kontroluje chybová hláška.
         /// </summary>
-        /// <param name="driver"></param>
-        /// <param name="wait"></param>
-        /// <returns></returns>
+        /// <param name="driver">Používá se pro ChromeDriver využívá funkce chromu</param>
+        /// <param name="wait">Čekací parametr nastavený na 5 vteřin</param>
+        /// <returns>Pokud je vše v pořádku vrátí hodnotu true</returns>
         public static bool BadLoginPassword(ChromeDriver driver, WebDriverWait wait)
         {
             try
@@ -157,9 +157,9 @@ namespace automatic_web_testing.Helper.Tests
         /// Tato třída zadává oba údaje špatně.
         /// Kontroluje se zde opět chybová hláška.
         /// </summary>
-        /// <param name="driver"></param>
-        /// <param name="wait"></param>
-        /// <returns></returns>
+        /// <param name="driver">Používá se pro ChromeDriver využívá funkce chromu</param>
+        /// <param name="wait">Čekací parametr nastavený na 5 vteřin</param>
+        /// <returns>Pokud vše projde vrátí hodnotu true</returns>
         public static bool BadLoginBoth(ChromeDriver driver, WebDriverWait wait)
         {
             try
