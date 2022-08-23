@@ -3,6 +3,8 @@ using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Support.UI;
+using SeleniumExtras.WaitHelpers;
+using System;
 using System.Linq;
 
 namespace automatic_web_testing.Helper.Tests
@@ -88,7 +90,7 @@ namespace automatic_web_testing.Helper.Tests
         {
             try
             {
-                wait.Until(e => e.FindElement(By.Id("Username")));
+                wait.Until(ExpectedConditions.ElementIsVisible(By.Id("Username")));
 
                 IWebElement username = driver.FindElement(By.Id("Username"));
                 Assert.IsNotNull(username, "Nenašel se element pro username");
@@ -126,7 +128,7 @@ namespace automatic_web_testing.Helper.Tests
         {
             try
             {
-                wait.Until(e => e.FindElement(By.Id("Username")));
+                wait.Until(ExpectedConditions.ElementIsVisible(By.Id("Username")));
 
                 IWebElement username = driver.FindElement(By.Id("Username"));
                 Assert.IsNotNull(username, "Nenašel se element pro username");
@@ -164,7 +166,7 @@ namespace automatic_web_testing.Helper.Tests
         {
             try
             {
-                wait.Until(e => e.FindElement(By.Id("Username")));
+                wait.Until(ExpectedConditions.ElementIsVisible(By.Id("Username")));
 
                 IWebElement username = driver.FindElement(By.Id("Username"));
                 Assert.IsNotNull(username, "Nenašel se element pro username");

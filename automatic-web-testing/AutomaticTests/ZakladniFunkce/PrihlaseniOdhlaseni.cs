@@ -39,22 +39,20 @@ namespace automatic_web_testing.AutomaticTests.ZakladniFunkce
             bool status = LoginHelper.BadLoginBoth(driver, wait);
             Assert.IsTrue(status);
         }
-        [TestCase(TestName = "Externí přihlášení přes Microsoft", Description = "Test kontroluje externí přihlášení přes microsoft přidá ho, přihlásí se přes něj a potom ho i odebere"), Order(8)]
+        [TestCase(TestName = "Přihlášení správnými údaji", Description = "Test se přihlásí správnými údaji"), Order(4)]
+        public void PrihlaseniSpravne()
+        {
+            bool status = LoginHelper.TryLogin(driver, wait);
+            Assert.IsTrue(status);
+        }
+        [TestCase(TestName = "Externí přihlášení přes Microsoft", Description = "Test kontroluje externí přihlášení přes microsoft přidá ho, přihlásí se přes něj a potom ho i odebere"), Order(5)]
         public void PrihlaseniMicrosoft()
         {
             driver = LoginHelper.Login(driver, wait);
             Assert.NotNull(driver);
 
-            wait.Until(e => e.FindElements(By.ClassName("MainModule.Header_action__1YiP5")).Where(e => e.GetAttribute("title") == UserHelper.CorrectUser.Email).FirstOrDefault());
-
-            IWebElement profile = driver.FindElements(By.ClassName("MainModule.Header_action__1YiP5")).Where(e => e.GetAttribute("title") == UserHelper.CorrectUser.Email).First();
-            profile.Click();
-
-            IWebElement profiler = driver.FindElement(By.ClassName("anticon-setting"));
-            profiler.Click();
-
-            IWebElement extraLogin = driver.FindElement(By.LinkText("Moje externí přihlášení"));
-            extraLogin.Click();
+            driver = External.ExternalLogin(driver, wait);
+            Assert.NotNull(driver);
 
             IWebElement addMicrosoft = driver.FindElements(By.ClassName("btn-primary")).Where(e => e.GetAttribute("title") == "Log in using your Microsoft account").First();
             addMicrosoft.Click();
@@ -93,36 +91,20 @@ namespace automatic_web_testing.AutomaticTests.ZakladniFunkce
             IWebElement exterLoginMicrosoft = driver.FindElements(By.TagName("a")).Where(e => e.Text == "Microsoft").FirstOrDefault();
             exterLoginMicrosoft.Click();
 
-            wait.Until(e => e.FindElements(By.ClassName("MainModule.Header_action__1YiP5")).Where(e => e.GetAttribute("title") == UserHelper.CorrectUser.Email).FirstOrDefault());
-
-            IWebElement profiledelete = driver.FindElements(By.ClassName("MainModule.Header_action__1YiP5")).Where(e => e.GetAttribute("title") == UserHelper.CorrectUser.Email).First();
-            profiledelete.Click();
-
-            IWebElement profilerdelete = driver.FindElement(By.ClassName("anticon-setting"));
-            profilerdelete.Click();
-
-            IWebElement extraLogindelete = driver.FindElement(By.LinkText("Moje externí přihlášení"));
-            extraLogindelete.Click();
+            driver = External.ExternalLogin(driver, wait);
+            Assert.NotNull(driver);
 
             IWebElement deleteMicrosoft = driver.FindElements(By.ClassName("btn-primary")).Where(e => e.GetAttribute("title") == "Remove this Microsoft login from your account").First();
             deleteMicrosoft.Click();
         }
-        [TestCase(TestName = "Externí přihlášení přes Google", Description = "Test kontroluje externí přihlášení přes google přidá ho, přihlásí se přes něj a potom ho i odebere"), Order(9)]
+        [TestCase(TestName = "Externí přihlášení přes Google", Description = "Test kontroluje externí přihlášení přes google přidá ho, přihlásí se přes něj a potom ho i odebere"), Order(6)]
         public void PrihlaseniGoogle()
         {
             driver = LoginHelper.Login(driver, wait);
             Assert.NotNull(driver);
 
-            wait.Until(e => e.FindElements(By.ClassName("MainModule.Header_action__1YiP5")).Where(e => e.GetAttribute("title") == UserHelper.CorrectUser.Email).FirstOrDefault());
-
-            IWebElement profile = driver.FindElements(By.ClassName("MainModule.Header_action__1YiP5")).Where(e => e.GetAttribute("title") == UserHelper.CorrectUser.Email).FirstOrDefault();
-            profile.Click();
-
-            IWebElement profiler = driver.FindElement(By.ClassName("anticon-setting"));
-            profiler.Click();
-
-            IWebElement extraLogin = driver.FindElement(By.LinkText("Moje externí přihlášení"));
-            extraLogin.Click();
+            driver = External.ExternalLogin(driver, wait);
+            Assert.NotNull(driver);
 
             IWebElement addGoogle = driver.FindElements(By.ClassName("btn-primary")).Where(e => e.GetAttribute("title") == "Log in using your Google account").FirstOrDefault();
             addGoogle.Click();
@@ -155,20 +137,11 @@ namespace automatic_web_testing.AutomaticTests.ZakladniFunkce
 
             IWebElement username = SearchHelper.WaitForElementById("Username", driver, 5, 250);
 
-
             IWebElement exterLoginGoogle = driver.FindElements(By.TagName("a")).Where(e => e.Text == "Google").FirstOrDefault();
             exterLoginGoogle.Click();
 
-            wait.Until(e => e.FindElements(By.ClassName("MainModule.Header_action__1YiP5")).Where(e => e.GetAttribute("title") == UserHelper.CorrectUser.Email).FirstOrDefault());
-
-            IWebElement profiledelete = driver.FindElements(By.ClassName("MainModule.Header_action__1YiP5")).Where(e => e.GetAttribute("title") == UserHelper.CorrectUser.Email).FirstOrDefault();
-            profiledelete.Click();
-
-            IWebElement profilerdelete = driver.FindElement(By.ClassName("anticon-setting"));
-            profilerdelete.Click();
-
-            IWebElement extraLogindelete = driver.FindElement(By.LinkText("Moje externí přihlášení"));
-            extraLogindelete.Click();
+            driver = External.ExternalLogin(driver, wait);
+            Assert.NotNull(driver);
 
             IWebElement deleteGoogle = driver.FindElements(By.ClassName("btn-primary")).Where(e => e.GetAttribute("title") == "Remove this Google login from your account").FirstOrDefault();
             deleteGoogle.Click();

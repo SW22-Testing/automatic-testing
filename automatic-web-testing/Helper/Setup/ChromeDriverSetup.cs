@@ -1,6 +1,7 @@
 ﻿using OpenQA.Selenium.Support.UI;
 using System;
 using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium;
 
 namespace automatic_web_testing.Helper.Setup
 {
@@ -23,6 +24,7 @@ namespace automatic_web_testing.Helper.Setup
             ChromeDriver driver = new ChromeDriver(options);
 
             wait = new WebDriverWait(driver, TimeSpan.FromSeconds(20));
+            //wait.IgnoreExceptionTypes(typeof(NoSuchElementException));
 
             driver.Manage().Window.Maximize();
             driver.Navigate().GoToUrl(url);
