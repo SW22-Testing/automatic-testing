@@ -27,8 +27,8 @@ namespace automatic_web_testing.AutomaticTests.ZakladniFunkce
         [TestCase(TestName = "Kontrola role + smazání", Description = "Kontroluje jestli role kterou chceme založit existuje pokud existuje tak ji smaže, potom ji založí a pokud neexistuje založí ji"), Order(1)]
         public void KontrolaRole()
         {
-            bool status = LoginHelper.TryLogin(driver, wait);
-            Assert.True(status);
+            driver = LoginHelper.Login(driver, wait);
+            Assert.NotNull(driver);
             bool roleStatus = RoleHelper.VytvoreniRole(driver, wait, out int indexOfRole, RoleFunkce.Vytvoreni);
             Assert.True(roleStatus);
             //Thread.Sleep(2000);
@@ -37,8 +37,8 @@ namespace automatic_web_testing.AutomaticTests.ZakladniFunkce
         [TestCase(TestName = "Úprava role", Description = "Upraví roli = přidá do popisku další text. Také pokud role není založí ji"), Order(2)]
         public void UpravaRole()
         {
-            bool status = LoginHelper.TryLogin(driver, wait);
-            Assert.True(status);
+            driver = LoginHelper.Login(driver, wait);
+            Assert.NotNull(driver);
 
             bool roleStatus = RoleHelper.VytvoreniRole(driver, wait, out int indexOfRole, RoleFunkce.Editace);
             Thread.Sleep(200);
@@ -49,8 +49,8 @@ namespace automatic_web_testing.AutomaticTests.ZakladniFunkce
         [TestCase(TestName = "Aktivita na roli", Description = "Aktivita na roli = Podívá se na aktivitu na roli a porovná ji jestli je vše v pořádku."), Order(3)]
         public void AktivitaNaRoli()
         {
-            bool status = LoginHelper.TryLogin(driver, wait);
-            Assert.True(status);
+            driver = LoginHelper.Login(driver, wait);
+            Assert.NotNull(driver);
 
             IWebElement projekty = driver.FindElement(By.LinkText("Projekty"));
             Assert.NotNull(projekty);

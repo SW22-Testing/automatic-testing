@@ -14,7 +14,8 @@ namespace automatic_web_testing.Helper.Tests
     {
         Smazani = 0,
         Editace = 1,
-        Vytvoreni = 2
+        Vytvoreni = 2,
+        Aktivita = 3
     }
     public class RoleHelper
     {
@@ -116,7 +117,7 @@ namespace automatic_web_testing.Helper.Tests
 
                             IWebElement popisRole = SearchHelper.WaitForElementById("description", driver, 5, 250);
                             popisRole.SendKeys("Jsem automatický test který zapisuje do popisku!");
-                            Assert.AreEqual("Jsem automatický test který zapisuje do popisku!", popisRole.GetAttribute("value"));
+                            Assert.AreEqual("Jsem automatický test který zapisuje do popisku!", popisRole.GetAttribute("value"), "Pokud se tohle stalo tak je to proto že je v popisku napsáno něco navíc");
 
                             IWebElement uzivatelRole = SearchHelper.WaitForElementById("userId", driver, 5, 250);
                             Assert.NotNull(uzivatelRole);
@@ -131,10 +132,6 @@ namespace automatic_web_testing.Helper.Tests
                             ulozitVytvor.Click();
                             return true;
                         }
-                    case RoleFunkce.Smazani:
-
-
-                        break;
 
                     case RoleFunkce.Editace:
 
@@ -192,13 +189,19 @@ namespace automatic_web_testing.Helper.Tests
 
                             IWebElement dopsani = SearchHelper.WaitForElementById("description", driver, 5, 250);
                             dopsani.SendKeys(" Hele dopsal jsem ti to :)");
-                            Assert.AreEqual("Jsem automatický test který zapisuje do popisku! Hele dopsal jsem ti to :)", dopsani.GetAttribute("value"));
+                            Assert.AreEqual("Jsem automatický test který zapisuje do popisku! Hele dopsal jsem ti to :)", dopsani.GetAttribute("value"),"Pokud se objevila tady chyba tak je v popisku něco navíc");
 
                             IWebElement ulozitVytvor = driver.FindElements(By.TagName("button")).Where(e => e.Text == "Uložit").FirstOrDefault();
                             Assert.NotNull(ulozitVytvor);
                             ulozitVytvor.Click();
                             return true;
                         }
+
+                    case RoleFunkce.Aktivita:
+                        if (true)
+                        {
+                        }
+                        
                 }
 
                 return true;
