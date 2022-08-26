@@ -75,15 +75,13 @@ namespace automatic_testing.AutomaticTests.ZakladniFunkce
             EsticonSession = Setup.ConnectToRunningProcess(RootSession, "AspeEsticon");
             Assert.NotNull(EsticonSession, "Nepovedlo se napojit na instance AspeEsticon");
 
-            var adminButton = EsticonSession.FindElementByName("Admin");
-            Assert.NotNull(adminButton);
+            var adminButton = SearchHelper.GetClickableElementByName(EsticonSession, "Admin", "Nepovedlo se najít tlačítko Admin");
             adminButton.Click();
 
             var adminWindow = SearchHelper.WaitForElementByName("Administrátor", EsticonSession, 5, 100);
             Assert.NotNull(adminWindow);
 
-            var uzivateleTab = SearchHelper.FindElementByName("Uživatelé", adminWindow);
-            Assert.NotNull(uzivateleTab);
+            var uzivateleTab = SearchHelper.GetClickableElementByName(adminWindow, "Uživatelé", "Nepoedlo se najít tlačítko Uživatelé");
             uzivateleTab.Click();
 
             AppiumWebElement createNewUserButton = null;
@@ -107,7 +105,7 @@ namespace automatic_testing.AutomaticTests.ZakladniFunkce
                 Assert.NotNull(newUserWindow, "Okno pro nový účet se neotevřelo");
                 CreateUser(newUserWindow, UserType.WindowsAuth, UserHelper.WindowsUser);
 
-                var createButton = SearchHelper.FindElementByName("OK", EsticonSession);
+                var createButton = SearchHelper.GetClickableElementByName(EsticonSession, "OK", "Problém s tlačítkem Vytvoření nového uživatele");
                 createButton.Click();
             }
             else
@@ -119,16 +117,14 @@ namespace automatic_testing.AutomaticTests.ZakladniFunkce
                 var newUserWindow = SearchHelper.FindElementByName($"Uživatel: <{UserHelper.NewUserProfile.LastName} {UserHelper.NewUserProfile.FirstName}>", RootSession);
                 Assert.NotNull(newUserWindow, "Okno pro nový účet se neotevřelo");
 
-                var offlineCheckBox = newUserWindow.FindElementByName("Aktivní");
-                Assert.NotNull(offlineCheckBox);
+                var offlineCheckBox = SearchHelper.GetClickableElementByName(newUserWindow, "Aktivní", "Problém s checkboxem přepnutí na Offline");
 
                 if (bool.Parse(offlineCheckBox.GetAttribute("Value.Value")) == true) offlineCheckBox.Click();
 
-                var createButton = SearchHelper.FindElementByName("OK", EsticonSession);
+                var createButton = SearchHelper.GetClickableElementByName(EsticonSession, "OK", "Problém s tlačítkem Vytvoření nového uživatele");
                 createButton.Click();
             }
-            var adminOkButton = SearchHelper.FindElementByName("OK", adminWindow);
-            Assert.NotNull(adminOkButton, "Nenašlo se tlačítko OK u okna Administrátor");
+            var adminOkButton = SearchHelper.GetClickableElementByName(adminWindow, "OK", "Problém s tlačítkem OK (ADMIN OKNO)");
             adminOkButton.Click();
 
             Logout();
@@ -138,25 +134,6 @@ namespace automatic_testing.AutomaticTests.ZakladniFunkce
             Assert.IsTrue(login);
 
             DisabledDataDialog(loginWindow);
-
-            //TODO: Přidat kontrolu pro vytvořeného uživatele
-
-
-            //esticonWindow = (WindowsElement)SearchHelper.WaitForElementByName("AspeEsticon", rootSession, 20, 100);
-            ////while (esticonWindow == null)
-            ////{
-            ////    esticonWindow = SearchHelper.FindElementByName("AspeEsticon", rootSession);
-            ////}
-            ////esticonWindow = SearchHelper.FindElementByName("AspeEsticon", rootSession);
-
-            //var ucetButton = SearchHelper.FindElementByName("Účet", esticonWindow);
-            //Assert.NotNull(ucetButton, "Tlačítko Účet");
-            //ucetButton.Click();
-            ////Finder.GetScreenshot("Kliknutí na tlačítko Účet.png", rootSession);
-
-            //WindowsElement odhlasitButton = (WindowsElement)SearchHelper.FindElementByName("Odhlásit", esticonWindow);
-            //odhlasitButton.Click();
-            //Assert.NotNull(odhlasitButton);
         }
 
         // Hotovo
@@ -188,82 +165,79 @@ namespace automatic_testing.AutomaticTests.ZakladniFunkce
             #endregion
 
         }
-        [TestCase(TestName = "Přihlášení pomocí špatného Windows účtu", Description = "Automatický test kontroluje přihlášení pomocí hesla"), Timeout(180000)]
-        /*TODO: Přihlásit -> Admin -> Zkontrolovat uživatele    -> Pokud není -> Odhlásit a Přihlásit se pomocí Windows ověření
-         *                                                      -> Pokud je -> Odstranit uživatele -> Odhlásit a Přihlásit se pomocí Windows ověření
-         */
-        public void PrihlaseniSeSpatnymWindowsUctem()
-        {
+        //[TestCase(TestName = "Přihlášení pomocí špatného Windows účtu", Description = "Automatický test kontroluje přihlášení pomocí hesla"), Timeout(180000)]
+        ///*TODO: Přihlásit -> Admin -> Zkontrolovat uživatele    -> Pokud není -> Odhlásit a Přihlásit se pomocí Windows ověření
+        // *                                                      -> Pokud je -> Odstranit uživatele -> Odhlásit a Přihlásit se pomocí Windows ověření
+        // */
+        //public void PrihlaseniSeSpatnymWindowsUctem()
+        //{
 
-            ScreenRecorder.StartRecording(TestContext.CurrentContext.Test.Name, "Základní funkce", "AspeEsticon");
-            Assert.NotNull(EsticonSession, "Esticon session byla prázdná");
-            #region Přihlášení   
-            LoginHelper.TryLogin(EsticonSession, UserHelper.EsticonUser.Login, UserHelper.EsticonUser.Password);
-            #endregion
-            //esticonWindow = (WindowsElement)SearchHelper.WaitForElementByName("AspeEsticon", rootSession, 20, 100);
-            EsticonSession = Setup.ConnectToRunningProcess(RootSession, "AspeEsticon");
+        //    ScreenRecorder.StartRecording(TestContext.CurrentContext.Test.Name, "Základní funkce", "AspeEsticon");
+        //    Assert.NotNull(EsticonSession, "Esticon session byla prázdná");
+        //    #region Přihlášení   
+        //    LoginHelper.TryLogin(EsticonSession, UserHelper.EsticonUser.Login, UserHelper.EsticonUser.Password);
+        //    #endregion
+        //    //esticonWindow = (WindowsElement)SearchHelper.WaitForElementByName("AspeEsticon", rootSession, 20, 100);
+        //    EsticonSession = Setup.ConnectToRunningProcess(RootSession, "AspeEsticon");
 
-            var adminButton = SearchHelper.FindElementByName("Admin", EsticonSession);
-            Assert.NotNull(adminButton, "Uživatel není admin, nebo tlačítko Admin není vidět");
-            adminButton.Click();
+        //    var adminButton = SearchHelper.GetClickableElementByName(EsticonSession, "Admin", "Nepovedlo se najít tlačítko Admin");
+        //    adminButton.Click();
 
-            var adminWindow = SearchHelper.FindElementByName("Administrátor", EsticonSession);
-            while (adminWindow == null)
-            {
-                adminWindow = SearchHelper.FindElementByName("Administrátor", EsticonSession);
-            }
-            adminWindow = SearchHelper.FindElementByName("Administrátor", EsticonSession);
+        //    var adminWindow = SearchHelper.FindElementByName("Administrátor", EsticonSession);
+        //    while (adminWindow == null)
+        //    {
+        //        adminWindow = SearchHelper.FindElementByName("Administrátor", EsticonSession);
+        //    }
+        //    adminWindow = SearchHelper.FindElementByName("Administrátor", EsticonSession);
 
-            var uzivateleTab = SearchHelper.FindElementByName("Uživatelé", adminWindow);
-            Assert.NotNull(uzivateleTab);
-            uzivateleTab.Click();
+        //    var uzivateleTab = SearchHelper.GetClickableElementByName(adminWindow,"Uživatelé", "Nepovedlo se najít tlačítko Uživatelé (ADMIN OKNO)");
+        //    uzivateleTab.Click();
 
-            var createNewUserButton = SearchHelper.FindElementByAccessibilityId("BarButtonItemLink", adminWindow);
-            while (createNewUserButton == null)
-            {
-                createNewUserButton = SearchHelper.FindElementByAccessibilityId("BarButtonItemLink", adminWindow);
-            }
-            createNewUserButton = SearchHelper.FindElementByAccessibilityId("BarButtonItemLink", adminWindow);
-            Assert.NotNull(createNewUserButton, "Nenašlo se tlačítko Nový záznam");
-            createNewUserButton.Click();
+        //    var createNewUserButton = SearchHelper.FindElementByAccessibilityId("BarButtonItemLink", adminWindow);
+        //    while (createNewUserButton == null)
+        //    {
+        //        createNewUserButton = SearchHelper.FindElementByAccessibilityId("BarButtonItemLink", adminWindow);
+        //    }
+        //    createNewUserButton = SearchHelper.FindElementByAccessibilityId("BarButtonItemLink", adminWindow);
+        //    Assert.NotNull(createNewUserButton, "Nenašlo se tlačítko Nový záznam");
+        //    createNewUserButton.Click();
 
-            var newUserWindow = SearchHelper.FindElementByName("Uživatel: < >", EsticonSession);
-            Assert.NotNull(newUserWindow, "Okno pro nový účet se neotevřelo");
+        //    var newUserWindow = SearchHelper.FindElementByName("Uživatel: < >", EsticonSession);
+        //    Assert.NotNull(newUserWindow, "Okno pro nový účet se neotevřelo");
 
-            var checkboxWindowLogin = SearchHelper.FindElementByName("povolit přihlášení Windows účtem", newUserWindow);
-            if (bool.Parse(checkboxWindowLogin.GetAttribute("Value.Value")) == false)
-                checkboxWindowLogin.Click();
+        //    var checkboxWindowLogin = SearchHelper.GetClickableElementByName(newUserWindow, "povolit přihlášení Windows účtem", "Nepovedlo se najít checkbox pro Windows login v oknu nového uživatele");
+        //    if (bool.Parse(checkboxWindowLogin.GetAttribute("Value.Value")) == false)
+        //        checkboxWindowLogin.Click();
 
-            var userSearchButton = SearchHelper.FindElementByName("...", newUserWindow);
-            Assert.NotNull(userSearchButton, "Nenašlo se tlačítko ...");
-            userSearchButton.Click();
+        //    var userSearchButton = SearchHelper.GetClickableElementByName(newUserWindow, "...", "Nepovedlo se najít tlačítko ... v oknu nového uživatele");
+        //    userSearchButton.Click();
 
-            var usersWindow = SearchHelper.FindElementByName("Výběr Windows uživatelů", EsticonSession);
-            Assert.NotNull(usersWindow, "Nenašlo se okno, nebo se neotevřelo");
+        //    var usersWindow = SearchHelper.FindElementByName("Výběr Windows uživatelů", EsticonSession);
+        //    Assert.NotNull(usersWindow, "Nenašlo se okno, nebo se neotevřelo");
 
-            //TODO: Předělat hledání sloupce pro login
+        //    //TODO: Předělat hledání sloupce pro login
 
-            var loginColumn = SearchHelper.FindElementByName("RowData.Row.LoginName", usersWindow);
-            while (loginColumn == null)
-            {
-                loginColumn = SearchHelper.FindElementByName("RowData.Row.LoginName", usersWindow);
-            }
-            loginColumn = SearchHelper.FindElementByName("RowData.Row.LoginName", usersWindow);
-            Assert.NotNull(loginColumn, "Nenašel se element");
+        //    var loginColumn = SearchHelper.FindElementByName("RowData.Row.LoginName", usersWindow);
+        //    while (loginColumn == null)
+        //    {
+        //        loginColumn = SearchHelper.FindElementByName("RowData.Row.LoginName", usersWindow);
+        //    }
+        //    loginColumn = SearchHelper.FindElementByName("RowData.Row.LoginName", usersWindow);
+        //    Assert.NotNull(loginColumn, "Nenašel se element");
 
-            //var usernameFilter = Finder.FindElementByName("FilterButton", (WindowsElement)loginColumn);
-            //usernameFilter.Click();
-            //usernameFilter.SendKeys(Environment.UserName);
+        //    //var usernameFilter = Finder.FindElementByName("FilterButton", (WindowsElement)loginColumn);
+        //    //usernameFilter.Click();
+        //    //usernameFilter.SendKeys(Environment.UserName);
 
-            //var ucetButton = Finder.FindElementByName("Účet", esticonWindow);
-            //Assert.NotNull(ucetButton, "Tlačítko Účet");
-            //ucetButton.Click();
-            ////Finder.GetScreenshot("Kliknutí na tlačítko Účet.png", rootSession);
+        //    //var ucetButton = Finder.FindElementByName("Účet", esticonWindow);
+        //    //Assert.NotNull(ucetButton, "Tlačítko Účet");
+        //    //ucetButton.Click();
+        //    ////Finder.GetScreenshot("Kliknutí na tlačítko Účet.png", rootSession);
 
-            //WindowsElement odhlasitButton = (WindowsElement)Finder.FindElementByName("Odhlásit", esticonWindow);
-            //odhlasitButton.Click();
-            //Assert.NotNull(odhlasitButton);
-        }
+        //    //WindowsElement odhlasitButton = (WindowsElement)Finder.FindElementByName("Odhlásit", esticonWindow);
+        //    //odhlasitButton.Click();
+        //    //Assert.NotNull(odhlasitButton);
+        //}
         [TestCase(TestName = "Přihlášení pomocí deaktovaného Windows účtu", Description = "Automatický test kontroluje přihlášení pomocí hesla"), Timeout(180000)]
         [Ignore("Nefunguje, jelikož nemám zapnutou VPN")]
         /*TODO: Přihlásit -> Admin -> Zkontrolovat uživatele    -> Pokud není -> Vytvořit nového uživatele s účtem, na kterém je přihlášen -> Odhlásit a Přihlásit se pomocí Windows ověření
@@ -281,14 +255,12 @@ namespace automatic_testing.AutomaticTests.ZakladniFunkce
             //esticonWindow = (WindowsElement)SearchHelper.WaitForElementByName("AspeEsticon", rootSession, 20, 100);
             EsticonSession = Setup.ConnectToRunningProcess(RootSession, "AspeEsticon");
 
-            var adminButton = SearchHelper.FindElementByName("Admin", EsticonSession);
-            Assert.NotNull(adminButton, "Uživatel není admin, nebo tlačítko Admin není vidět");
+            var adminButton = SearchHelper.GetClickableElementByName(EsticonSession, "Admin", "Nepovedlo se najít tlačítko Admin");
             adminButton.Click();
 
             var adminWindow = (WindowsElement)SearchHelper.WaitForElementByName("Administrátor", EsticonSession, 5, 500);
 
-            var uzivateleTab = SearchHelper.FindElementByName("Uživatelé", adminWindow);
-            Assert.NotNull(uzivateleTab);
+            var uzivateleTab = SearchHelper.GetClickableElementByName(adminWindow, "Uživatelé", "Nepoedlo se najít tlačítko Uživatelé");
             uzivateleTab.Click();
 
             AppiumWebElement createNewUserButton = null;
@@ -312,7 +284,7 @@ namespace automatic_testing.AutomaticTests.ZakladniFunkce
                 Assert.NotNull(newUserWindow, "Okno pro nový účet se neotevřelo");
                 CreateUser(newUserWindow, UserType.PasswordAuth, UserHelper.NewUserProfile);
 
-                var createButton = SearchHelper.FindElementByName("OK", EsticonSession);
+                var createButton = SearchHelper.GetClickableElementByName(EsticonSession, "OK", "Problém s tlačítkem Vytvoření nového uživatele");
                 createButton.Click();
             }
             else
@@ -329,11 +301,10 @@ namespace automatic_testing.AutomaticTests.ZakladniFunkce
 
                 if (bool.Parse(offlineCheckBox.GetAttribute("Value.Value")) == true) offlineCheckBox.Click();
 
-                var createButton = SearchHelper.FindElementByName("OK", EsticonSession);
+                var createButton = SearchHelper.GetClickableElementByName(EsticonSession, "OK", "Nepovedlo se najít tlačítko pro vytvoření nového uživatele");
                 createButton.Click();
             }
-            var adminOkButton = SearchHelper.FindElementByName("OK", adminWindow);
-            Assert.NotNull(adminOkButton, "Nenašlo se tlačítko OK u okna Administrátor");
+            var adminOkButton = SearchHelper.GetClickableElementByName(adminWindow, "OK", "Nenašlo se tlačítko OK u okna Administrátor");
             adminOkButton.Click();
 
             Logout();
@@ -356,14 +327,12 @@ namespace automatic_testing.AutomaticTests.ZakladniFunkce
 
             EsticonSession = Setup.ConnectToRunningProcess(RootSession, "AspeEsticon");
 
-            var adminButton = SearchHelper.FindElementByName("Admin", EsticonSession);
-            Assert.NotNull(adminButton, "Uživatel není admin, nebo tlačítko Admin není vidět");
+            var adminButton = SearchHelper.GetClickableElementByName(EsticonSession, "Admin", "Nepovedlo se najít tlačítko Admin");
             adminButton.Click();
 
             var adminWindow = (WindowsElement)SearchHelper.WaitForElementByName("Administrátor", EsticonSession, 5, 500);
 
-            var uzivateleTab = SearchHelper.FindElementByName("Uživatelé", adminWindow);
-            Assert.NotNull(uzivateleTab);
+            var uzivateleTab = SearchHelper.GetClickableElementByName(adminWindow, "Uživatelé", "Nepoedlo se najít tlačítko Uživatelé");
             uzivateleTab.Click();
 
             AppiumWebElement createNewUserButton = null;
@@ -387,7 +356,7 @@ namespace automatic_testing.AutomaticTests.ZakladniFunkce
                 Assert.NotNull(newUserWindow, "Okno pro nový účet se neotevřelo");
                 CreateUser(newUserWindow, UserType.PasswordAuth, UserHelper.NewUserProfile);
 
-                var createButton = SearchHelper.FindElementByName("OK", EsticonSession);
+                var createButton = SearchHelper.GetClickableElementByName(EsticonSession, "OK", "Problém s tlačítkem Vytvoření nového uživatele");
                 createButton.Click();
             }
             else
@@ -404,11 +373,10 @@ namespace automatic_testing.AutomaticTests.ZakladniFunkce
 
                 if (bool.Parse(offlineCheckBox.GetAttribute("Value.Value")) == true) offlineCheckBox.Click();
 
-                var createButton = SearchHelper.FindElementByName("OK", EsticonSession);
+                var createButton = SearchHelper.GetClickableElementByName(EsticonSession, "OK", "Problém s tlačítkem Vytvoření nového uživatele");
                 createButton.Click();
             }
-            var adminOkButton = SearchHelper.FindElementByName("OK", adminWindow);
-            Assert.NotNull(adminOkButton, "Nenašlo se tlačítko OK u okna Administrátor");
+            var adminOkButton = SearchHelper.GetClickableElementByName(adminWindow, "OK", "Problém s tlačítkem OK (ADMIN OKNO)");
             adminOkButton.Click();
 
             Logout();
@@ -456,9 +424,8 @@ namespace automatic_testing.AutomaticTests.ZakladniFunkce
             var ucetButton = SearchHelper.WaitForElementByName("Účet", EsticonSession, 5, 100);
             Assert.NotNull(ucetButton, "Tlačítko Účet");
             ucetButton.Click();
-            WindowsElement odhlasitButton = SearchHelper.FindElementByName("Odhlásit", EsticonSession);
+            AppiumWebElement odhlasitButton = SearchHelper.GetClickableElementByName(EsticonSession, "Odhlásit", "Nepovedlo se najít tlačítko Odhlásit");
             odhlasitButton.Click();
-            Assert.NotNull(odhlasitButton);
         }
         /// <summary>
         /// 
@@ -472,7 +439,7 @@ namespace automatic_testing.AutomaticTests.ZakladniFunkce
             Assert.AreEqual(@"Přihlášení se nezdařilo.
 Chybně zadané heslo nebo uživatelské jméno.", errorText.Text, "Byla vypsána jiná chybový hláška");
 
-            var errorButton = SearchHelper.FindElementByName("OK", errorDialog);
+            var errorButton = SearchHelper.GetClickableElementByName(errorDialog, "OK", "Problém s tlačítkem v error dialogu");
             Assert.NotNull(errorButton, "Chybí tlačítko");
 
             errorButton.Click();
@@ -528,12 +495,11 @@ Kontaktujte administrátora.", errorText.Text);
                     }
                     break;
                 case UserType.WindowsAuth:
-                    var pswdloginCheckbox = newUserWindow.FindElementByName("povolit přihlášení jménem a heslem");
-                    Assert.NotNull(pswdloginCheckbox);
+                    var pswdloginCheckbox = SearchHelper.GetClickableElementByName(newUserWindow, "povolit přihlášení jménem a heslem", "Nepovedlo se najít checkbox pro přihlášení heslem");
                     pswdloginCheckbox.Click();
 
-                    var windowsLoginCheckbox = newUserWindow.FindElementByName("povolit přihlášení Windows účtem");
-                    Assert.NotNull(windowsLoginCheckbox);
+                    var windowsLoginCheckbox = SearchHelper.GetClickableElementByName(newUserWindow, "povolit přihlášení Windows účtem", "Nepovedlo se najít checkbox pro windows přihlášení");
+
                     windowsLoginCheckbox.Click();
 
                     var windowsInput = newUserWindow.FindElementByClassName("ButtonEdit");
@@ -550,7 +516,7 @@ Kontaktujte administrátora.", errorText.Text);
             prijmeniInput.SendKeys(profile.LastName);
             emailInput.SendKeys(profile.Email);
 
-            var offlineCheckBox = newUserWindow.FindElementByName("Aktivní");
+            var offlineCheckBox = SearchHelper.GetClickableElementByName(newUserWindow, "Aktivní", "Nepovedlo se najít checkbox pro checkbox Online/Offline (NOVÝ ÚČET)");
             Assert.NotNull(offlineCheckBox);
             offlineCheckBox.Click();
         }

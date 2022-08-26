@@ -19,7 +19,7 @@ namespace automatic_testing.Helpers.Tests
                 Assert.IsNotNull(session);
 
                 // Přepne na login s heslem
-                var userCheckBox = SearchHelper.FindElementByName("Přihlásit pomocí jména a hesla", session);
+                var userCheckBox = SearchHelper.GetClickableElementByName(session, "Přihlásit pomocí jména a hesla", "Nepovedlo se kliknout na");
                 Assert.IsNotNull(userCheckBox);
 
 
@@ -53,7 +53,7 @@ namespace automatic_testing.Helpers.Tests
         {
             try
             {
-                var userCheckBox = SearchHelper.FindElementByName("Přihlásit pomocí Windows ověření", session);
+                var userCheckBox = SearchHelper.GetClickableElementByName(session, "Přihlásit pomocí Windows ověření", "Nepovedlo se kliknout na");
                 Assert.IsNotNull(userCheckBox);
 
                 userCheckBox.Click();
