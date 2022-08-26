@@ -85,6 +85,7 @@ namespace automatic_testing.AutomaticTests.ZakladniFunkce
             uzivateleTab.Click();
 
             AppiumWebElement createNewUserButton = null;
+            //TODO: Předělat část kódu, aby fungovala s AppiumWebElement
             WindowsElement gridData = (WindowsElement)SearchHelper.FindElementByAccessibilityId("gcGrid", adminWindow);
             bool? isCreated = null;
 
@@ -440,8 +441,6 @@ namespace automatic_testing.AutomaticTests.ZakladniFunkce
 Chybně zadané heslo nebo uživatelské jméno.", errorText.Text, "Byla vypsána jiná chybový hláška");
 
             var errorButton = SearchHelper.GetClickableElementByName(errorDialog, "OK", "Problém s tlačítkem v error dialogu");
-            Assert.NotNull(errorButton, "Chybí tlačítko");
-
             errorButton.Click();
         }
         /// <summary>
@@ -452,7 +451,7 @@ Chybně zadané heslo nebo uživatelské jméno.", errorText.Text, "Byla vypsán
         {
             var errorWindow = loginWindow.FindElementByClassName("#32770");
             var errorText = errorWindow.FindElementByAccessibilityId("65535");
-            var errorButton = errorWindow.FindElementByAccessibilityId("2");
+            var errorButton = SearchHelper.GetClickableElementByAccessibilityId(errorWindow, "2", "Nepovedlo se najít tlačítko OK v ERROR DIALOGU");
 
             Assert.AreEqual(@"Tento účet byl deaktivován.
 Kontaktujte administrátora.", errorText.Text);
@@ -481,8 +480,7 @@ Kontaktujte administrátora.", errorText.Text);
             switch (userType)
             {
                 case UserType.PasswordAuth:
-                    var loginInput = SearchHelper.FindElementByAccessibilityId("textEditLogin", newUserWindow);
-                    Assert.NotNull(loginInput, "Nenašel se element Login");
+                    var loginInput = SearchHelper.GetClickableElementByAccessibilityId(newUserWindow, "textEditLogin", "Nepovedlo se najít input pro Login");
                     loginInput.SendKeys(profile.Login);
                     Assert.AreEqual(profile.Login.Length, loginInput.Text.Length);
 
@@ -517,7 +515,6 @@ Kontaktujte administrátora.", errorText.Text);
             emailInput.SendKeys(profile.Email);
 
             var offlineCheckBox = SearchHelper.GetClickableElementByName(newUserWindow, "Aktivní", "Nepovedlo se najít checkbox pro checkbox Online/Offline (NOVÝ ÚČET)");
-            Assert.NotNull(offlineCheckBox);
             offlineCheckBox.Click();
         }
     }

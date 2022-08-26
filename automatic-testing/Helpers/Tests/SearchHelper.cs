@@ -27,8 +27,8 @@ namespace automatic_testing.Helpers.Tests
         {
             WindowsElement el = driver.FindElementByName(name);
             
-            Assert.IsNotNull(el);
-            Assert.True(el.Displayed);
+            Assert.IsNotNull(el, errorDesc);
+            Assert.True(el.Displayed, errorDesc);
             if (enabled)
                 Assert.True(el.Enabled, errorDesc);
             else
@@ -48,8 +48,8 @@ namespace automatic_testing.Helpers.Tests
         {
             AppiumWebElement el = driver.FindElementByName(name);
 
-            Assert.IsNotNull(el);
-            Assert.True(el.Displayed);
+            Assert.IsNotNull(el, errorDesc);
+            Assert.True(el.Displayed, errorDesc);
             if (enabled)
                 Assert.True(el.Enabled, errorDesc);
             else
@@ -69,8 +69,8 @@ namespace automatic_testing.Helpers.Tests
             ICollection<AppiumWebElement> els = (ICollection<AppiumWebElement>)driver.FindElementsByName(name);
             foreach (AppiumWebElement el in els)
             {
-                Assert.IsNotNull(el);
-                Assert.True(el.Displayed);
+                Assert.IsNotNull(el, errorDesc);
+                Assert.True(el.Displayed, errorDesc);
                 if (enabled)
                     Assert.True(el.Enabled, errorDesc);
                 else
@@ -91,8 +91,8 @@ namespace automatic_testing.Helpers.Tests
             ICollection<AppiumWebElement> els = driver.FindElementsByName(name);
             foreach (AppiumWebElement el in els)
             {
-                Assert.IsNotNull(el);
-                Assert.True(el.Displayed);
+                Assert.IsNotNull(el, errorDesc);
+                Assert.True(el.Displayed, errorDesc);
                 if (enabled)
                     Assert.True(el.Enabled, errorDesc);
                 else
@@ -110,12 +110,12 @@ namespace automatic_testing.Helpers.Tests
         /// <param name="errorDesc">Vypsaná chyba, pokud neprojde kontrola</param>
         /// <param name="enabled">Stav elementu</param>
         /// <returns></returns>
-        public static AppiumWebElement GetClickableElementByAccessibiliyId(WindowsDriver<WindowsElement> driver, string accessibilityId, string errorDesc, bool enabled = true)
+        public static AppiumWebElement GetClickableElementByAccessibilityId(WindowsDriver<WindowsElement> driver, string accessibilityId, string errorDesc, bool enabled = true)
         {
             WindowsElement el = driver.FindElementByAccessibilityId(accessibilityId);
 
-            Assert.IsNotNull(el);
-            Assert.True(el.Displayed);
+            Assert.IsNotNull(el, errorDesc);
+            Assert.True(el.Displayed, errorDesc);
             if (enabled)
                 Assert.True(el.Enabled, errorDesc);
             else
@@ -135,22 +135,29 @@ namespace automatic_testing.Helpers.Tests
         {
             AppiumWebElement el = driver.FindElementByAccessibilityId(accessibilityId);
 
-            Assert.IsNotNull(el);
-            Assert.True(el.Displayed);
+            Assert.IsNotNull(el, errorDesc);
+            Assert.True(el.Displayed, errorDesc);
             if (enabled)
                 Assert.True(el.Enabled, errorDesc);
             else
                 Assert.False(el.Enabled, errorDesc);
             return el;
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="driver"></param>
+        /// <param name="accessibilityId"></param>
+        /// <param name="errorDesc"></param>
+        /// <param name="enabled"></param>
+        /// <returns></returns>
         public static ICollection<AppiumWebElement> GetClickableElementsByAccessibilityId(AppiumWebElement driver, string accessibilityId, string errorDesc, bool enabled = true)
         {
             ICollection<AppiumWebElement> els = (ICollection<AppiumWebElement>)driver.FindElementsByAccessibilityId(accessibilityId);
             foreach (AppiumWebElement el in els)
             {
-                Assert.IsNotNull(el);
-                Assert.True(el.Displayed);
+                Assert.IsNotNull(el, errorDesc);
+                Assert.True(el.Displayed, errorDesc);
                 if (enabled)
                     Assert.True(el.Enabled, errorDesc);
                 else
@@ -159,22 +166,28 @@ namespace automatic_testing.Helpers.Tests
             return els;
         }
         /// <summary>
-        /// Vratí 1 element, který má stejný název jako parametr: <c>name</c>
+        /// 
         /// </summary>
-        /// <param name="automationId">AutomationId elementu</param>
-        /// <param name="session">Session, ve které se bude hledat</param>
+        /// <param name="driver"></param>
+        /// <param name="accessibilityId"></param>
+        /// <param name="errorDesc"></param>
+        /// <param name="enabled"></param>
         /// <returns></returns>
-        public static WindowsElement FindElementByAccessibilityId(string automationId, WindowsDriver<WindowsElement> session)
+        public static ICollection<AppiumWebElement> GetClickableElementsByAccessibilityId(WindowsDriver<WindowsElement> driver, string accessibilityId, string errorDesc, bool enabled = true)
         {
-            try
+            ICollection<AppiumWebElement> els = (ICollection<AppiumWebElement>)driver.FindElementsByAccessibilityId(accessibilityId);
+            foreach (AppiumWebElement el in els)
             {
-                return session.FindElementByAccessibilityId(automationId);
+                Assert.IsNotNull(el, errorDesc);
+                Assert.True(el.Displayed, errorDesc);
+                if (enabled)
+                    Assert.True(el.Enabled, errorDesc);
+                else
+                    Assert.False(el.Enabled, errorDesc);
             }
-            catch
-            {
-                return null;
-            }
+            return els;
         }
+        
         /// <summary>
         /// Vratí řadu element, které mají stejný AutomationId jako parametr: <c>automationId</c>
         /// </summary>
