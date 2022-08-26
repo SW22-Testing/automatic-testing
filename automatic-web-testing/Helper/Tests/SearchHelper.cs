@@ -9,6 +9,8 @@ namespace automatic_web_testing.Helper.Tests
 {
     public class SearchHelper
     {
+
+        //!Uprav celý pro asserty
         /// <summary>
         /// 
         /// </summary>

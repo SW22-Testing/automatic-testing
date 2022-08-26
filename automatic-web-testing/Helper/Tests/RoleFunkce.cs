@@ -201,6 +201,8 @@ namespace automatic_web_testing.Helper.Tests
                         if (true)
                         {
                         }
+                        //!Tohle pak vymaž
+                        break;
                         
                 }
 
