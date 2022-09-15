@@ -4,7 +4,6 @@ using automatic_testing.Helpers.Recording;
 using automatic_testing.Helpers.Setup;
 using automatic_testing.Helpers.SpecialActions;
 using automatic_testing.Helpers.Tests;
-using Microsoft.VisualStudio.TestPlatform.ObjectModel;
 using NUnit.Framework;
 using OpenQA.Selenium.Appium.Windows;
 using OpenQA.Selenium.Appium;
@@ -16,7 +15,7 @@ namespace automatic_testing.AutomaticTests.ZakladniFunkce
     [TestFixture]
     public class PrihlaseniOdhlaseni
     {
-        public WinAppDriverSetup Setup { get; set; }
+        private WinAppDriverSetup Setup { get; set; }
         /// <summary>
         /// Root session se všemi okny zařízení
         /// </summary>
@@ -84,21 +83,19 @@ namespace automatic_testing.AutomaticTests.ZakladniFunkce
             var uzivateleTab = SearchHelper.GetClickableElementByName(adminWindow, "Uživatelé", "Nepoedlo se najít tlačítko Uživatelé");
             uzivateleTab.Click();
 
-            AppiumWebElement createNewUserButton = null;
             //TODO: Předělat část kódu, aby fungovala s AppiumWebElement
-            WindowsElement gridData = (WindowsElement)SearchHelper.FindElementByAccessibilityId("gcGrid", adminWindow);
+            var gridData = (WindowsElement)SearchHelper.FindElementByAccessibilityId("gcGrid", adminWindow);
             bool? isCreated = null;
 
-            TestContext.WriteLine(SearchHelper.FindElementsByAccessibilityId("RowData.Row.DataDto", gridData).Where(e => e.GetAttribute("Value.Value") == UserHelper.WindowsUser.Login).Count());
-            var parallelTask = Parallel.For(0, SearchHelper.FindElementsByAccessibilityId("RowData.Row.DataDto", gridData).Count(), e =>
+            TestContext.WriteLine(SearchHelper.FindElementsByAccessibilityId("RowData.Row.DataDto", gridData).Count(e => e.GetAttribute("Value.Value") == UserHelper.WindowsUser.Login));
+            Parallel.For(0, SearchHelper.FindElementsByAccessibilityId("RowData.Row.DataDto", gridData).Count(), e =>
             {
-                isCreated = SearchHelper.FindElementsByAccessibilityId("RowData.Row.DataDto", gridData).Where(e => e.GetAttribute("Value.Value") == UserHelper.WindowsUser.Login).Count() != 0;
-                if (isCreated == true) return;
+                isCreated = SearchHelper.FindElementsByAccessibilityId("RowData.Row.DataDto", gridData).Count(f => f.GetAttribute("Value.Value") == UserHelper.WindowsUser.Login) != 0;
             });
             //! Pokud se nenajde uživatel, tak se vytvoří, jinak otevře detail a zkontroluje stav offline
             if (isCreated == false)
             {
-                createNewUserButton = EsticonSession.FindElementsByAccessibilityId("BarButtonItemLink").Where(e => e.GetAttribute("HelpText") == "Nový záznam").FirstOrDefault();
+                AppiumWebElement createNewUserButton = EsticonSession.FindElementsByAccessibilityId("BarButtonItemLink").FirstOrDefault(e => e.GetAttribute("HelpText") == "Nový záznam");
                 Assert.NotNull(createNewUserButton, "Nenašlo se tlačítko Nový záznam");
                 createNewUserButton.Click();
 
@@ -111,7 +108,7 @@ namespace automatic_testing.AutomaticTests.ZakladniFunkce
             }
             else
             {
-                var windowsUser = SearchHelper.FindElementsByAccessibilityId("RowData.Row.DataDto", gridData).Where(e => e.GetAttribute("Value.Value") == UserHelper.WindowsUser.Login).First();
+                var windowsUser = SearchHelper.FindElementsByAccessibilityId("RowData.Row.DataDto", gridData).First(e => e.GetAttribute("Value.Value") == UserHelper.WindowsUser.Login);
                 Assert.NotNull(windowsUser, "Nenašel se správně záznam");
                 MouseActionsHelper.DoubleClick(windowsUser);
 
@@ -120,7 +117,7 @@ namespace automatic_testing.AutomaticTests.ZakladniFunkce
 
                 var offlineCheckBox = SearchHelper.GetClickableElementByName(newUserWindow, "Aktivní", "Problém s checkboxem přepnutí na Offline");
 
-                if (bool.Parse(offlineCheckBox.GetAttribute("Value.Value")) == true) offlineCheckBox.Click();
+                if (bool.Parse(offlineCheckBox.GetAttribute("Value.Value"))) offlineCheckBox.Click();
 
                 var createButton = SearchHelper.GetClickableElementByName(EsticonSession, "OK", "Problém s tlačítkem Vytvoření nového uživatele");
                 createButton.Click();
@@ -243,7 +240,7 @@ namespace automatic_testing.AutomaticTests.ZakladniFunkce
         [Ignore("Nefunguje, jelikož nemám zapnutou VPN")]
         /*TODO: Přihlásit -> Admin -> Zkontrolovat uživatele    -> Pokud není -> Vytvořit nového uživatele s účtem, na kterém je přihlášen -> Odhlásit a Přihlásit se pomocí Windows ověření
          *                                                      -> Pokud je -> Zkontrolovat stav (online/offline)   -> Pokud online -> Zavřít -> Odhlásit a Přihlásit se pomocí Windows ověření
-         *                                                                                                          -> Pokud offlie -> Změnit stav na online -> Odhlásit a Přihlásit se pomocí Windows ověření
+         *                                                                                                          -> Pokud offline -> Změnit stav na online -> Odhlásit a Přihlásit se pomocí Windows ověření
          */
         public void PrihlaseniDeaktivovanymUctemWindows()
         {
@@ -264,20 +261,18 @@ namespace automatic_testing.AutomaticTests.ZakladniFunkce
             var uzivateleTab = SearchHelper.GetClickableElementByName(adminWindow, "Uživatelé", "Nepoedlo se najít tlačítko Uživatelé");
             uzivateleTab.Click();
 
-            AppiumWebElement createNewUserButton = null;
             WindowsElement gridData = (WindowsElement)SearchHelper.FindElementByAccessibilityId("gcGrid", adminWindow);
             bool? isCreated = null;
 
-            TestContext.WriteLine(SearchHelper.FindElementsByAccessibilityId("RowData.Row.DataDto", gridData).Where(e => e.GetAttribute("Value.Value") == UserHelper.NewUserProfile.Login).Count());
-            var parallelTask = Parallel.For(0, SearchHelper.FindElementsByAccessibilityId("RowData.Row.DataDto", gridData).Count(), e =>
+            TestContext.WriteLine(SearchHelper.FindElementsByAccessibilityId("RowData.Row.DataDto", gridData).Count(e => e.GetAttribute("Value.Value") == UserHelper.NewUserProfile.Login));
+            Parallel.For(0, SearchHelper.FindElementsByAccessibilityId("RowData.Row.DataDto", gridData).Count(), e =>
             {
-                isCreated = SearchHelper.FindElementsByAccessibilityId("RowData.Row.DataDto", gridData).Where(e => e.GetAttribute("Value.Value") == UserHelper.NewUserProfile.Login).Count() != 0;
-                if (isCreated == true) return;
+                isCreated = SearchHelper.FindElementsByAccessibilityId("RowData.Row.DataDto", gridData).Count(f => f.GetAttribute("Value.Value") == UserHelper.NewUserProfile.Login) != 0;
             });
             //! Pokud se nenajde uživatel, tak se vytvoří, jinak otevře detail a zkontroluje stav offline
             if (isCreated == false)
             {
-                createNewUserButton = SearchHelper.FindElementsByAccessibilityId("BarButtonItemLink", adminWindow).Where(e => e.GetAttribute("HelpText") == "Nový záznam").FirstOrDefault();
+                var createNewUserButton = SearchHelper.FindElementsByAccessibilityId("BarButtonItemLink", adminWindow).FirstOrDefault(e => e.GetAttribute("HelpText") == "Nový záznam");
                 Assert.NotNull(createNewUserButton, "FindElementByAccessibilityId se tlačítko Nový záznam");
                 createNewUserButton.Click();
 
@@ -290,7 +285,7 @@ namespace automatic_testing.AutomaticTests.ZakladniFunkce
             }
             else
             {
-                var windowsUser = SearchHelper.FindElementsByAccessibilityId("RowData.Row.DataDto", gridData).Where(e => e.GetAttribute("Value.Value") == UserHelper.NewUserProfile.Login).First();
+                var windowsUser = SearchHelper.FindElementsByAccessibilityId("RowData.Row.DataDto", gridData).First(e => e.GetAttribute("Value.Value") == UserHelper.NewUserProfile.Login);
                 Assert.NotNull(windowsUser, "FindElementByAccessibilityId se tlačítko Nový záznam");
                 MouseActionsHelper.DoubleClick(windowsUser);
 
@@ -300,7 +295,7 @@ namespace automatic_testing.AutomaticTests.ZakladniFunkce
                 var offlineCheckBox = newUserWindow.FindElementByName("Aktivní");
                 Assert.NotNull(offlineCheckBox);
 
-                if (bool.Parse(offlineCheckBox.GetAttribute("Value.Value")) == true) offlineCheckBox.Click();
+                if (bool.Parse((string)offlineCheckBox.GetAttribute("Value.Value"))) offlineCheckBox.Click();
 
                 var createButton = SearchHelper.GetClickableElementByName(EsticonSession, "OK", "Nepovedlo se najít tlačítko pro vytvoření nového uživatele");
                 createButton.Click();
@@ -336,20 +331,18 @@ namespace automatic_testing.AutomaticTests.ZakladniFunkce
             var uzivateleTab = SearchHelper.GetClickableElementByName(adminWindow, "Uživatelé", "Nepoedlo se najít tlačítko Uživatelé");
             uzivateleTab.Click();
 
-            AppiumWebElement createNewUserButton = null;
             WindowsElement gridData = (WindowsElement)SearchHelper.FindElementByAccessibilityId("gcGrid", adminWindow);
             bool? isCreated = null;
 
-            TestContext.WriteLine(SearchHelper.FindElementsByAccessibilityId("RowData.Row.DataDto", gridData).Where(e => e.GetAttribute("Value.Value") == UserHelper.NewUserProfile.Login).Count());
-            var parallelTask = Parallel.For(0, SearchHelper.FindElementsByAccessibilityId("RowData.Row.DataDto", gridData).Count(), e =>
+            TestContext.WriteLine(SearchHelper.FindElementsByAccessibilityId("RowData.Row.DataDto", gridData).Count(e => e.GetAttribute("Value.Value") == UserHelper.NewUserProfile.Login));
+            Parallel.For(0, SearchHelper.FindElementsByAccessibilityId("RowData.Row.DataDto", gridData).Count(), e =>
             {
-                isCreated = SearchHelper.FindElementsByAccessibilityId("RowData.Row.DataDto", gridData).Where(e => e.GetAttribute("Value.Value") == UserHelper.NewUserProfile.Login).Count() != 0;
-                if (isCreated == true) return;
+                isCreated = SearchHelper.FindElementsByAccessibilityId("RowData.Row.DataDto", gridData).Count(f => f.GetAttribute("Value.Value") == UserHelper.NewUserProfile.Login) != 0;
             });
             //! Pokud se nenajde uživatel, tak se vytvoří, jinak otevře detail a zkontroluje stav offline
             if (isCreated == false)
             {
-                createNewUserButton = SearchHelper.FindElementsByAccessibilityId("BarButtonItemLink", adminWindow).Where(e => e.GetAttribute("HelpText") == "Nový záznam").FirstOrDefault();
+                var createNewUserButton = SearchHelper.FindElementsByAccessibilityId("BarButtonItemLink", adminWindow).FirstOrDefault(e => e.GetAttribute("HelpText") == "Nový záznam");
                 Assert.NotNull(createNewUserButton, "FindElementByAccessibilityId se tlačítko Nový záznam");
                 createNewUserButton.Click();
 
@@ -362,7 +355,7 @@ namespace automatic_testing.AutomaticTests.ZakladniFunkce
             }
             else
             {
-                var windowsUser = SearchHelper.FindElementsByAccessibilityId("RowData.Row.DataDto", gridData).Where(e => e.GetAttribute("Value.Value") == UserHelper.NewUserProfile.Login).First();
+                var windowsUser = SearchHelper.FindElementsByAccessibilityId("RowData.Row.DataDto", gridData).First(e => e.GetAttribute("Value.Value") == UserHelper.NewUserProfile.Login);
                 Assert.NotNull(windowsUser, "FindElementByAccessibilityId se tlačítko Nový záznam");
                 MouseActionsHelper.DoubleClick(windowsUser);
 
@@ -372,7 +365,7 @@ namespace automatic_testing.AutomaticTests.ZakladniFunkce
                 var offlineCheckBox = newUserWindow.FindElementByName("Aktivní");
                 Assert.NotNull(offlineCheckBox);
 
-                if (bool.Parse(offlineCheckBox.GetAttribute("Value.Value")) == true) offlineCheckBox.Click();
+                if (bool.Parse((string)offlineCheckBox.GetAttribute("Value.Value"))) offlineCheckBox.Click();
 
                 var createButton = SearchHelper.GetClickableElementByName(EsticonSession, "OK", "Problém s tlačítkem Vytvoření nového uživatele");
                 createButton.Click();
@@ -438,7 +431,7 @@ namespace automatic_testing.AutomaticTests.ZakladniFunkce
 
             var errorText = SearchHelper.FindElementByAccessibilityId("65535", errorDialog);
             Assert.AreEqual(@"Přihlášení se nezdařilo.
-Chybně zadané heslo nebo uživatelské jméno.", errorText.Text, "Byla vypsána jiná chybový hláška");
+Chybně zadané heslo nebo uživatelské jméno.", errorText.Text, "Byla vypsána jiná chybová hláška");
 
             var errorButton = SearchHelper.GetClickableElementByName(errorDialog, "OK", "Problém s tlačítkem v error dialogu");
             errorButton.Click();
@@ -458,13 +451,15 @@ Kontaktujte administrátora.", errorText.Text);
 
             errorButton.Click();
         }
+
         /// <summary>
         /// 
         /// </summary>
         /// <param name="newUserWindow"></param>
+        /// <param name="userType"></param>
+        /// <param name="profile"></param>
         private static void CreateUser(WindowsElement newUserWindow, UserType userType, UserProfile profile)
         {
-            AppiumWebElement kodInput = null;
             AppiumWebElement jmenoInput = null;
             AppiumWebElement prijmeniInput = null;
             AppiumWebElement emailInput = null;
@@ -486,10 +481,11 @@ Kontaktujte administrátora.", errorText.Text);
 
 
                     Assert.NotNull(passwordInputs, "Nenašly se elementy pro heslo");
-                    for (int i = 0; i < passwordInputs.Count(); i++)
+                    var appiumWebElements = passwordInputs as AppiumWebElement[] ?? passwordInputs.ToArray();
+                    for (var i = 0; i < appiumWebElements.Count(); i++)
                     {
-                        passwordInputs.ElementAt(i).SendKeys(UserHelper.NewUserProfile.Password);
-                        Assert.AreEqual(UserHelper.NewUserProfile.Password.Length, passwordInputs.ElementAt(i).Text.Length);
+                        appiumWebElements.ElementAt(i).SendKeys(UserHelper.NewUserProfile.Password);
+                        Assert.AreEqual(UserHelper.NewUserProfile.Password.Length, appiumWebElements.ElementAt(i).Text.Length);
                     }
                     break;
                 case UserType.WindowsAuth:
@@ -508,7 +504,7 @@ Kontaktujte administrátora.", errorText.Text);
                     break;
             }
 
-            kodInput = newUserWindow.FindElementByXPath("//*[@Name='Kód']/following-sibling::*");
+            var kodInput = newUserWindow.FindElementByXPath("//*[@Name='Kód']/following-sibling::*");
             kodInput.SendKeys(profile.Kod);
             jmenoInput.SendKeys(profile.FirstName);
             prijmeniInput.SendKeys(profile.LastName);

@@ -4,13 +4,16 @@ using System;
 
 namespace automatic_testing.Helpers.Tests
 {
-    public class LoginHelper
+    public static class LoginHelper
     {
         #region Přihlášení s Asserts
+
         /// <summary>
         /// Kontrola přihlášení s Asserty
         /// </summary>
         /// <param name="session">Session, ve které se bude hledat přihlašovací okno pro AspeEsticon</param>
+        /// <param name="username"></param>
+        /// <param name="password"></param>
         public static bool TryLogin(WindowsDriver<WindowsElement> session, string username, string password)
         {
             try
@@ -66,10 +69,13 @@ namespace automatic_testing.Helpers.Tests
 
         #endregion
         #region Přihlášení
+
         /// <summary>
         /// Kontrola přihlášení bez Assertu
         /// </summary>
         /// <param name="session">Session, ve které se bude hledat přihlašovací okno pro AspeEsticon</param>
+        /// <param name="username"></param>
+        /// <param name="password"></param>
         public static WindowsDriver<WindowsElement> Login(WindowsDriver<WindowsElement> session, string username, string password)
         {
             try
