@@ -1,5 +1,6 @@
 {
     "threshold": 75,
+    "reporters": [
       "consoleFull"
     ],
     "ignore": [
