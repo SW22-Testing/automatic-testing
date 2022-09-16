@@ -1,7 +1,6 @@
 ﻿using OpenQA.Selenium.Support.UI;
 using System;
 using OpenQA.Selenium.Chrome;
-using OpenQA.Selenium;
 
 namespace automatic_web_testing.Helper.Setup
 {
@@ -10,7 +9,7 @@ namespace automatic_web_testing.Helper.Setup
     /// Obsahuje také vstupní parametr na čekání.
     /// Nakonec obsahuje i funkci dispose která zavírá session. 
     /// </summary>
-    public class ChromeDriverSetup
+    public static class ChromeDriverSetup
     {
         /// <summary>
         /// Tahle metoda nám dává vstupní parametr a má v sobě funkci navigate a wait.
@@ -21,7 +20,7 @@ namespace automatic_web_testing.Helper.Setup
         public static ChromeDriver Setup(string url, out WebDriverWait wait)
         {
             var options = new ChromeOptions();
-            ChromeDriver driver = new ChromeDriver(options);
+            var driver = new ChromeDriver(options);
 
             wait = new WebDriverWait(driver, TimeSpan.FromSeconds(20));
             //wait.IgnoreExceptionTypes(typeof(NoSuchElementException));
@@ -45,8 +44,8 @@ namespace automatic_web_testing.Helper.Setup
             }
             catch
             {
+                // ignored
             }
-
         }
     }
 }
