@@ -25,7 +25,7 @@ namespace automatic_web_testing.AutomaticTests.ZakladniFunkce
         [TestCase(TestName = "Přihlášení chybný email", Description = "Test kontroluje přihlášení s chybným uživatelským emailem"), Order(1)]
         public void PrihlaseniChybneJmeno()
         {
-            var status = BadLoginUsername(driver,wait);
+            var status = BadLoginUsername(driver, wait);
             Assert.IsTrue(status);
         }
         [TestCase(TestName = "Přihlášení chybné heslo", Description = "Test kontroluje přihlášení s chybným heslem"), Order(2)]
