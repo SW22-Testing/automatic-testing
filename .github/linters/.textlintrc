@@ -1,6 +1,6 @@
 {
   "filters": {
-    "comments": true
+    "comments": false
   },
   "rules": {
     "terminology": true
