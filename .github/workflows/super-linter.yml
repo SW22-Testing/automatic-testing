@@ -15,8 +15,11 @@ name: Lint Code Base
 # Start the job on all push #
 #############################
 on:
+  push:
+    branches-ignore: [master, main, prod, dev]
+    # Remove the line above to run when pushing to master
   pull_request:
-    branches: [prod]
+    branches: [master, main, prod, dev]
 
 ###############
 # Set the Job #
@@ -48,5 +51,5 @@ jobs:
         uses: github/super-linter@v4
         env:
           VALIDATE_ALL_CODEBASE: false
-          DEFAULT_BRANCH: master
+          DEFAULT_BRANCH: dev
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
