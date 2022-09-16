@@ -189,7 +189,7 @@ namespace automatic_web_testing.Helper.Tests
 
                             var dopsani = SearchHelper.WaitForElementById("description", driver, 5, 250);
                             dopsani.SendKeys(" Hele dopsal jsem ti to :)");
-                            Assert.AreEqual("Jsem automatický test který zapisuje do popisku! Hele dopsal jsem ti to :)", dopsani.GetAttribute("value"),"Pokud se objevila tady chyba tak je v popisku něco navíc");
+                            Assert.AreEqual("Jsem automatický test který zapisuje do popisku! Hele dopsal jsem ti to :)", dopsani.GetAttribute("value"), "Pokud se objevila tady chyba tak je v popisku něco navíc");
 
                             var ulozitVytvor = driver.FindElements(By.TagName("button")).FirstOrDefault(e => e.Text == "Uložit");
                             Assert.NotNull(ulozitVytvor);
@@ -203,9 +203,7 @@ namespace automatic_web_testing.Helper.Tests
                         }
                         //!Tohle pak vymaž
                         break;
-                        
                 }
-
                 return true;
             }
             catch
