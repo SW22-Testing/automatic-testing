@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace automatic_web_testing.Helper.Tests
 {
-    public class SearchHelper
+    public static class SearchHelper
     {
 
         //!Uprav celý pro asserty
