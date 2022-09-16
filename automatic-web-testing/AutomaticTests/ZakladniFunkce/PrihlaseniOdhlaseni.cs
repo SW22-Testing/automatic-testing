@@ -17,39 +17,39 @@ namespace automatic_web_testing.AutomaticTests.ZakladniFunkce
         private WebDriverWait wait { get; set; }
         [SetUp]
         public void Setup()
-        {
-            WebDriverWait _wait;
-            driver = ChromeDriverSetup.Setup("https://dv1.aspehub.cz/Account", out _wait);
+        { 
+            WebDriverWait _wait; 
+            driver = ChromeDriverSetup.Setup("https://dv1.aspehub.cz/Account", out _wait); 
             wait = _wait;
         }
         [TestCase(TestName = "Přihlášení chybný email", Description = "Test kontroluje přihlášení s chybným uživatelským emailem"), Order(1)]
         public void PrihlaseniChybneJmeno()
-        {
-            var status = BadLoginUsername(driver,wait);
+        { 
+            var status = BadLoginUsername(driver,wait); 
             Assert.IsTrue(status);
         }
         [TestCase(TestName = "Přihlášení chybné heslo", Description = "Test kontroluje přihlášení s chybným heslem"), Order(2)]
         public void PrihlaseniChybneHeslo()
-        {
-            var status = BadLoginPassword(driver, wait);
+        { 
+            var status = BadLoginPassword(driver, wait); 
             Assert.IsTrue(status);
         }
         [TestCase(TestName = "Přihlášení chybné heslo a email", Description = "Test kontroluje přihlášení s chybným heslem a mailem"), Order(3)]
         public void PrihlaseniObeChybne()
-        {
-            var status = BadLoginBoth(driver, wait);
+        { 
+            var status = BadLoginBoth(driver, wait); 
             Assert.IsTrue(status);
         }
         [TestCase(TestName = "Přihlášení správnými údaji", Description = "Test se přihlásí správnými údaji"), Order(4)]
         public void PrihlaseniSpravne()
-        {
-            var status = LoginHelper.TryLogin(driver, wait);
+        { 
+            var status = LoginHelper.TryLogin(driver, wait); 
             Assert.IsTrue(status);
         }
         [TestCase(TestName = "Externí přihlášení přes Microsoft", Description = "Test kontroluje externí přihlášení přes microsoft přidá ho, přihlásí se přes něj a potom ho i odebere"), Order(5)]
         public void PrihlaseniMicrosoft()
-        {
-            driver = LoginHelper.Login(driver, wait);
+        { 
+            driver = LoginHelper.Login(driver, wait); 
             Assert.NotNull(driver);
 
             driver = ExternalLogin(driver, wait);
@@ -147,14 +147,12 @@ namespace automatic_web_testing.AutomaticTests.ZakladniFunkce
             var deleteGoogle = driver.FindElements(By.ClassName("btn-primary")).FirstOrDefault(e => e.GetAttribute("title") == "Remove this Google login from your account");
             deleteGoogle?.Click();
         }
-
         [TearDown]
         public void TearDown()
         {
             ChromeDriverSetup.Dispose(driver);
         }
         /*---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
-        
         /// <summary>
         /// Tato třída jde do nastavení uživatele => externího přihlášení
         /// </summary>
@@ -162,7 +160,7 @@ namespace automatic_web_testing.AutomaticTests.ZakladniFunkce
         /// <param name="wait">Vyčkává než se určitá věc objeví defaultně 5 vteřin</param>
         /// <returns>Vrací hodnotu driver. Kde tato hodnota obsahuje jestli se dostal test k nastavení externího přihlášení</returns>
         public static ChromeDriver ExternalLogin(ChromeDriver driver, WebDriverWait wait)
-        {
+        { 
             try
             {
                 wait.Until(e => e.FindElements(By.ClassName("MainModule.Header_action__1YiP5")).FirstOrDefault(e => e.GetAttribute("title") == UserHelper.CorrectUser.Email));
@@ -186,7 +184,6 @@ namespace automatic_web_testing.AutomaticTests.ZakladniFunkce
                 return null;
             }
         }
-
         /// <summary>
         /// Tato třída se přihlašuje špatným emailem (username).
         /// Kontroluje se zde chybová hláška.
@@ -234,7 +231,7 @@ namespace automatic_web_testing.AutomaticTests.ZakladniFunkce
         /// <param name="wait">Čekací parametr nastavený na 5 vteřin</param>
         /// <returns>Pokud je vše v pořádku vrátí hodnotu true</returns>
         public static bool BadLoginPassword(ChromeDriver driver, WebDriverWait wait)
-        {
+        { 
             try
             {
                 wait.Until(ExpectedConditions.ElementIsVisible(By.Id("Username")));

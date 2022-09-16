@@ -24,7 +24,7 @@ namespace automatic_web_testing.Helper.Tests
             if (driver == null) return null;
             var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(timeout));
             wait.PollingInterval = TimeSpan.FromMilliseconds(pollinginterval);
-            wait.Until(ExpectedConditions.ElementIsVisible(By.Id(id)));
+            wait.Until(ExpectedConditions.ElementIsVisible(By.Id(id))); 
             return driver.FindElement(By.Id(id));
         }
         /// <summary>
@@ -38,8 +38,10 @@ namespace automatic_web_testing.Helper.Tests
         public static IWebElement WaitForElementByClassName(string className, ChromeDriver driver, int timeout, int pollinginterval)
         {
             if (driver == null) return null;
-            var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(timeout));
-            wait.PollingInterval = TimeSpan.FromMilliseconds(pollinginterval);
+            var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(timeout))
+            {
+                PollingInterval = TimeSpan.FromMilliseconds(pollinginterval)
+            };
             wait.Until(ExpectedConditions.ElementIsVisible(By.ClassName(className)));
             return driver.FindElement(By.ClassName(className));
         }
