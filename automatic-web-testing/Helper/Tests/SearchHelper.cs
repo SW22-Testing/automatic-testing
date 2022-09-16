@@ -16,7 +16,7 @@ namespace automatic_web_testing.Helper.Tests
         /// </summary>
         /// <param name="id"></param>
         /// <param name="driver"></param>
-        /// <param name="timeout"></param>
+        /// <param name="timeout"></param>///
         /// <param name="pollinginterval"></param>
         /// <returns></returns>
         public static IWebElement WaitForElementById(string id, ChromeDriver driver, int timeout, int pollinginterval)
@@ -24,7 +24,7 @@ namespace automatic_web_testing.Helper.Tests
             if (driver == null) return null;
             var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(timeout));
             wait.PollingInterval = TimeSpan.FromMilliseconds(pollinginterval);
-            wait.Until(ExpectedConditions.ElementIsVisible(By.Id(id))); 
+            wait.Until(ExpectedConditions.ElementIsVisible(By.Id(id)));
             return driver.FindElement(By.Id(id));
         }
         /// <summary>
