@@ -51,51 +51,35 @@ namespace automatic_web_testing.AutomaticTests.ZakladniFunkce
         {
             driver = LoginHelper.Login(driver, wait);
             Assert.NotNull(driver);
-    
             driver = ExternalLogin(driver, wait);
             Assert.NotNull(driver);
-    
             var addMicrosoft = driver.FindElements(By.ClassName("btn-primary")).First(e => e.GetAttribute("title") == "Log in using your Microsoft account");
             addMicrosoft.Click();
-    
             var usernameMicrosoft = SearchHelper.WaitForElementById("i0116", driver, 5, 250);
-    
             usernameMicrosoft.SendKeys(UserHelper.MicrosoftUser.Email);
             Assert.AreEqual(UserHelper.MicrosoftUser.Email, usernameMicrosoft.GetAttribute("value"));
-    
             var confirmMicrosoft = driver.FindElements(By.TagName("input")).First(e => e.GetAttribute("type") == "submit");
             confirmMicrosoft.Click();
-    
             SearchHelper.WaitForElementById("idA_PWD_ForgotPassword", driver, 5, 250);
-    
             var passwordMicrosoft = driver.FindElement(By.ClassName("ext-text-box"));
             Assert.NotNull(passwordMicrosoft, "heslo neni");
             passwordMicrosoft.SendKeys(UserHelper.MicrosoftUser.Password);
             Assert.AreEqual(UserHelper.MicrosoftUser.Password, passwordMicrosoft.GetAttribute("value"));
-    
             confirmMicrosoft = driver.FindElements(By.TagName("input")).First(e => e.GetAttribute("type") == "submit");
             confirmMicrosoft.Click();
-    
             var noRemember = driver.FindElement(By.Id("idBtn_Back"));
             noRemember?.Click();
-    
             var logoutIdentity = driver.FindElements(By.TagName("a")).FirstOrDefault(e => e.Text == "Odhlásit se");
             logoutIdentity?.Click();
-    
             var logoutConfirm = driver.FindElements(By.TagName("button")).FirstOrDefault(e => e.Text == "Ano");
             logoutConfirm?.Click();
-    
             driver.Navigate().GoToUrl("https://dv1.aspehub.cz/Account");
-    
             var username = SearchHelper.WaitForElementById("Username", driver, 5, 250);
             Assert.Null(username);
-    
             var exterLoginMicrosoft = driver.FindElements(By.TagName("a")).FirstOrDefault(e => e.Text == "Microsoft");
             exterLoginMicrosoft?.Click();
-    
             driver = ExternalLogin(driver, wait);
             Assert.NotNull(driver);
-    
             var deleteMicrosoft = driver.FindElements(By.ClassName("btn-primary")).First(e => e.GetAttribute("title") == "Remove this Microsoft login from your account");
             deleteMicrosoft.Click();
         }
@@ -104,48 +88,33 @@ namespace automatic_web_testing.AutomaticTests.ZakladniFunkce
         {
             driver = LoginHelper.Login(driver, wait);
             Assert.NotNull(driver);
-    
             driver = ExternalLogin(driver, wait);
             Assert.NotNull(driver);
-    
             var addGoogle = driver.FindElements(By.ClassName("btn-primary")).FirstOrDefault(e => e.GetAttribute("title") == "Log in using your Google account");
             addGoogle?.Click();
-    
             wait.Until(e => e.FindElement(By.Id("identifierId")));
             var usernameGoogle = driver.FindElement(By.Id("identifierId"));
             usernameGoogle.SendKeys(UserHelper.GoogleUser.Email);
             Assert.AreEqual(UserHelper.GoogleUser.Email, usernameGoogle.GetAttribute("value"));
-    
             var nextLogin = driver.FindElements(By.TagName("button")).FirstOrDefault(e => e.Text == "Další");
             nextLogin?.Click();
-    
             wait.Until(e => e.FindElements(By.TagName("span")).Where(f => f.Text == "Zapomněli jste heslo?"));
-    
             var passwordGoogle = driver.FindElement(By.Name("password"));
             passwordGoogle.SendKeys(UserHelper.GoogleUser.Password);
             Assert.AreEqual(UserHelper.GoogleUser.Password, passwordGoogle.GetAttribute("value"));
-    
             passwordGoogle.SendKeys(Keys.Enter);
-    
             Thread.Sleep(1500);
-    
             var logoutIdentity = driver.FindElements(By.TagName("a")).FirstOrDefault(e => e.Text == "Odhlásit se");
             logoutIdentity?.Click();
-    
             var logoutConfirm = driver.FindElements(By.TagName("button")).FirstOrDefault(e => e.Text == "Ano");
             logoutConfirm?.Click();
-    
             driver.Navigate().GoToUrl("https://dv1.aspehub.cz/Account");
-    
             var username = SearchHelper.WaitForElementById("Username", driver, 5, 250);
             Assert.Null(username);
-
             var exterLoginGoogle = driver.FindElements(By.TagName("a")).FirstOrDefault(e => e.Text == "Google");
             exterLoginGoogle?.Click();
-    
             driver = ExternalLogin(driver, wait);
             Assert.NotNull(driver);
-    
             var deleteGoogle = driver.FindElements(By.ClassName("btn-primary")).FirstOrDefault(e => e.GetAttribute("title") == "Remove this Google login from your account");
             deleteGoogle?.Click();
         }
@@ -166,19 +135,15 @@ namespace automatic_web_testing.AutomaticTests.ZakladniFunkce
             try
             {
                 wait.Until(e => e.FindElements(By.ClassName("MainModule.Header_action__1YiP5")).FirstOrDefault(f => f.GetAttribute("title") == UserHelper.CorrectUser.Email));
-    
                 var profile = driver.FindElements(By.ClassName("MainModule.Header_action__1YiP5")).First(e => e.GetAttribute("title") == UserHelper.CorrectUser.Email);
                 Assert.NotNull(profile);
                 profile.Click();
-    
                 var profiler = driver.FindElement(By.ClassName("anticon-setting"));
                 Assert.NotNull(profiler);
                 profiler.Click();
-    
                 var extraLogin = driver.FindElement(By.LinkText("Moje externí přihlášení"));
                 Assert.NotNull(extraLogin);
                 extraLogin.Click();
-    
                 return driver;
             }
             catch
@@ -198,25 +163,20 @@ namespace automatic_web_testing.AutomaticTests.ZakladniFunkce
             try
             {
                 wait.Until(ExpectedConditions.ElementIsVisible(By.Id("Username")));
-    
                 var username = driver.FindElement(By.Id("Username"));
                 Assert.IsNotNull(username, "Nenašel se element pro username");
                 var password = driver.FindElement(By.Id("Password"));
                 Assert.IsNotNull(password, "Nenašel se element pro password");
-    
                 username.SendKeys(UserHelper.IncorrectUser.Email);
                 Assert.AreEqual(UserHelper.IncorrectUser.Email, username.GetAttribute("value"), "Zadané hodnoty nesouhlasí s obdrženými");
                 password.SendKeys(UserHelper.CorrectUser.Password);
                 Assert.AreEqual(UserHelper.CorrectUser.Password, password.GetAttribute("value"), "Zadané hodnoty nesouhlasí s obdrženými");
-    
                 var prihlasitButton = driver.FindElement(By.Name("button"));
                 Assert.IsNotNull(prihlasitButton, "Nenašlo se tlačítko pro přihlášení");
                 prihlasitButton.Click();
-    
                 //Pokud bude problém udělá se třída
                 var errorMessage = driver.FindElement(By.ClassName("alert-danger"));
                 Assert.IsTrue(errorMessage.Displayed, "Nenašla se zpráva o chybě");
-    
                 return true;
             }
             catch
@@ -224,7 +184,6 @@ namespace automatic_web_testing.AutomaticTests.ZakladniFunkce
                 return false;
             }
         }
-    
         /// <summary>
         /// Tato třída se přihlašuje špatným heslem.
         /// Taky se kontroluje chybová hláška.
@@ -237,25 +196,20 @@ namespace automatic_web_testing.AutomaticTests.ZakladniFunkce
             try
             {
                 wait.Until(ExpectedConditions.ElementIsVisible(By.Id("Username")));
-    
                 var username = driver.FindElement(By.Id("Username"));
                 Assert.IsNotNull(username, "Nenašel se element pro username");
                 var password = driver.FindElement(By.Id("Password"));
                 Assert.IsNotNull(password, "Nenašel se element pro password");
-    
                 username.SendKeys(UserHelper.CorrectUser.Email);
                 Assert.AreEqual(UserHelper.CorrectUser.Email, username.GetAttribute("value"), "Zadané hodnoty nesouhlasí s obdrženými");
                 password.SendKeys(UserHelper.IncorrectUser.Password);
                 Assert.AreEqual(UserHelper.IncorrectUser.Password, password.GetAttribute("value"), "Zadané hodnoty nesouhlasí s obdrženými");
-    
                 var prihlasitButton = driver.FindElement(By.Name("button"));
                 Assert.IsNotNull(prihlasitButton, "Nenašlo se tlačítko pro přihlášení");
                 prihlasitButton.Click();
-    
                 //Pokud bude problém udělá se třída
                 var errorMessage = driver.FindElement(By.ClassName("alert-danger"));
                 Assert.IsTrue(errorMessage.Displayed, "Nenašla se zpráva o chybě");
-    
                 return true;
             }
             catch
@@ -263,7 +217,6 @@ namespace automatic_web_testing.AutomaticTests.ZakladniFunkce
                 return false;
             }
         }
-    
         /// <summary>
         /// Tato třída zadává oba údaje špatně.
         /// Kontroluje se zde opět chybová hláška.
@@ -276,25 +229,20 @@ namespace automatic_web_testing.AutomaticTests.ZakladniFunkce
             try
             {
                 wait.Until(ExpectedConditions.ElementIsVisible(By.Id("Username")));
-    
                 var username = driver.FindElement(By.Id("Username"));
                 Assert.IsNotNull(username, "Nenašel se element pro username");
                 var password = driver.FindElement(By.Id("Password"));
                 Assert.IsNotNull(password, "Nenašel se element pro password");
-    
                 username.SendKeys(UserHelper.IncorrectUser.Email);
                 Assert.AreEqual(UserHelper.IncorrectUser.Email, username.GetAttribute("value"), "Zadané hodnoty nesouhlasí s obdrženými");
                 password.SendKeys(UserHelper.IncorrectUser.Password);
                 Assert.AreEqual(UserHelper.IncorrectUser.Password, password.GetAttribute("value"), "Zadané hodnoty nesouhlasí s obdrženými");
-    
                 var prihlasitButton = driver.FindElement(By.Name("button"));
                 Assert.IsNotNull(prihlasitButton, "Nenašlo se tlačítko pro přihlášení");
                 prihlasitButton.Click();
-    
                 //Pokud bude problém udělá se třída
                 var errorMessage = driver.FindElement(By.ClassName("alert-danger"));
                 Assert.IsTrue(errorMessage.Displayed, "Nenašla se zpráva o chybě");
-    
                 return true;
             }
             catch

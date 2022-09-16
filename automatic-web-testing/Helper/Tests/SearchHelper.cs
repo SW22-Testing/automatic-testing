@@ -9,10 +9,9 @@ namespace automatic_web_testing.Helper.Tests
 {
     public static class SearchHelper
     {
-    
         //!Uprav celý pro asserty
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="id"></param>
         /// <param name="driver"></param>
@@ -28,7 +27,7 @@ namespace automatic_web_testing.Helper.Tests
             return driver.FindElement(By.Id(id));
         }
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="className"></param>
         /// <param name="driver"></param>
@@ -56,7 +55,7 @@ namespace automatic_web_testing.Helper.Tests
             return driver.FindElements(By.ClassName(className));
         }
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="className"></param>
         /// <param name="driver"></param>
@@ -66,14 +65,13 @@ namespace automatic_web_testing.Helper.Tests
         public static IList<IWebElement> WaitForElementsByClassName(string className, ChromeDriver driver, int timeout, int pollinginterval)
         {
             if (driver == null) return null;
-    
             var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(timeout));
             wait.PollingInterval = TimeSpan.FromMilliseconds(pollinginterval);
             wait.Until(ExpectedConditions.ElementIsVisible(By.ClassName(className)));
             return driver.FindElements(By.ClassName(className));
         }
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="tagName"></param>
         /// <param name="driver"></param>
@@ -89,7 +87,7 @@ namespace automatic_web_testing.Helper.Tests
             return driver.FindElement(By.TagName(tagName));
         }
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="tagName"></param>
         /// <param name="driver"></param>
