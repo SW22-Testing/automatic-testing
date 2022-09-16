@@ -25,7 +25,7 @@ namespace automatic_testing.Helpers.Tests
         public static AppiumWebElement GetClickableElementByName(WindowsDriver<WindowsElement> driver, string name, string errorDesc, bool enabled = true)
         {
             var el = driver.FindElementByName(name);
-            
+
             Assert.IsNotNull(el, errorDesc);
             Assert.True(el.Displayed, errorDesc);
             if (enabled)
@@ -537,7 +537,7 @@ namespace automatic_testing.Helpers.Tests
                 {
                     try
                     {
-                         _ = driver.FindElementByName(name);
+                        _ = driver.FindElementByName(name);
                         iterate = false;
                     }
                     catch (WebDriverException)

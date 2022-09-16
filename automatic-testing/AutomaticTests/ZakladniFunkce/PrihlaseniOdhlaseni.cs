@@ -97,7 +97,7 @@ namespace automatic_testing.AutomaticTests.ZakladniFunkce
             if (isCreated == false)
             {
                 var createNewUserButton = SearchHelper
-                    .GetClickableElementsByClassName(adminWindow,"LightweightBarItemLinkControl", "Nový záznam")
+                    .GetClickableElementsByClassName(adminWindow, "LightweightBarItemLinkControl", "Nový záznam")
                     .FirstOrDefault(e => e.GetAttribute("HelpText") == "Nový záznam");
 
                 createNewUserButton?.Click();
@@ -301,7 +301,7 @@ namespace automatic_testing.AutomaticTests.ZakladniFunkce
                 MouseActionsHelper.DoubleClick(windowsUser);
 
 
-                var user = ("{0} {1}",UserHelper.NewUserProfile.LastName, UserHelper.NewUserProfile.FirstName);
+                var user = $"{UserHelper.NewUserProfile.LastName} {UserHelper.NewUserProfile.FirstName}";
                 var newUserWindow = SearchHelper.GetParentElementByName(
                     RootSession, $"Uživatel: <{user}>"
                     , $"Nepovedlo se najít okno detailu uzivatele {user}");
@@ -443,7 +443,7 @@ namespace automatic_testing.AutomaticTests.ZakladniFunkce
         /// </summary>
         private void WrongDataDialog()
         {
-            var errorDialog = SearchHelper.GetParentElementByClassName(EsticonSession, "#32770","");
+            var errorDialog = SearchHelper.GetParentElementByClassName(EsticonSession, "#32770", "");
 
             var errorText = SearchHelper.FindElementByAccessibilityId("65535", errorDialog);
             Assert.AreEqual(@"Přihlášení se nezdařilo.
