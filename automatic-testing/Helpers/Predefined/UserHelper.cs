@@ -1,5 +1,6 @@
 ﻿using automatic_testing.Classes;
 using System;
+using OpenQA.Selenium;
 
 namespace automatic_testing.Helpers.Predefined
 {

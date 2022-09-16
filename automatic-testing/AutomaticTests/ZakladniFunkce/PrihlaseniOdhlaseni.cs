@@ -9,6 +9,7 @@ using OpenQA.Selenium.Appium.Windows;
 using OpenQA.Selenium.Appium;
 using System.Threading.Tasks;
 using System.Linq;
+using OpenQA.Selenium;
 
 namespace automatic_testing.AutomaticTests.ZakladniFunkce
 {
@@ -85,7 +86,7 @@ namespace automatic_testing.AutomaticTests.ZakladniFunkce
 
             //TODO: Předělat část kódu, aby fungovala s AppiumWebElement
             var gridData = (WindowsElement)SearchHelper.FindElementByAccessibilityId("gcGrid", adminWindow);
-            bool? isCreated = null;
+            var isCreated = false;
 
             TestContext.WriteLine(SearchHelper.FindElementsByAccessibilityId("RowData.Row.DataDto", gridData).Count(e => e.GetAttribute("Value.Value") == UserHelper.WindowsUser.Login));
             Parallel.For(0, SearchHelper.FindElementsByAccessibilityId("RowData.Row.DataDto", gridData).Count(), e =>
@@ -95,12 +96,14 @@ namespace automatic_testing.AutomaticTests.ZakladniFunkce
             //! Pokud se nenajde uživatel, tak se vytvoří, jinak otevře detail a zkontroluje stav offline
             if (isCreated == false)
             {
-                AppiumWebElement createNewUserButton = EsticonSession.FindElementsByAccessibilityId("BarButtonItemLink").FirstOrDefault(e => e.GetAttribute("HelpText") == "Nový záznam");
-                Assert.NotNull(createNewUserButton, "Nenašlo se tlačítko Nový záznam");
-                createNewUserButton.Click();
+                var createNewUserButton = SearchHelper
+                    .GetClickableElementsByClassName(adminWindow,"LightweightBarItemLinkControl", "Nový záznam")
+                    .FirstOrDefault(e => e.GetAttribute("HelpText") == "Nový záznam");
+
+                createNewUserButton?.Click();
 
                 var newUserWindow = SearchHelper.GetParentElementByName(EsticonSession, "Uživatel: < >", "Nenašlo se okno Nového uživatele");
-                Assert.NotNull(newUserWindow, "Okno pro nový účet se neotevřelo");
+
                 CreateUser(newUserWindow as WindowsElement, UserType.WindowsAuth, UserHelper.WindowsUser);
 
                 var createButton = SearchHelper.GetClickableElementByName(EsticonSession, "OK", "Problém s tlačítkem Vytvoření nového uživatele");
@@ -112,10 +115,11 @@ namespace automatic_testing.AutomaticTests.ZakladniFunkce
                 Assert.NotNull(windowsUser, "Nenašel se správně záznam");
                 MouseActionsHelper.DoubleClick(windowsUser);
 
-                var user = ("{0} {1}", UserHelper.NewUserProfile.FirstName, UserHelper.NewUserProfile.LastName);
+                //? Mozná zbytečné tady (Ve windows účtu není definované jméno a přijmění
+                var user = $"{UserHelper.NewUserProfile.LastName} {UserHelper.NewUserProfile.FirstName}";
 
                 var newUserWindow = SearchHelper.GetParentElementByName(
-                    RootSession, $"Uživatel: <{user}>"
+                    RootSession, $"Uživatel: < >"
                     , $"Nepovedlo se najít okno detailu uzivatele {user}");
                 Assert.NotNull(newUserWindow, "Okno pro nový účet se neotevřelo");
 
@@ -297,9 +301,9 @@ namespace automatic_testing.AutomaticTests.ZakladniFunkce
                 MouseActionsHelper.DoubleClick(windowsUser);
 
 
-                var user = ("{0} {1}",UserHelper.NewUserProfile.FirstName, UserHelper.NewUserProfile.LastName);
+                var user = ("{0} {1}",UserHelper.NewUserProfile.LastName, UserHelper.NewUserProfile.FirstName);
                 var newUserWindow = SearchHelper.GetParentElementByName(
-                    RootSession, $"Uživatel: <{UserHelper.NewUserProfile.LastName} {UserHelper.NewUserProfile.FirstName}>"
+                    RootSession, $"Uživatel: <{user}>"
                     , $"Nepovedlo se najít okno detailu uzivatele {user}");
                 Assert.NotNull(newUserWindow, "Okno pro nový účet se neotevřelo");
 
@@ -372,7 +376,7 @@ namespace automatic_testing.AutomaticTests.ZakladniFunkce
                 Assert.NotNull(windowsUser, "FindElementByAccessibilityId se tlačítko Nový záznam");
                 MouseActionsHelper.DoubleClick(windowsUser);
 
-                var user = ("{0} {1}", UserHelper.NewUserProfile.FirstName, UserHelper.NewUserProfile.LastName);
+                var user = $"{UserHelper.NewUserProfile.LastName} {UserHelper.NewUserProfile.FirstName}";
                 var newUserWindow = SearchHelper.GetParentElementByName(
                     RootSession, $"Uživatel: <{user}>",
                     $"Nepovedlo se najít okno detailu uzivatele {user}");
@@ -439,8 +443,7 @@ namespace automatic_testing.AutomaticTests.ZakladniFunkce
         /// </summary>
         private void WrongDataDialog()
         {
-            var errorDialog = SearchHelper.GetParentElementByName(EsticonSession, "#32770","");
-            Assert.NotNull(errorDialog, "Nevyskočil varovný dialog o nepovedeném přihlášení");
+            var errorDialog = SearchHelper.GetParentElementByClassName(EsticonSession, "#32770","");
 
             var errorText = SearchHelper.FindElementByAccessibilityId("65535", errorDialog);
             Assert.AreEqual(@"Přihlášení se nezdařilo.
@@ -511,7 +514,9 @@ Kontaktujte administrátora.", errorText.Text);
 
                     var windowsInput = newUserWindow.FindElementByClassName("ButtonEdit");
                     Assert.NotNull(windowsInput);
-                    windowsInput.SendKeys(profile.Login);
+                    //! SendKeys má definovanou US klávesnici a nejde změnit
+                    //! Opravit šlo buď ALT kódem, nebo schránkou (před každým psaní by se string uložil do schránky a přes ctrl + V by se vložil
+                    windowsInput.SendKeys(profile.Login.Replace(@"\", Keys.Alt + Keys.NumberPad9 + Keys.NumberPad2 + Keys.Alt));
                     Assert.AreEqual(profile.Login, windowsInput.Text);
 
                     break;

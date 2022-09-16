@@ -265,7 +265,8 @@ namespace automatic_testing.Helpers.Tests
         {
             // ReSharper disable once SuspiciousTypeConversion.Global
             var els = driver.FindElementsByAccessibilityId(accessibilityId) as ICollection<AppiumWebElement>;
-            foreach (var el in els!)
+
+            foreach (var el in els)
             {
                 Assert.IsNotNull(el, errorDesc);
                 Assert.True(el.Displayed, errorDesc);
@@ -674,6 +675,90 @@ namespace automatic_testing.Helpers.Tests
                 //? Zřejmě není potřeba, ale radši nechávám, kdyby v budoucnu byly potíže
                 //Thread.Sleep(1000);
                 return driver.FindElementByAccessibilityId(id);
+            }
+            catch
+            {
+                TestContext.WriteLine("Nepovedlo se najít element");
+                return null;
+            }
+        }
+
+        public static ICollection<AppiumWebElement> WaitForElementsByAccessibilityId(string id, WindowsElement driver, int timeOut, int pollingInterval)
+        {
+            if (driver == null) return null;
+
+            var timer = new Stopwatch();
+            var iterate = true;
+            var timeOutSpan = TimeSpan.FromSeconds(timeOut);
+            _ = TimeSpan.FromMilliseconds(pollingInterval);
+            timer.Start();
+            try
+            {
+                //while(timer.ElapsedMilliseconds < timeOut)
+                //{
+                //    tmp = FindElementByName(name, driver);
+                //    if (tmp?.Displayed == true) return tmp;
+                //    Thread.Sleep(_polling);
+                //}
+                while (timer.Elapsed <= timeOutSpan && iterate)
+                {
+                    try
+                    {
+                        _ = driver.FindElementsByAccessibilityId(id);
+                        iterate = false;
+                    }
+                    catch (WebDriverException)
+                    {
+                        //LogSearchError(ex, automationId, controlName);
+                    }
+                }
+                timer.Stop();
+                timer.Reset();
+                //? Zřejmě není potřeba, ale radši nechávám, kdyby v budoucnu byly potíže
+                //Thread.Sleep(1000);
+                return driver.FindElementsByAccessibilityId(id) as ICollection<AppiumWebElement>;
+            }
+            catch
+            {
+                TestContext.WriteLine("Nepovedlo se najít element");
+                return null;
+            }
+        }
+
+        public static ICollection<AppiumWebElement> WaitForElementsByAccessibilityId(string id, WindowsDriver<WindowsElement> driver, int timeOut, int pollingInterval)
+        {
+            if (driver == null) return null;
+
+            var timer = new Stopwatch();
+            var iterate = true;
+            var timeOutSpan = TimeSpan.FromSeconds(timeOut);
+            _ = TimeSpan.FromMilliseconds(pollingInterval);
+            timer.Start();
+            try
+            {
+                //while(timer.ElapsedMilliseconds < timeOut)
+                //{
+                //    tmp = FindElementByName(name, driver);
+                //    if (tmp?.Displayed == true) return tmp;
+                //    Thread.Sleep(_polling);
+                //}
+                while (timer.Elapsed <= timeOutSpan && iterate)
+                {
+                    try
+                    {
+                        _ = driver.FindElementsByAccessibilityId(id);
+                        iterate = false;
+                    }
+                    catch (WebDriverException)
+                    {
+                        //LogSearchError(ex, automationId, controlName);
+                    }
+                }
+                timer.Stop();
+                timer.Reset();
+                //? Zřejmě není potřeba, ale radši nechávám, kdyby v budoucnu byly potíže
+                //Thread.Sleep(1000);
+                return driver.FindElementsByAccessibilityId(id) as ICollection<AppiumWebElement>;
             }
             catch
             {
