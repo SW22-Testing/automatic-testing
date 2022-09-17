@@ -1,8 +1,0 @@
-{
-  "filters": {
-    "comments": false
-  },
-  "rules": {
-    "terminology": true
-  }
-}

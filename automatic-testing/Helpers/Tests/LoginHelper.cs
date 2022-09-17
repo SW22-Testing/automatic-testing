@@ -4,13 +4,16 @@ using System;
 
 namespace automatic_testing.Helpers.Tests
 {
-    public class LoginHelper
+    public static class LoginHelper
     {
         #region Přihlášení s Asserts
+
         /// <summary>
         /// Kontrola přihlášení s Asserty
         /// </summary>
         /// <param name="session">Session, ve které se bude hledat přihlašovací okno pro AspeEsticon</param>
+        /// <param name="username"></param>
+        /// <param name="password"></param>
         public static bool TryLogin(WindowsDriver<WindowsElement> session, string username, string password)
         {
             try
@@ -19,27 +22,22 @@ namespace automatic_testing.Helpers.Tests
                 Assert.IsNotNull(session);
 
                 // Přepne na login s heslem
-                var userCheckBox = SearchHelper.FindElementByName("Přihlásit pomocí jména a hesla", session);
-                Assert.IsNotNull(userCheckBox);
-
+                var userCheckBox = SearchHelper.GetClickableElementByName(session, "Přihlásit pomocí jména a hesla", "Nepovedlo se kliknout na checkbox pro přihlášení heslem");
 
                 userCheckBox.Click();
                 Assert.True(userCheckBox.GetAttribute("SelectionItem.IsSelected").Equals("True"));
 
-                var userNameBox = SearchHelper.FindElementByAccessibilityId("PART_Editor", session);
-                Assert.IsNotNull(userNameBox);
+                var userNameBox = SearchHelper.GetClickableElementByAccessibilityId(session, "PART_Editor", "Nepovedlo se najít input pro UserName");
 
                 userNameBox.SendKeys(username);
                 Assert.AreEqual(username, userNameBox.Text);
 
-                var passwordBox = SearchHelper.FindElementByAccessibilityId("passwordBox", session);
-                Assert.IsNotNull(passwordBox);
+                var passwordBox = SearchHelper.GetClickableElementByAccessibilityId(session, "passwordBox", "Nepovedlo se najít input pro heslo");
 
                 passwordBox.SendKeys(password);
                 Assert.AreEqual(password.Length, passwordBox.Text.Length);
 
-                var login = SearchHelper.FindElementByAccessibilityId("btnOk", session);
-                Assert.IsNotNull(login);
+                var login = SearchHelper.GetClickableElementByAccessibilityId(session, "btnOk", "Nepovedlo se najít tlačítko pro login");
                 login.Click();
 
                 return true;
@@ -53,14 +51,12 @@ namespace automatic_testing.Helpers.Tests
         {
             try
             {
-                var userCheckBox = SearchHelper.FindElementByName("Přihlásit pomocí Windows ověření", session);
-                Assert.IsNotNull(userCheckBox);
+                var userCheckBox = SearchHelper.GetClickableElementByName(session, "Přihlásit pomocí Windows ověření", "Nepovedlo se kliknout na checkbox pro přihlášení heslem");
 
                 userCheckBox.Click();
                 Assert.True(userCheckBox.GetAttribute("SelectionItem.IsSelected").Equals("True"));
 
-                var login = SearchHelper.FindElementByAccessibilityId("btnOk", session);
-                Assert.IsNotNull(login);
+                var login = SearchHelper.GetClickableElementByAccessibilityId(session, "btnOk", "Nepovedlo se najít tlačítko pro login");
                 login.Click();
 
                 return true;
@@ -73,10 +69,13 @@ namespace automatic_testing.Helpers.Tests
 
         #endregion
         #region Přihlášení
+
         /// <summary>
         /// Kontrola přihlášení bez Assertu
         /// </summary>
         /// <param name="session">Session, ve které se bude hledat přihlašovací okno pro AspeEsticon</param>
+        /// <param name="username"></param>
+        /// <param name="password"></param>
         public static WindowsDriver<WindowsElement> Login(WindowsDriver<WindowsElement> session, string username, string password)
         {
             try
@@ -90,7 +89,7 @@ namespace automatic_testing.Helpers.Tests
                 var passwordBox = session.FindElementByAccessibilityId("passwordBox");
                 passwordBox.SendKeys(password);
 
-                var login = session.FindElementByAccessibilityId("btnOk");
+                var login = SearchHelper.GetClickableElementByAccessibilityId(session, "btnOk", "Nepovedlo se najít tlačítko pro login");
                 login.Click();
 
                 return session;
@@ -104,14 +103,11 @@ namespace automatic_testing.Helpers.Tests
         {
             try
             {
-                var userCheckBox = SearchHelper.FindElementByName("Přihlásit pomocí Windows ověření", session);
-                Assert.IsNotNull(userCheckBox);
+                var userCheckBox = session.FindElementByAccessibilityId("Přihlásit pomocí Windows ověření");
 
                 userCheckBox.Click();
-                Assert.True(userCheckBox.GetAttribute("SelectionItem.IsSelected").Equals("True"));
 
-                var login = SearchHelper.FindElementByAccessibilityId("btnOk", session);
-                Assert.IsNotNull(login);
+                var login = session.FindElementByAccessibilityId("btnOk");
                 login.Click();
 
                 return session;
