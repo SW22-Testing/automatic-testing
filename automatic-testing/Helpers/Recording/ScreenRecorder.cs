@@ -1,4 +1,5 @@
-﻿using OpenQA.Selenium.Appium;
+﻿#nullable enable
+using OpenQA.Selenium.Appium;
 using OpenQA.Selenium.Appium.Windows;
 using ScreenRecorderLib;
 using System;
@@ -10,17 +11,21 @@ namespace automatic_testing.Helpers.Recording
 {
     public class ScreenRecorder
     {
-        private readonly Recorder screenCaptureJob = Recorder.CreateRecorder();
-        private readonly string OutputDirectoryName = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+        private readonly Recorder _screenCaptureJob = Recorder.CreateRecorder();
+        private readonly string _outputDirectoryName = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) ?? string.Empty;
+
         /// <summary>
         /// Zapne nahrávání a uloží video
         /// </summary>
         /// <param name="testName">Název souboru po vytvoření</param>
         /// <param name="testModule">Složka pod projektem</param>
+        /// <param name="version"></param>
         /// <param name="project">Projektová složka</param>
         public void StartRecording(string testName = "Automatický test", string testModule = "Obecné", string? version = null, string project = "Obecné")
         {
-            screenCaptureJob.Record(Path.Combine(OutputDirectoryName, "Záznamy", "Videa", project, testModule, GetName(testName, version, DateTime.Now)));
+            if (version != null)
+                _screenCaptureJob.Record(Path.Combine(_outputDirectoryName, "Záznamy", "Videa", project, testModule,
+                    GetName(testName, version, DateTime.Now)));
         }
         /// <summary>
         /// Zastaví nahrávání
@@ -28,24 +33,27 @@ namespace automatic_testing.Helpers.Recording
         public void StopRecording()
         {
             Thread.Sleep(1000);
-            screenCaptureJob.Stop();
+            _screenCaptureJob.Stop();
         }
         public void TakeScreenShot(AppiumWebElement driver, string testName = "Automatický test",
                                    string testModule = "Obecné", string? version = null, string project = "Obecné")
         {
             var screenshot = driver.GetScreenshot();
-            screenshot.SaveAsFile(Path.Combine(OutputDirectoryName,
-                                               "Záznamy",
-                                               "Fotky",
-                                               project,
-                                               testModule,
-                                               GetName(testName, version, DateTime.Now)));
+            if (version != null)
+                screenshot.SaveAsFile(Path.Combine(_outputDirectoryName,
+                    "Záznamy",
+                    "Fotky",
+                    project,
+                    testModule,
+                    GetName(testName, version, DateTime.Now)));
         }
         public void TakeScreenShot(WindowsDriver<WindowsElement> driver, string testName = "Automatický test",
                                    string testModule = "Obecné", string? version = null, string project = "Obecné")
         {
             var screenshot = driver.GetScreenshot();
-            screenshot.SaveAsFile(Path.Combine(OutputDirectoryName, "Záznamy", "Fotky", project, testModule, GetName(testName, version, DateTime.Now)));
+            if (version != null)
+                screenshot.SaveAsFile(Path.Combine(_outputDirectoryName, "Záznamy", "Fotky", project, testModule,
+                    GetName(testName, version, DateTime.Now)));
         }
         private string GetName(string name, string version, DateTime dateTime)
         {

@@ -9,111 +9,284 @@ using System.Threading;
 
 namespace automatic_testing.Helpers.Tests
 {
-    public class SearchHelper
+    public static class SearchHelper
     {
         //TODO: Doplnit <returns> pro Summary
 
         #region Hledání pomocí Name
         /// <summary>
-        /// Vrátí 1 element, který má stejný název jako parametr: <c>name</c>
+        /// Vyhledá element podle parametru Name a zkontroluje stav elementu
         /// </summary>
-        /// <param name="name">Název elementu</param>
-        /// <param name="driver">Session, ve které se bude hledat</param>
+        /// <param name="driver">Objekt, ve kterém se bude vyhledávat</param>
+        /// <param name="name">Parametr Name hledaného elementu</param>
+        /// <param name="errorDesc">Vypsaná chyba, pokud neprojde kontrola</param>
+        /// <param name="enabled">Stav elementu</param>
         /// <returns></returns>
-        public static WindowsElement FindElementByName(string name, WindowsDriver<WindowsElement> driver)
+        public static AppiumWebElement GetClickableElementByName(WindowsDriver<WindowsElement> driver, string name, string errorDesc, bool enabled = true)
         {
-            try
-            {
-                return driver.FindElementByName(name);
-            }
-            catch
-            {
-                return null;
-            }
-        }
-        /// <summary>
-        /// Vrátí 1 element, který má stejný název jako parametr: <c>name</c>
-        /// </summary>
-        /// <param name="name">Název elementu</param>
-        /// <param name="driver">Session, ve které se bude hledat</param>
-        /// <returns></returns>
-        public static AppiumWebElement FindElementByName(string name, AppiumWebElement driver)
-        {
-            try
-            {
-                return driver.FindElementByName(name);
-            }
-            catch
-            {
-                return null;
-            }
-        }
-        /// <summary>
-        /// Vrátí řadu element, které mají stejný název jako parametr: <c>name</c>
-        /// </summary>
-        /// <param name="name">Název elementu</param>
-        /// <param name="driver">Session, ve které se bude hledat</param>
-        /// <returns></returns>
-        public static IEnumerable<AppiumWebElement> FindElementsByName(string name, WindowsElement driver)
-        {
-            if (driver == null)
-                return null;
+            var el = driver.FindElementByName(name);
 
-            try
-            {
-                return driver.FindElementsByName(name);
-            }
-            catch
-            {
-                return null;
-            }
+            Assert.IsNotNull(el, errorDesc);
+            Assert.True(el.Displayed, errorDesc);
+            if (enabled)
+                Assert.True(el.Enabled, errorDesc);
+            else
+                Assert.False(el.Enabled, errorDesc);
+
+            return el;
         }
         /// <summary>
-        /// Vrátí řadu elementů, které mají stejný název jako parametr: <c>name</c>
+        /// Vyhledá element podle parametru Name a zkontroluje stav elementu
         /// </summary>
-        /// <param name="name">Název elementu</param>
-        /// <param name="driver">Session, ve které se bude hledat</param>
+        /// <param name="driver">Element, ve kterém se bude vyhledávat</param>
+        /// <param name="name">Parametr Name hledaného elementu</param>
+        /// <param name="errorDesc">Vypsaná chyba, pokud neprojde kontrola</param>
+        /// <param name="enabled">Stav elementu</param>
         /// <returns></returns>
-        public static IEnumerable<AppiumWebElement> FindElementsByName(string name, WindowsDriver<WindowsElement> driver)
+        public static AppiumWebElement GetClickableElementByName(AppiumWebElement driver, string name, string errorDesc, bool enabled = true)
         {
-            if (driver == null)
-                return null;
+            var el = driver.FindElementByName(name);
 
-            try
+            Assert.IsNotNull(el, errorDesc);
+            Assert.True(el.Displayed, errorDesc);
+            if (enabled)
+                Assert.True(el.Enabled, errorDesc);
+            else
+                Assert.False(el.Enabled, errorDesc);
+            return el;
+        }
+        /// <summary>
+        /// Vyhledá elementy podle parametru Name a zkontroluje stav tlačítek
+        /// </summary>
+        /// <param name="driver">Objekt, ve kterém se bude vyhledávat</param>
+        /// <param name="name">Parametr Name hledaného elementu</param>
+        /// <param name="errorDesc">Vypsaná chyba, pokud neprojde kontrola</param>
+        /// <param name="enabled">Stav elementu</param>
+        /// <returns></returns>
+        public static ICollection<AppiumWebElement> GetClickableElementsByName(WindowsDriver<WindowsElement> driver, string name, string errorDesc, bool enabled = true)
+        {
+            // ReSharper disable once SuspiciousTypeConversion.Global
+            var els = driver.FindElementsByName(name) as ICollection<AppiumWebElement>;
+            foreach (var el in els!)
             {
-                return driver.FindElementsByName(name);
+                Assert.IsNotNull(el, errorDesc);
+                Assert.True(el.Displayed, errorDesc);
+                if (enabled)
+                    Assert.True(el.Enabled, errorDesc);
+                else
+                    Assert.False(el.Enabled, errorDesc);
             }
-            catch
+            return els;
+        }
+        /// <summary>
+        /// Vyhledá elementy podle parametru Name a zkontroluje stav tlačítek
+        /// </summary>
+        /// <param name="driver">Objekt, ve kterém se bude vyhledávat</param>
+        /// <param name="name">Parametr Name hledaných elementů</param>
+        /// <param name="errorDesc">Vypsaná chyba, pokud neprojde kontrola</param>
+        /// <param name="enabled">Stav elementu</param>
+        /// <returns></returns>
+        public static ICollection<AppiumWebElement> GetClickableElementsByName(AppiumWebElement driver, string name, string errorDesc, bool enabled = true)
+        {
+            ICollection<AppiumWebElement> els = driver.FindElementsByName(name);
+            foreach (var el in els)
             {
-                return null;
+                Assert.IsNotNull(el, errorDesc);
+                Assert.True(el.Displayed, errorDesc);
+                if (enabled)
+                    Assert.True(el.Enabled, errorDesc);
+                else
+                    Assert.False(el.Enabled, errorDesc);
             }
+            return els;
+        }
+
+        /// <summary>
+        /// Vyhledá element podle parametru Name a zkontroluje stav elementu
+        /// </summary>
+        /// <param name="driver">Objekt, ve kterém se bude vyhledávat</param>
+        /// <param name="name">Parametr Name hledaného elementu</param>
+        /// <param name="errorDesc">Vypsaná chyba, pokud neprojde kontrola</param>
+        /// <param name="enabled">Stav elementu</param>
+        /// <returns></returns>
+        public static AppiumWebElement GetParentElementByName(WindowsDriver<WindowsElement> driver, string name, string errorDesc, bool enabled = true)
+        {
+            var el = driver.FindElementByName(name);
+
+            Assert.IsNotNull(el, errorDesc);
+            Assert.True(el.Displayed, errorDesc);
+            if (enabled)
+                Assert.True(el.Enabled, errorDesc);
+            else
+                Assert.False(el.Enabled, errorDesc);
+
+            return el;
+        }
+        /// <summary>
+        /// Vyhledá element podle parametru Name a zkontroluje stav elementu
+        /// </summary>
+        /// <param name="driver">Element, ve kterém se bude vyhledávat</param>
+        /// <param name="name">Parametr Name hledaného elementu</param>
+        /// <param name="errorDesc">Vypsaná chyba, pokud neprojde kontrola</param>
+        /// <param name="enabled">Stav elementu</param>
+        /// <returns></returns>
+        public static AppiumWebElement GetParentElementByName(AppiumWebElement driver, string name, string errorDesc, bool enabled = true)
+        {
+            var el = driver.FindElementByName(name);
+
+            Assert.IsNotNull(el, errorDesc);
+            Assert.True(el.Displayed, errorDesc);
+            if (enabled)
+                Assert.True(el.Enabled, errorDesc);
+            else
+                Assert.False(el.Enabled, errorDesc);
+            return el;
+        }
+        /// <summary>
+        /// Vyhledá elementy podle parametru Name a zkontroluje stav tlačítek
+        /// </summary>
+        /// <param name="driver">Objekt, ve kterém se bude vyhledávat</param>
+        /// <param name="name">Parametr Name hledaného elementu</param>
+        /// <param name="errorDesc">Vypsaná chyba, pokud neprojde kontrola</param>
+        /// <param name="enabled">Stav elementu</param>
+        /// <returns></returns>
+        public static ICollection<AppiumWebElement> GetParentElementsByName(WindowsDriver<WindowsElement> driver, string name, string errorDesc, bool enabled = true)
+        {
+            // ReSharper disable once SuspiciousTypeConversion.Global
+            var els = driver.FindElementsByName(name) as ICollection<AppiumWebElement>;
+            foreach (var el in els!)
+            {
+                Assert.IsNotNull(el, errorDesc);
+                Assert.True(el.Displayed, errorDesc);
+                if (enabled)
+                    Assert.True(el.Enabled, errorDesc);
+                else
+                    Assert.False(el.Enabled, errorDesc);
+            }
+            return els;
+        }
+        /// <summary>
+        /// Vyhledá elementy podle parametru Name a zkontroluje stav tlačítek
+        /// </summary>
+        /// <param name="driver">Objekt, ve kterém se bude vyhledávat</param>
+        /// <param name="name">Parametr Name hledaných elementů</param>
+        /// <param name="errorDesc">Vypsaná chyba, pokud neprojde kontrola</param>
+        /// <param name="enabled">Stav elementu</param>
+        /// <returns></returns>
+        public static ICollection<AppiumWebElement> GetParentElementsByName(AppiumWebElement driver, string name, string errorDesc, bool enabled = true)
+        {
+            ICollection<AppiumWebElement> els = driver.FindElementsByName(name);
+            foreach (var el in els)
+            {
+                Assert.IsNotNull(el, errorDesc);
+                Assert.True(el.Displayed, errorDesc);
+                if (enabled)
+                    Assert.True(el.Enabled, errorDesc);
+                else
+                    Assert.False(el.Enabled, errorDesc);
+            }
+            return els;
         }
         #endregion
+
         #region Hledání pomocí AutomationId
         /// <summary>
-        /// Vratí 1 element, který má stejný název jako parametr: <c>name</c>
+        /// Vyhledá element podle parametru AccessibiliyId a zkontroluje stav element
         /// </summary>
-        /// <param name="automationId">AutomationId elementu</param>
-        /// <param name="session">Session, ve které se bude hledat</param>
+        /// <param name="driver">Objekt, ve kterém se bude vyhledávat</param>
+        /// <param name="accessibilityId">Parametr Accessibility Id hledaného elementu</param>
+        /// <param name="errorDesc">Vypsaná chyba, pokud neprojde kontrola</param>
+        /// <param name="enabled">Stav elementu</param>
         /// <returns></returns>
-        public static WindowsElement FindElementByAccessibilityId(string automationId, WindowsDriver<WindowsElement> session)
+        public static AppiumWebElement GetClickableElementByAccessibilityId(WindowsDriver<WindowsElement> driver, string accessibilityId, string errorDesc, bool enabled = true)
         {
-            try
-            {
-                return session.FindElementByAccessibilityId(automationId);
-            }
-            catch
-            {
-                return null;
-            }
+            var el = driver.FindElementByAccessibilityId(accessibilityId);
+
+            Assert.IsNotNull(el, errorDesc);
+            Assert.True(el.Displayed, errorDesc);
+            if (enabled)
+                Assert.True(el.Enabled, errorDesc);
+            else
+                Assert.False(el.Enabled, errorDesc);
+
+            return el;
         }
+        /// <summary>
+        /// Vyhledá element podle parametru AccessibiliyId a zkontroluje stav element
+        /// </summary>
+        /// <param name="driver">Objekt, ve kterém se bude vyhledávat</param>
+        /// <param name="accessibilityId">Parametr Accessibility Id hledaného elementu</param>
+        /// <param name="errorDesc">Vypsaná chyba, pokud neprojde kontrola</param>
+        /// <param name="enabled">Stav elementu</param>
+        /// <returns></returns>
+        public static AppiumWebElement GetClickableElementByAccessibilityId(AppiumWebElement driver, string accessibilityId, string errorDesc, bool enabled = true)
+        {
+            var el = driver.FindElementByAccessibilityId(accessibilityId);
+
+            Assert.IsNotNull(el, errorDesc);
+            Assert.True(el.Displayed, errorDesc);
+            if (enabled)
+                Assert.True(el.Enabled, errorDesc);
+            else
+                Assert.False(el.Enabled, errorDesc);
+            return el;
+        }
+        /// <summary>
+        /// Vyhledá element podle parametru AccessibiliyId a zkontroluje stav element
+        /// </summary>
+        /// <param name="driver">Objekt, ve kterém se bude vyhledávat</param>
+        /// <param name="accessibilityId">Parametr Accessibility Id hledaných elementů</param>
+        /// <param name="errorDesc">Vypsaná chyba, pokud neprojde kontrola</param>
+        /// <param name="enabled">Stav elementu</param>
+        /// <returns></returns>
+        public static ICollection<AppiumWebElement> GetClickableElementsByAccessibilityId(AppiumWebElement driver, string accessibilityId, string errorDesc, bool enabled = true)
+        {
+            var els = (ICollection<AppiumWebElement>)driver.FindElementsByAccessibilityId(accessibilityId);
+            foreach (var el in els)
+            {
+                Assert.IsNotNull(el, errorDesc);
+                Assert.True(el.Displayed, errorDesc);
+                if (enabled)
+                    Assert.True(el.Enabled, errorDesc);
+                else
+                    Assert.False(el.Enabled, errorDesc);
+            }
+            return els;
+        }
+        /// <summary>
+        /// Vyhledá element podle parametru AccessibiliyId a zkontroluje stav element
+        /// </summary>
+        /// <param name="driver">Objekt, ve kterém se bude vyhledávat</param>
+        /// <param name="accessibilityId">Parametr Accessibility Id hledaných elementů</param>
+        /// <param name="errorDesc">Vypsaná chyba, pokud neprojde kontrola</param>
+        /// <param name="enabled">Stav elementů</param>
+        /// <returns></returns>
+        public static ICollection<AppiumWebElement> GetClickableElementsByAccessibilityId(WindowsDriver<WindowsElement> driver, string accessibilityId, string errorDesc, bool enabled = true)
+        {
+            // ReSharper disable once SuspiciousTypeConversion.Global
+            var els = driver.FindElementsByAccessibilityId(accessibilityId) as ICollection<AppiumWebElement>;
+
+            foreach (var el in els)
+            {
+                Assert.IsNotNull(el, errorDesc);
+                Assert.True(el.Displayed, errorDesc);
+                if (enabled)
+                    Assert.True(el.Enabled, errorDesc);
+                else
+                    Assert.False(el.Enabled, errorDesc);
+            }
+            return els;
+        }
+
+
+
         /// <summary>
         /// Vratí řadu element, které mají stejný AutomationId jako parametr: <c>automationId</c>
         /// </summary>
         /// <param name="automationId">AutomationId elementu</param>
         /// <param name="session">Session, ve které se bude hledat</param>
         /// <returns></returns>
-        public static AppiumWebElement FindElementByAccessibilityId(string automationId, AppiumWebElement? session)
+        public static AppiumWebElement FindElementByAccessibilityId(string automationId, AppiumWebElement session)
         {
             if (session == null)
                 return null;
@@ -132,13 +305,13 @@ namespace automatic_testing.Helpers.Tests
         /// <param name="automationId">AutomationId elementu</param>
         /// <param name="session">Session, ve které se bude hledat</param>
         /// <returns></returns>
-        public static IEnumerable<AppiumWebElement> FindElementsByAccessibilityId(string automationId, WindowsElement? driver)
+        public static IEnumerable<AppiumWebElement> FindElementsByAccessibilityId(string automationId, WindowsElement session)
         {
-            if (driver == null)
+            if (session == null)
                 return null;
             try
             {
-                return driver.FindElementsByAccessibilityId(automationId);
+                return session.FindElementsByAccessibilityId(automationId);
             }
             catch
             {
@@ -151,13 +324,13 @@ namespace automatic_testing.Helpers.Tests
         /// <param name="automationId">AutomationId elementu</param>
         /// <param name="session">Session, ve které se bude hledat</param>
         /// <returns></returns>
-        public static IEnumerable<AppiumWebElement> FindElementsByAccessibilityId(string automationId, WindowsDriver<WindowsElement> driver)
+        public static IEnumerable<AppiumWebElement> FindElementsByAccessibilityId(string automationId, WindowsDriver<WindowsElement> session)
         {
-            if (driver == null)
+            if (session == null)
                 return null;
             try
             {
-                return driver.FindElementsById(automationId);
+                return session.FindElementsById(automationId);
             }
             catch
             {
@@ -167,78 +340,177 @@ namespace automatic_testing.Helpers.Tests
         #endregion
         #region Hledání pomocí ClassName
         /// <summary>
-        /// Vratí 1 element, který má stejný název jako parametr: <c>className</c>
+        /// Vyhledá element podle parametru Name a zkontroluje stav elementu
         /// </summary>
-        /// <param name="className">ClassName elementu</param>
-        /// <param name="session">Session, ve které se bude hledat</param>
+        /// <param name="driver">Objekt, ve kterém se bude vyhledávat</param>
+        /// <param name="name">Parametr Name hledaného elementu</param>
+        /// <param name="errorDesc">Vypsaná chyba, pokud neprojde kontrola</param>
+        /// <param name="enabled">Stav elementu</param>
         /// <returns></returns>
-        public static WindowsElement FindElementByClassName(string className, WindowsDriver<WindowsElement> session)
+        public static AppiumWebElement GetClickableElementByClassName(WindowsDriver<WindowsElement> driver, string name, string errorDesc, bool enabled = true)
         {
-            try
-            {
-                return session.FindElementByClassName(className);
-            }
-            catch
-            {
-                return null;
-            }
+            var el = driver.FindElementByClassName(name);
+
+            Assert.IsNotNull(el, errorDesc);
+            Assert.True(el.Displayed, errorDesc);
+            if (enabled)
+                Assert.True(el.Enabled, errorDesc);
+            else
+                Assert.False(el.Enabled, errorDesc);
+
+            return el;
         }
         /// <summary>
-        /// Vratí řadu element, které mají stejný AutomationId jako parametr: <c>className</c>
+        /// Vyhledá element podle parametru Name a zkontroluje stav elementu
         /// </summary>
-        /// <param name="className">ClassName elementu</param>
-        /// <param name="session">Session, ve které se bude hledat</param>
+        /// <param name="driver">Element, ve kterém se bude vyhledávat</param>
+        /// <param name="name">Parametr Name hledaného elementu</param>
+        /// <param name="errorDesc">Vypsaná chyba, pokud neprojde kontrola</param>
+        /// <param name="enabled">Stav elementu</param>
         /// <returns></returns>
-        public static AppiumWebElement FindElementByClassName(string className, WindowsElement? session)
+        public static AppiumWebElement GetClickableElementByClassName(AppiumWebElement driver, string name, string errorDesc, bool enabled = true)
         {
-            if (session == null)
-                return null;
-            try
-            {
-                return session.FindElementByClassName(className);
-            }
-            catch
-            {
-                return null;
-            }
+            var el = driver.FindElementByClassName(name);
+
+            Assert.IsNotNull(el, errorDesc);
+            Assert.True(el.Displayed, errorDesc);
+            if (enabled)
+                Assert.True(el.Enabled, errorDesc);
+            else
+                Assert.False(el.Enabled, errorDesc);
+            return el;
         }
         /// <summary>
-        /// Vratí řadu element, které mají stejný AutomationId jako parametr: <c>className</c>
+        /// Vyhledá elementy podle parametru Name a zkontroluje stav tlačítek
         /// </summary>
-        /// <param name="className">ClassName elementu</param>
-        /// <param name="driver">Session, ve které se bude hledat</param>
+        /// <param name="driver">Objekt, ve kterém se bude vyhledávat</param>
+        /// <param name="name">Parametr Name hledaného elementu</param>
+        /// <param name="errorDesc">Vypsaná chyba, pokud neprojde kontrola</param>
+        /// <param name="enabled">Stav elementu</param>
         /// <returns></returns>
-        public static IEnumerable<AppiumWebElement> FindElementsByClassName(string className, WindowsElement? driver)
+        public static ICollection<AppiumWebElement> GetClickableElementsByClassName(WindowsDriver<WindowsElement> driver, string name, string errorDesc, bool enabled = true)
         {
-            if (driver == null)
-                return null;
-            try
+            // ReSharper disable once SuspiciousTypeConversion.Global
+            var els = driver.FindElementsByClassName(name) as ICollection<AppiumWebElement>;
+            foreach (var el in els!)
             {
-                return driver.FindElementsByClassName(className);
+                Assert.IsNotNull(el, errorDesc);
+                Assert.True(el.Displayed, errorDesc);
+                if (enabled)
+                    Assert.True(el.Enabled, errorDesc);
+                else
+                    Assert.False(el.Enabled, errorDesc);
             }
-            catch
-            {
-                return null;
-            }
+            return els;
         }
         /// <summary>
-        /// Vratí řadu element, které mají stejný AutomationId jako parametr: <c>className</c>
+        /// Vyhledá elementy podle parametru Name a zkontroluje stav tlačítek
         /// </summary>
-        /// <param name="className">ClassName elementu</param>
-        /// <param name="driver">Session, ve které se bude hledat</param>
+        /// <param name="driver">Objekt, ve kterém se bude vyhledávat</param>
+        /// <param name="name">Parametr Name hledaných elementů</param>
+        /// <param name="errorDesc">Vypsaná chyba, pokud neprojde kontrola</param>
+        /// <param name="enabled">Stav elementu</param>
         /// <returns></returns>
-        public static IEnumerable<AppiumWebElement> FindElementsByClassName(string className, WindowsDriver<WindowsElement> driver)
+        public static ICollection<AppiumWebElement> GetClickableElementsByClassName(AppiumWebElement driver, string name, string errorDesc, bool enabled = true)
         {
-            if (driver == null)
-                return null;
-            try
+            ICollection<AppiumWebElement> els = driver.FindElementsByClassName(name);
+            foreach (var el in els)
             {
-                return driver.FindElementsByClassName(className);
+                Assert.IsNotNull(el, errorDesc);
+                Assert.True(el.Displayed, errorDesc);
+                if (enabled)
+                    Assert.True(el.Enabled, errorDesc);
+                else
+                    Assert.False(el.Enabled, errorDesc);
             }
-            catch
+            return els;
+        }
+
+        /// <summary>
+        /// Vyhledá element podle parametru Name a zkontroluje stav elementu
+        /// </summary>
+        /// <param name="driver">Objekt, ve kterém se bude vyhledávat</param>
+        /// <param name="name">Parametr Name hledaného elementu</param>
+        /// <param name="errorDesc">Vypsaná chyba, pokud neprojde kontrola</param>
+        /// <param name="enabled">Stav elementu</param>
+        /// <returns></returns>
+        public static AppiumWebElement GetParentElementByClassName(WindowsDriver<WindowsElement> driver, string name, string errorDesc, bool enabled = true)
+        {
+            var el = driver.FindElementByClassName(name);
+
+            Assert.IsNotNull(el, errorDesc);
+            Assert.True(el.Displayed, errorDesc);
+            if (enabled)
+                Assert.True(el.Enabled, errorDesc);
+            else
+                Assert.False(el.Enabled, errorDesc);
+
+            return el;
+        }
+        /// <summary>
+        /// Vyhledá element podle parametru Name a zkontroluje stav elementu
+        /// </summary>
+        /// <param name="driver">Element, ve kterém se bude vyhledávat</param>
+        /// <param name="name">Parametr Name hledaného elementu</param>
+        /// <param name="errorDesc">Vypsaná chyba, pokud neprojde kontrola</param>
+        /// <param name="enabled">Stav elementu</param>
+        /// <returns></returns>
+        public static AppiumWebElement GetParentElementByClassName(AppiumWebElement driver, string name, string errorDesc, bool enabled = true)
+        {
+            var el = driver.FindElementByClassName(name);
+
+            Assert.IsNotNull(el, errorDesc);
+            Assert.True(el.Displayed, errorDesc);
+            if (enabled)
+                Assert.True(el.Enabled, errorDesc);
+            else
+                Assert.False(el.Enabled, errorDesc);
+            return el;
+        }
+        /// <summary>
+        /// Vyhledá elementy podle parametru Name a zkontroluje stav tlačítek
+        /// </summary>
+        /// <param name="driver">Objekt, ve kterém se bude vyhledávat</param>
+        /// <param name="name">Parametr Name hledaného elementu</param>
+        /// <param name="errorDesc">Vypsaná chyba, pokud neprojde kontrola</param>
+        /// <param name="enabled">Stav elementu</param>
+        /// <returns></returns>
+        public static ICollection<AppiumWebElement> GetParentsElementsByClassName(WindowsDriver<WindowsElement> driver, string name, string errorDesc, bool enabled = true)
+        {
+            // ReSharper disable once SuspiciousTypeConversion.Global
+            var els = driver.FindElementsByClassName(name) as ICollection<AppiumWebElement>;
+            foreach (var el in els!)
             {
-                return null;
+                Assert.IsNotNull(el, errorDesc);
+                Assert.True(el.Displayed, errorDesc);
+                if (enabled)
+                    Assert.True(el.Enabled, errorDesc);
+                else
+                    Assert.False(el.Enabled, errorDesc);
             }
+            return els;
+        }
+        /// <summary>
+        /// Vyhledá elementy podle parametru Name a zkontroluje stav tlačítek
+        /// </summary>
+        /// <param name="driver">Objekt, ve kterém se bude vyhledávat</param>
+        /// <param name="name">Parametr Name hledaných elementů</param>
+        /// <param name="errorDesc">Vypsaná chyba, pokud neprojde kontrola</param>
+        /// <param name="enabled">Stav elementu</param>
+        /// <returns></returns>
+        public static ICollection<AppiumWebElement> GetParentElementsByClassName(AppiumWebElement driver, string name, string errorDesc, bool enabled = true)
+        {
+            ICollection<AppiumWebElement> els = driver.FindElementsByClassName(name);
+            foreach (var el in els)
+            {
+                Assert.IsNotNull(el, errorDesc);
+                Assert.True(el.Displayed, errorDesc);
+                if (enabled)
+                    Assert.True(el.Enabled, errorDesc);
+                else
+                    Assert.False(el.Enabled, errorDesc);
+            }
+            return els;
         }
         #endregion
 
@@ -254,18 +526,18 @@ namespace automatic_testing.Helpers.Tests
         {
             if (driver == null) return null;
 
-            Stopwatch timer = new Stopwatch();
-            bool iterate = true;
-            var _timeOut = TimeSpan.FromSeconds(timeOut);
+            var timer = new Stopwatch();
+            var iterate = true;
+            var timeOutSpan = TimeSpan.FromSeconds(timeOut);
             _ = TimeSpan.FromMilliseconds(pollingInterval);
             timer.Start();
             try
             {
-                while (timer.Elapsed <= _timeOut && iterate == true)
+                while (timer.Elapsed <= timeOutSpan && iterate)
                 {
                     try
                     {
-                        AppiumWebElement tmp = driver.FindElementByName(name);
+                        _ = driver.FindElementByName(name);
                         iterate = false;
                     }
                     catch (WebDriverException)
@@ -290,9 +562,9 @@ namespace automatic_testing.Helpers.Tests
         {
             if (driver == null) return null;
 
-            Stopwatch timer = new Stopwatch();
-            bool iterate = true;
-            var _timeOut = TimeSpan.FromSeconds(timeOut);
+            var timer = new Stopwatch();
+            var iterate = true;
+            var timeOutSpan = TimeSpan.FromSeconds(timeOut);
             _ = TimeSpan.FromMilliseconds(pollingInterval);
             timer.Start();
             try
@@ -303,11 +575,11 @@ namespace automatic_testing.Helpers.Tests
                 //    if (tmp?.Displayed == true) return tmp;
                 //    Thread.Sleep(_polling);
                 //}
-                while (timer.Elapsed <= _timeOut && iterate == true)
+                while (timer.Elapsed <= timeOutSpan && iterate)
                 {
                     try
                     {
-                        AppiumWebElement tmp = driver.FindElementByName(name);
+                        _ = driver.FindElementByName(name);
                         iterate = false;
                     }
                     catch (WebDriverException)
@@ -332,9 +604,9 @@ namespace automatic_testing.Helpers.Tests
         {
             if (driver == null) return null;
 
-            Stopwatch timer = new Stopwatch();
-            bool iterate = true;
-            var _timeOut = TimeSpan.FromSeconds(timeOut);
+            var timer = new Stopwatch();
+            var iterate = true;
+            var timeOutSpan = TimeSpan.FromSeconds(timeOut);
             _ = TimeSpan.FromMilliseconds(pollingInterval);
             timer.Start();
             try
@@ -345,11 +617,11 @@ namespace automatic_testing.Helpers.Tests
                 //    if (tmp?.Displayed == true) return tmp;
                 //    Thread.Sleep(_polling);
                 //}
-                while (timer.Elapsed <= _timeOut && iterate == true)
+                while (timer.Elapsed <= timeOutSpan && iterate)
                 {
                     try
                     {
-                        AppiumWebElement tmp = driver.FindElementByAccessibilityId(id);
+                        _ = driver.FindElementByAccessibilityId(id);
                         iterate = false;
                     }
                     catch (WebDriverException)
@@ -373,9 +645,9 @@ namespace automatic_testing.Helpers.Tests
         {
             if (driver == null) return null;
 
-            Stopwatch timer = new Stopwatch();
-            bool iterate = true;
-            var _timeOut = TimeSpan.FromSeconds(timeOut);
+            var timer = new Stopwatch();
+            var iterate = true;
+            var timeOutSpan = TimeSpan.FromSeconds(timeOut);
             _ = TimeSpan.FromMilliseconds(pollingInterval);
             timer.Start();
             try
@@ -386,11 +658,11 @@ namespace automatic_testing.Helpers.Tests
                 //    if (tmp?.Displayed == true) return tmp;
                 //    Thread.Sleep(_polling);
                 //}
-                while (timer.Elapsed <= _timeOut && iterate == true)
+                while (timer.Elapsed <= timeOutSpan && iterate)
                 {
                     try
                     {
-                        AppiumWebElement tmp = driver.FindElementByAccessibilityId(id);
+                        _ = driver.FindElementByAccessibilityId(id);
                         iterate = false;
                     }
                     catch (WebDriverException)
@@ -403,6 +675,90 @@ namespace automatic_testing.Helpers.Tests
                 //? Zřejmě není potřeba, ale radši nechávám, kdyby v budoucnu byly potíže
                 //Thread.Sleep(1000);
                 return driver.FindElementByAccessibilityId(id);
+            }
+            catch
+            {
+                TestContext.WriteLine("Nepovedlo se najít element");
+                return null;
+            }
+        }
+
+        public static ICollection<AppiumWebElement> WaitForElementsByAccessibilityId(string id, WindowsElement driver, int timeOut, int pollingInterval)
+        {
+            if (driver == null) return null;
+
+            var timer = new Stopwatch();
+            var iterate = true;
+            var timeOutSpan = TimeSpan.FromSeconds(timeOut);
+            _ = TimeSpan.FromMilliseconds(pollingInterval);
+            timer.Start();
+            try
+            {
+                //while(timer.ElapsedMilliseconds < timeOut)
+                //{
+                //    tmp = FindElementByName(name, driver);
+                //    if (tmp?.Displayed == true) return tmp;
+                //    Thread.Sleep(_polling);
+                //}
+                while (timer.Elapsed <= timeOutSpan && iterate)
+                {
+                    try
+                    {
+                        _ = driver.FindElementsByAccessibilityId(id);
+                        iterate = false;
+                    }
+                    catch (WebDriverException)
+                    {
+                        //LogSearchError(ex, automationId, controlName);
+                    }
+                }
+                timer.Stop();
+                timer.Reset();
+                //? Zřejmě není potřeba, ale radši nechávám, kdyby v budoucnu byly potíže
+                //Thread.Sleep(1000);
+                return driver.FindElementsByAccessibilityId(id) as ICollection<AppiumWebElement>;
+            }
+            catch
+            {
+                TestContext.WriteLine("Nepovedlo se najít element");
+                return null;
+            }
+        }
+
+        public static ICollection<AppiumWebElement> WaitForElementsByAccessibilityId(string id, WindowsDriver<WindowsElement> driver, int timeOut, int pollingInterval)
+        {
+            if (driver == null) return null;
+
+            var timer = new Stopwatch();
+            var iterate = true;
+            var timeOutSpan = TimeSpan.FromSeconds(timeOut);
+            _ = TimeSpan.FromMilliseconds(pollingInterval);
+            timer.Start();
+            try
+            {
+                //while(timer.ElapsedMilliseconds < timeOut)
+                //{
+                //    tmp = FindElementByName(name, driver);
+                //    if (tmp?.Displayed == true) return tmp;
+                //    Thread.Sleep(_polling);
+                //}
+                while (timer.Elapsed <= timeOutSpan && iterate)
+                {
+                    try
+                    {
+                        _ = driver.FindElementsByAccessibilityId(id);
+                        iterate = false;
+                    }
+                    catch (WebDriverException)
+                    {
+                        //LogSearchError(ex, automationId, controlName);
+                    }
+                }
+                timer.Stop();
+                timer.Reset();
+                //? Zřejmě není potřeba, ale radši nechávám, kdyby v budoucnu byly potíže
+                //Thread.Sleep(1000);
+                return driver.FindElementsByAccessibilityId(id) as ICollection<AppiumWebElement>;
             }
             catch
             {

@@ -9,23 +9,23 @@ namespace automatic_testing.Helpers.Setup
 {
     public class WinAppDriverSetup
     {
-        protected string DriverUrl { get; set; }
+        private string DriverUrl { get; set; }
         private AppiumOptions AppiumOptionsRoot { get; set; }
         private AppiumOptions AppiumOptionsEsticon { get; set; }
         private Process WinAppDriver { get; set; }
 
 
-        public WinAppDriverSetup(string _driverUrl = "http://127.0.0.1:4723/")
+        public WinAppDriverSetup(string driverUrl = "http://127.0.0.1:4723/")
         {
-            DriverUrl = _driverUrl;
+            DriverUrl = driverUrl;
             WinAppDriver = new Process();
         }
 
         /// <summary>
         /// Create session for already running app
         /// </summary>
-        /// <param name="appText">Název procesu, který se má připojit</param>
-        /// <param name="name">Název elementu, na který se má čekat</param>
+        /// <param name="driver"></param>
+        /// <param name="windowName"></param>
         /// <returns>Session for already running app</returns>
         /// <example>CreateSessionForAlreadyRunningApp("calc");</example>
         //! Prozatím je zbytečný | Někdy se třeba bude používat
@@ -44,8 +44,6 @@ namespace automatic_testing.Helpers.Setup
         /// <summary>
         /// Zapnutí session pro vybírání oken
         /// </summary>
-        /// <param name="dest">Cesta k programu. Pokud je root, session vidí všechny okna</param>
-        /// <param name="deviceName">Typ zařízení, na kterém poběží program</param>
         /// <returns>Vrací root session se všemi otevřenými okny</returns>
         public WindowsDriver<WindowsElement> GetRootSession()
         {
@@ -58,8 +56,6 @@ namespace automatic_testing.Helpers.Setup
         /// <summary>
         /// Zapnutí session s AspeEsticonem
         /// </summary>
-        /// <param name="dest">Cesta k programu. Pokud je root, session vidí všechny okna</param>
-        /// <param name="deviceName">Typ zařízení, na kterém poběží program</param>
         /// <returns>Vrátí session, ve které je AspeEsticon</returns>
         public WindowsDriver<WindowsElement> GetEsticonSession()
         {
@@ -71,7 +67,7 @@ namespace automatic_testing.Helpers.Setup
 
         public void WinAppDriverProcessStart()
         {
-            ProcessStartInfo winAppInfo = new ProcessStartInfo
+            var winAppInfo = new ProcessStartInfo
             {
                 CreateNoWindow = true,
                 UseShellExecute = false,
@@ -89,11 +85,11 @@ namespace automatic_testing.Helpers.Setup
             WinAppDriver.Dispose();
 
             var prcs = Process.GetProcessesByName("WinAppDriver");
-            if (prcs.Count() > 0)
-                foreach (var p in prcs)
-                {
-                    p.Kill();
-                }
+            if (!prcs.Any()) return;
+            foreach (var p in prcs)
+            {
+                p.Kill();
+            }
         }
         /// <summary>
         /// Pustit na konci každého testu, aby zavřel všechny instance AspeEsticon
@@ -101,11 +97,11 @@ namespace automatic_testing.Helpers.Setup
         public void KillEveryInstance()
         {
             var prcs = Process.GetProcessesByName("EstiCon.Client");
-            if (prcs.Count() > 0)
-                foreach (var p in prcs)
-                {
-                    p.Kill();
-                }
+            if (!prcs.Any()) return;
+            foreach (var p in prcs)
+            {
+                p.Kill();
+            }
         }
 
     }
