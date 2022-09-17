@@ -1,6 +1,6 @@
 {
     "threshold": 75,
-    "reporters": ["html", "verbose"],
+    "reporters": ["html", "consoleFull"],
     "ignore": [
       "**/__snapshots__/**",
       "**/automatic-testing/Helpers/tests/**"
