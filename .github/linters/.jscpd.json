@@ -3,7 +3,6 @@
     "reporters": ["html", "markdown"],
     "ignore": [
       "**/__snapshots__/**",
-        "**/automatic-testing/Helpers/tests/**"
     ],
     "absolute": true
   }
