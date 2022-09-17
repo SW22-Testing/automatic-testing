@@ -1,10 +1,9 @@
 {
     "threshold": 75,
-    "reporters": [
-      "consoleFull"
-    ],
+    "reporters": ["html", "markdown"],
     "ignore": [
-      "**/__snapshots__/**"
+      "**/__snapshots__/**",
+        "**/automatic-testing/Helpers/tests/**"
     ],
     "absolute": true
   }
