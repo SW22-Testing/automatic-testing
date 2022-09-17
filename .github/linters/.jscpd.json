@@ -1,0 +1,9 @@
+{
+    "threshold": 75,
+    "reporters": ["html", "consoleFull", "markdown"],
+    "ignore": [
+      "**/github/workspace/automatic-testing/Helpers/tests/**",
+      "**/github/workspace/automatic-web-testing/Helper/Tests/**"
+    ],
+    "absolute": true
+  }

@@ -1,8 +1,0 @@
-{
-    "threshold": 75,
-    "reporters": ["html", "consoleFull", "markdown"],
-    "ignore": [
-      "**/automatic-testing/Helpers/tests/**"
-    ],
-    "absolute": true
-  }
