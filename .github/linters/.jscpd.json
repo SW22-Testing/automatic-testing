@@ -4,8 +4,7 @@
       "consoleFull"
     ],
     "ignore": [
-      "**/__snapshots__/**",
-      "**/automatic-testing/helpers/**"
+      "**/__snapshots__/**"
     ],
     "absolute": true
   }
