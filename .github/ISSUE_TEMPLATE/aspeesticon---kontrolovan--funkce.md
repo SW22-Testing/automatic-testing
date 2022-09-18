@@ -2,7 +2,7 @@
 name: AspeEsticon - Kontrolovaná funkce
 about: Popis kontrolované funkce
 title: Vytvoření uživatele
-labels: aspeEsticon, automatic test, feature
+labels: aspeEsticon, aspeHub, automatic test, feature
 assignees: motirek, Twinrest
 
 ---
