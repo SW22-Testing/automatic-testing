@@ -11,7 +11,7 @@ namespace automatic_testing.Helpers.Tests
         /// <summary>
         /// Kontrola přihlášení s Asserty
         /// </summary>
-        /// <param name="session">Session, ve které se bude hledvat přihlašovací okno pro AspeEsticon</param>
+        /// <param name="session">Session, ve které se bude hledat přihlašovací okno pro AspeEsticon</param>
         /// <param name="username"></param>
         /// <param name="password"></param>
         public static bool TryLogin(WindowsDriver<WindowsElement> session, string username, string password)
