@@ -5,7 +5,9 @@ VisualStudioVersion = 17.2.32616.157
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "automatic-testing", "automatic-testing.csproj", "{99B2EF5F-2A27-45A0-8B7F-695EBB537481}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "automatic-web-testing", "..\automatic-web-testing\automatic-web-testing.csproj", "{EBC3CECF-632F-4D15-836F-EEB303CF5C5C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "automatic-web-testing", "..\automatic-web-testing\automatic-web-testing.csproj", "{EBC3CECF-632F-4D15-836F-EEB303CF5C5C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "screen-recorder", "..\screen-recorder\screen-recorder.csproj", "{7680D7BB-4C11-4DDC-992A-A746A0B464E8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,12 +27,20 @@ Global
 		{99B2EF5F-2A27-45A0-8B7F-695EBB537481}.Release|x64.Build.0 = Release|x64
 		{EBC3CECF-632F-4D15-836F-EEB303CF5C5C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{EBC3CECF-632F-4D15-836F-EEB303CF5C5C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EBC3CECF-632F-4D15-836F-EEB303CF5C5C}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{EBC3CECF-632F-4D15-836F-EEB303CF5C5C}.Debug|x64.Build.0 = Debug|Any CPU
+		{EBC3CECF-632F-4D15-836F-EEB303CF5C5C}.Debug|x64.ActiveCfg = Debug|x64
+		{EBC3CECF-632F-4D15-836F-EEB303CF5C5C}.Debug|x64.Build.0 = Debug|x64
 		{EBC3CECF-632F-4D15-836F-EEB303CF5C5C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EBC3CECF-632F-4D15-836F-EEB303CF5C5C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{EBC3CECF-632F-4D15-836F-EEB303CF5C5C}.Release|x64.ActiveCfg = Release|Any CPU
 		{EBC3CECF-632F-4D15-836F-EEB303CF5C5C}.Release|x64.Build.0 = Release|Any CPU
+		{7680D7BB-4C11-4DDC-992A-A746A0B464E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7680D7BB-4C11-4DDC-992A-A746A0B464E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7680D7BB-4C11-4DDC-992A-A746A0B464E8}.Debug|x64.ActiveCfg = Debug|x64
+		{7680D7BB-4C11-4DDC-992A-A746A0B464E8}.Debug|x64.Build.0 = Debug|x64
+		{7680D7BB-4C11-4DDC-992A-A746A0B464E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7680D7BB-4C11-4DDC-992A-A746A0B464E8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7680D7BB-4C11-4DDC-992A-A746A0B464E8}.Release|x64.ActiveCfg = Release|Any CPU
+		{7680D7BB-4C11-4DDC-992A-A746A0B464E8}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

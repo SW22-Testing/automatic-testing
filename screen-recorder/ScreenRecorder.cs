@@ -1,16 +1,25 @@
 ﻿#nullable enable
-using ScreenRecorderLib;
 using System;
 using System.IO;
 using System.Reflection;
 using System.Threading;
+using ScreenRecorderLib;
 
-namespace automatic_testing.Helpers.Recording
+namespace screen_recorder
 {
+    public static class Program
+    {
+        static void Main()
+        {
+            // ReSharper disable once ObjectCreationAsStatement
+            new ScreenRecorder();
+        }
+    }
     public class ScreenRecorder
     {
         private readonly Recorder _screenCaptureJob = Recorder.CreateRecorder();
-        private readonly string _outputDirectoryName = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) ?? string.Empty;
+        //private readonly string _outputDirectoryName = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) ?? string.Empty;
+        private readonly string _outputDirectoryName = Environment.GetFolderPath(Environment.SpecialFolder.MyVideos);
 
         /// <summary>
         /// Zapne nahrávání a uloží video do definovaného souboru
@@ -21,8 +30,8 @@ namespace automatic_testing.Helpers.Recording
         /// <param name="project">Hlavní složka</param>
         public void StartRecording(string testName = "Automatický test", string testModule = "Obecné", string? version = null, string project = "Obecné")
         {
-                _screenCaptureJob.Record(Path.Combine(_outputDirectoryName, "Záznamy", "Videa", project, testModule,
-                    GetName(testName, string.IsNullOrEmpty(version) ? "" : version)));
+            _screenCaptureJob.Record(Path.Combine(_outputDirectoryName, "Záznamy", "Videa", project, testModule,
+                GetName(testName, string.IsNullOrEmpty(version) ? "" : version)));
         }
         /// <summary>
         /// Zastaví nahrávání

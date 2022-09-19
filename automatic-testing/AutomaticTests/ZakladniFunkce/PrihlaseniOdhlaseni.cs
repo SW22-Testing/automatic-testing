@@ -1,6 +1,6 @@
 ﻿using automatic_testing.Classes;
 using automatic_testing.Helpers.Predefined;
-using automatic_testing.Helpers.Recording;
+using screen_recorder;
 using automatic_testing.Helpers.Setup;
 using automatic_testing.Helpers.SpecialActions;
 using automatic_testing.Helpers.Tests;
@@ -93,7 +93,9 @@ namespace automatic_testing.AutomaticTests.ZakladniFunkce
             {
                 isCreated = SearchHelper.FindElementsByAccessibilityId("RowData.Row.DataDto", gridData).Count(f => f.GetAttribute("Value.Value") == UserHelper.WindowsUser.Login) != 0;
             });
+
             //! Pokud se nenajde uživatel, tak se vytvoří, jinak otevře detail a zkontroluje stav offline
+            //? Zkusit zkontrolovat při hledání uživatele a pokud je online, tak změnit na offline
             if (isCreated == false)
             {
                 var createNewUserButton = SearchHelper
@@ -146,7 +148,7 @@ namespace automatic_testing.AutomaticTests.ZakladniFunkce
         [TestCase(TestName = "Přihlášení pomocí správného účtu a špatného hesla", Description = "Automatický test kontroluje přihlášení pomocí hesla"), Timeout(20000)]
         public void PrihlaseniSeSpatnymHeslem()
         {
-            ScreenRecorder.StartRecording(TestContext.CurrentContext.Test.Name, "Základní funkce", "AspeEsticon");
+            ScreenRecorder.StartRecording(TestContext.CurrentContext.Test.Name, "Základní funkce", Version, "AspeEsticon");
 
             Assert.NotNull(EsticonSession, "Esticon session byla prázdná");
             #region Testovací metodu a data
@@ -160,7 +162,7 @@ namespace automatic_testing.AutomaticTests.ZakladniFunkce
         [TestCase(TestName = "Přihlášení pomocí špatného účtu a správného hesla", Description = "Automatický test kontroluje přihlášení pomocí hesla"), Timeout(20000)]
         public void PrihlaseniSeSpatnymLoginem()
         {
-            ScreenRecorder.StartRecording(TestContext.CurrentContext.Test.Name, "Základní funkce", "AspeEsticon");
+            ScreenRecorder.StartRecording(TestContext.CurrentContext.Test.Name, "Základní funkce", Version, "AspeEsticon");
 
             Assert.NotNull(EsticonSession, "Esticon session byla prázdná");
             #region Přihlášení
@@ -254,7 +256,7 @@ namespace automatic_testing.AutomaticTests.ZakladniFunkce
         public void PrihlaseniDeaktivovanymUctemWindows()
         {
 
-            ScreenRecorder.StartRecording(TestContext.CurrentContext.Test.Name, "Základní funkce", "AspeEsticon");
+            ScreenRecorder.StartRecording(TestContext.CurrentContext.Test.Name, "Základní funkce", Version, "AspeEsticon");
             Assert.NotNull(EsticonSession, "Esticon session byla prázdná");
             #region Přihlášení   
             LoginHelper.TryLogin(EsticonSession, UserHelper.EsticonUser.Login, UserHelper.EsticonUser.Password);
@@ -331,7 +333,7 @@ namespace automatic_testing.AutomaticTests.ZakladniFunkce
         [TestCase(TestName = "Přihlášení pomocí deaktivovaného účtu s heslem", Description = "Automatický test kontroluje přihlášení pomocí hesla"), Timeout(180000)]
         public void PrihlaseniDeaktovanymUctemHeslem()
         {
-            ScreenRecorder.StartRecording(TestContext.CurrentContext.Test.Name, "Základní funkce", "AspeEsticon");
+            ScreenRecorder.StartRecording(TestContext.CurrentContext.Test.Name, "Základní funkce", Version, "AspeEsticon");
             Assert.NotNull(EsticonSession, "Esticon session byla prázdná");
 
             LoginHelper.TryLogin(EsticonSession, UserHelper.EsticonUser.Login, UserHelper.EsticonUser.Password);

@@ -5,6 +5,8 @@
     <RootNamespace>automatic_web_testing</RootNamespace>
 
     <IsPackable>false</IsPackable>
+
+    <Platforms>AnyCPU;x64</Platforms>
   </PropertyGroup>
 
   <ItemGroup>
