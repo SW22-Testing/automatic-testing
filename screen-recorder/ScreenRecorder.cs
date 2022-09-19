@@ -9,12 +9,12 @@ namespace screen_recorder
 {
     public static class Program
     {
-         static void Main()
-         {
-             // ReSharper disable once ObjectCreationAsStatement
-             new ScreenRecorder();
-         }
-     }
+        static void Main()
+        {
+            // ReSharper disable once ObjectCreationAsStatement
+            new ScreenRecorder();
+        }
+    }
     public class ScreenRecorder
     {
         private readonly Recorder _screenCaptureJob = Recorder.CreateRecorder();

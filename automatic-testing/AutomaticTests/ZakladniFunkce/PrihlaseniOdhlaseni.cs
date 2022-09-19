@@ -162,7 +162,7 @@ namespace automatic_testing.AutomaticTests.ZakladniFunkce
         [TestCase(TestName = "Přihlášení pomocí špatného účtu a správného hesla", Description = "Automatický test kontroluje přihlášení pomocí hesla"), Timeout(20000)]
         public void PrihlaseniSeSpatnymLoginem()
         {
-            ScreenRecorder.StartRecording(TestContext.CurrentContext.Test.Name , "Základní funkce", Version, "AspeEsticon");
+            ScreenRecorder.StartRecording(TestContext.CurrentContext.Test.Name, "Základní funkce", Version, "AspeEsticon");
 
             Assert.NotNull(EsticonSession, "Esticon session byla prázdná");
             #region Přihlášení
