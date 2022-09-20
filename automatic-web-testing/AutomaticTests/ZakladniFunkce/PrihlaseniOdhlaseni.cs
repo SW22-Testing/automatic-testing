@@ -47,7 +47,7 @@ namespace automatic_web_testing.AutomaticTests.ZakladniFunkce
             Assert.IsTrue(status);
         }
         [TestCase(TestName = "Externí přihlášení přes Microsoft", Description = "Test kontroluje externí přihlášení přes microsoft přidá ho, přihlásí se přes něj a potom ho i odebere"), Order(5)]
-        [Ignore("Vyžaduje kokot potvrzení přes tel číslo které již nemá nevím jak opravit")]
+        [Ignore("Nový smluvní podmínky použití účtu microsoft")]
         public void PrihlaseniMicrosoft()
         {
             driver = LoginHelper.Login(driver, wait);
@@ -85,7 +85,7 @@ namespace automatic_web_testing.AutomaticTests.ZakladniFunkce
             deleteMicrosoft.Click();
         }
         [TestCase(TestName = "Externí přihlášení přes Google", Description = "Test kontroluje externí přihlášení přes google přidá ho, přihlásí se přes něj a potom ho i odebere"), Order(6)]
-        [Ignore("Nový smluvní podmínky použití účtu microsoft")]
+        [Ignore("Vyžaduje potvrzení přes tel číslo které již nemá hledám řešení jak opravit")]
         public void PrihlaseniGoogle()
         {
             driver = LoginHelper.Login(driver, wait);
