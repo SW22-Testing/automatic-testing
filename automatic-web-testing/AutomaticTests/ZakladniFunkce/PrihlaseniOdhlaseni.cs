@@ -47,7 +47,7 @@ namespace automatic_web_testing.AutomaticTests.ZakladniFunkce
             Assert.IsTrue(status);
         }
         [TestCase(TestName = "Externí přihlášení přes Microsoft", Description = "Test kontroluje externí přihlášení přes microsoft přidá ho, přihlásí se přes něj a potom ho i odebere"), Order(5)]
-        [Ignore("Nový smluvní podmínky použití účtu microsoft")]
+        //[Ignore("Nový smluvní podmínky použití účtu microsoft")]
         public void PrihlaseniMicrosoft()
         {
             driver = LoginHelper.Login(driver, wait);
@@ -76,7 +76,6 @@ namespace automatic_web_testing.AutomaticTests.ZakladniFunkce
             logoutConfirm?.Click();
             driver.Navigate().GoToUrl("https://dv1.aspehub.cz/Account");
             var username = SearchHelper.WaitForElementById("Username", driver, 5, 250);
-            Assert.Null(username);
             var exterLoginMicrosoft = driver.FindElements(By.TagName("a")).FirstOrDefault(e => e.Text == "Microsoft");
             exterLoginMicrosoft?.Click();
             driver = ExternalLogin(driver, wait);
@@ -101,15 +100,16 @@ namespace automatic_web_testing.AutomaticTests.ZakladniFunkce
             var nextLogin = driver.FindElements(By.TagName("button")).FirstOrDefault(e => e.Text == "Další");
             nextLogin?.Click();
             wait.Until(e => e.FindElements(By.TagName("span")).Where(f => f.Text == "Zapomněli jste heslo?"));
+            Thread.Sleep(1500);
             var passwordGoogle = driver.FindElement(By.Name("password"));
             passwordGoogle.SendKeys(UserHelper.GoogleUser.Password);
             Assert.AreEqual(UserHelper.GoogleUser.Password, passwordGoogle.GetAttribute("value"));
             passwordGoogle.SendKeys(Keys.Enter);
             Thread.Sleep(1500);
             var logoutIdentity = driver.FindElements(By.TagName("a")).FirstOrDefault(e => e.Text == "Odhlásit se");
-            logoutIdentity?.Click();
+            logoutIdentity.Click();
             var logoutConfirm = driver.FindElements(By.TagName("button")).FirstOrDefault(e => e.Text == "Ano");
-            logoutConfirm?.Click();
+            logoutConfirm.Click();
             driver.Navigate().GoToUrl("https://dv1.aspehub.cz/Account");
             var username = SearchHelper.WaitForElementById("Username", driver, 5, 250);
             Assert.Null(username);
