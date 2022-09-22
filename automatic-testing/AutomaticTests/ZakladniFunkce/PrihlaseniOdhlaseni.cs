@@ -248,7 +248,7 @@ namespace automatic_testing.AutomaticTests.ZakladniFunkce
         //    //Assert.NotNull(odhlasitButton);
         //}
         [TestCase(TestName = "Přihlášení pomocí deaktovaného Windows účtu", Description = "Automatický test kontroluje přihlášení pomocí hesla"), Timeout(180000)]
-        [Ignore("Nefunguje, jelikož nemám zapnutou VPN")]
+        [Ignore("Není naprogramováno")]
         /*TODO: Přihlásit -> Admin -> Zkontrolovat uživatele    -> Pokud není -> Vytvořit nového uživatele s účtem, na kterém je přihlášen -> Odhlásit a Přihlásit se pomocí Windows ověření
          *                                                      -> Pokud je -> Zkontrolovat stav (online/offline)   -> Pokud online -> Zavřít -> Odhlásit a Přihlásit se pomocí Windows ověření
          *                                                                                                          -> Pokud offline -> Změnit stav na online -> Odhlásit a Přihlásit se pomocí Windows ověření
