@@ -18,4 +18,8 @@
     <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="105.0.5195.5200" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\screen-recorder\screen-recorder.csproj" />
+  </ItemGroup>
+
 </Project>
