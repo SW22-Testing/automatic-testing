@@ -74,6 +74,8 @@ namespace automatic_web_testing.AutomaticTests.ZakladniFunkce
             var logoutConfirm = driver.FindElements(By.TagName("button")).FirstOrDefault(e => e.Text == "Ano");
             logoutConfirm?.Click();
             driver.Navigate().GoToUrl("https://dv1.aspehub.cz/Account");
+            //TODO: Přidat čekání na element, PODMÍNKA: element je vidět (ElementIsVisible)
+            Thread.Sleep(2500);
             var exterLoginMicrosoft = driver.FindElements(By.TagName("a")).FirstOrDefault(e => e.Text == "Microsoft");
             exterLoginMicrosoft?.Click();
             driver = ExternalLogin(driver, wait);
