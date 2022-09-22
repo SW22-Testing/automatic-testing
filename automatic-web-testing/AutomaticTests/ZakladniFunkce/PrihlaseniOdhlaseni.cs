@@ -47,7 +47,6 @@ namespace automatic_web_testing.AutomaticTests.ZakladniFunkce
             Assert.IsTrue(status);
         }
         [TestCase(TestName = "Externí přihlášení přes Microsoft", Description = "Test kontroluje externí přihlášení přes microsoft přidá ho, přihlásí se přes něj a potom ho i odebere"), Order(5)]
-        //[Ignore("Nový smluvní podmínky použití účtu microsoft")]
         public void PrihlaseniMicrosoft()
         {
             driver = LoginHelper.Login(driver, wait);
@@ -75,7 +74,6 @@ namespace automatic_web_testing.AutomaticTests.ZakladniFunkce
             var logoutConfirm = driver.FindElements(By.TagName("button")).FirstOrDefault(e => e.Text == "Ano");
             logoutConfirm?.Click();
             driver.Navigate().GoToUrl("https://dv1.aspehub.cz/Account");
-            var username = SearchHelper.WaitForElementById("Username", driver, 5, 250);
             var exterLoginMicrosoft = driver.FindElements(By.TagName("a")).FirstOrDefault(e => e.Text == "Microsoft");
             exterLoginMicrosoft?.Click();
             driver = ExternalLogin(driver, wait);
