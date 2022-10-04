@@ -1,4 +1,5 @@
-﻿using automatic_web_testing.Helper.Predefined;
+﻿using System;
+using automatic_web_testing.Helper.Predefined;
 using automatic_web_testing.Helper.Setup;
 using automatic_web_testing.Helper.Tests;
 using NUnit.Framework;
@@ -8,6 +9,8 @@ using OpenQA.Selenium.Support.UI;
 using SeleniumExtras.WaitHelpers;
 using System.Linq;
 using System.Threading;
+using SeleniumExtras.WaitHelpers;
+using screen_recorder;
 
 namespace automatic_web_testing.AutomaticTests.ZakladniFunkce
 {
@@ -53,6 +56,7 @@ namespace automatic_web_testing.AutomaticTests.ZakladniFunkce
             Assert.NotNull(driver);
             driver = ExternalLogin(driver, wait);
             Assert.NotNull(driver);
+            ExternalAccounts.MicrosoftEdit(driver);
             var addMicrosoft = driver.FindElements(By.ClassName("btn-primary")).First(e => e.GetAttribute("title") == "Log in using your Microsoft account");
             addMicrosoft.Click();
             var usernameMicrosoft = SearchHelper.WaitForElementById("i0116", driver, 5, 250);
@@ -74,8 +78,8 @@ namespace automatic_web_testing.AutomaticTests.ZakladniFunkce
             var logoutConfirm = driver.FindElements(By.TagName("button")).FirstOrDefault(e => e.Text == "Ano");
             logoutConfirm?.Click();
             driver.Navigate().GoToUrl("https://dv1.aspehub.cz/Account");
-            //TODO: Přidat čekání na element, PODMÍNKA: element je vidět (ElementIsVisible)
-            Thread.Sleep(2500);
+            var checkMicrosoft = SearchHelper.WaitForElementByTagName("a", driver, 5, 250);
+            Console.WriteLine(checkMicrosoft.Text);
             var exterLoginMicrosoft = driver.FindElements(By.TagName("a")).FirstOrDefault(e => e.Text == "Microsoft");
             exterLoginMicrosoft?.Click();
             driver = ExternalLogin(driver, wait);
@@ -84,13 +88,13 @@ namespace automatic_web_testing.AutomaticTests.ZakladniFunkce
             deleteMicrosoft.Click();
         }
         [TestCase(TestName = "Externí přihlášení přes Google", Description = "Test kontroluje externí přihlášení přes google přidá ho, přihlásí se přes něj a potom ho i odebere"), Order(6)]
-        [Ignore("Vyžaduje potvrzení přes tel číslo které již nemá hledám řešení jak opravit")]
         public void PrihlaseniGoogle()
         {
             driver = LoginHelper.Login(driver, wait);
             Assert.NotNull(driver);
             driver = ExternalLogin(driver, wait);
             Assert.NotNull(driver);
+            ExternalAccounts.GoogleEdit(driver);
             var addGoogle = driver.FindElements(By.ClassName("btn-primary")).FirstOrDefault(e => e.GetAttribute("title") == "Log in using your Google account");
             addGoogle?.Click();
             wait.Until(e => e.FindElement(By.Id("identifierId")));
@@ -107,12 +111,12 @@ namespace automatic_web_testing.AutomaticTests.ZakladniFunkce
             passwordGoogle.SendKeys(Keys.Enter);
             Thread.Sleep(1500);
             var logoutIdentity = driver.FindElements(By.TagName("a")).FirstOrDefault(e => e.Text == "Odhlásit se");
-            logoutIdentity.Click();
+            logoutIdentity?.Click();
             var logoutConfirm = driver.FindElements(By.TagName("button")).FirstOrDefault(e => e.Text == "Ano");
-            logoutConfirm.Click();
+            logoutConfirm?.Click();
             driver.Navigate().GoToUrl("https://dv1.aspehub.cz/Account");
             var username = SearchHelper.WaitForElementById("Username", driver, 5, 250);
-            Assert.Null(username);
+            Assert.NotNull(username);
             var exterLoginGoogle = driver.FindElements(By.TagName("a")).FirstOrDefault(e => e.Text == "Google");
             exterLoginGoogle?.Click();
             driver = ExternalLogin(driver, wait);
