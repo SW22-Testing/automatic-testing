@@ -115,6 +115,7 @@ namespace automatic_web_testing.AutomaticTests.ZakladniFunkce
             var logoutConfirm = driver.FindElements(By.TagName("button")).FirstOrDefault(e => e.Text == "Ano");
             logoutConfirm?.Click();
             driver.Navigate().GoToUrl("https://dv1.aspehub.cz/Account");
+            //TODO: Tady ti padá Po přihlášení
             var username = SearchHelper.WaitForElementById("Username", driver, 5, 250);
             Assert.NotNull(username);
             var exterLoginGoogle = driver.FindElements(By.TagName("a")).FirstOrDefault(e => e.Text == "Google");
