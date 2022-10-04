@@ -17,7 +17,7 @@ namespace automatic_web_testing.Helper.Tests
         public static void GoogleEdit(ChromeDriver driver)
         {
             var deleteGooglesearch = driver.FindElements(By.ClassName("btn-primary")).FirstOrDefault(e => e.GetAttribute("title") == "Remove this Google login from your account");
-            if (deleteGooglesearch is { Displayed: true})
+            if (deleteGooglesearch is { Displayed: true })
                 deleteGooglesearch.Click();
         }
     }
