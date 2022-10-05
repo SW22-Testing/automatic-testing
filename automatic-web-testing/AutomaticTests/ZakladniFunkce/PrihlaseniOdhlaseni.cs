@@ -18,6 +18,7 @@ namespace automatic_web_testing.AutomaticTests.ZakladniFunkce
     {
         ChromeDriver driver { get; set; }
         private WebDriverWait wait { get; set; }
+
         [SetUp]
         public void Setup()
         {
@@ -25,30 +26,35 @@ namespace automatic_web_testing.AutomaticTests.ZakladniFunkce
             driver = ChromeDriverSetup.Setup("https://dv1.aspehub.cz/Account", out _wait);
             wait = _wait;
         }
+
         [TestCase(TestName = "Přihlášení chybný email", Description = "Test kontroluje přihlášení s chybným uživatelským emailem"), Order(1)]
         public void PrihlaseniChybneJmeno()
         {
             var status = BadLoginUsername(driver, wait);
             Assert.IsTrue(status);
         }
+
         [TestCase(TestName = "Přihlášení chybné heslo", Description = "Test kontroluje přihlášení s chybným heslem"), Order(2)]
         public void PrihlaseniChybneHeslo()
         {
             var status = BadLoginPassword(driver, wait);
             Assert.IsTrue(status);
         }
+
         [TestCase(TestName = "Přihlášení chybné heslo a email", Description = "Test kontroluje přihlášení s chybným heslem a mailem"), Order(3)]
         public void PrihlaseniObeChybne()
         {
             var status = BadLoginBoth(driver, wait);
             Assert.IsTrue(status);
         }
+
         [TestCase(TestName = "Přihlášení správnými údaji", Description = "Test se přihlásí správnými údaji"), Order(4)]
         public void PrihlaseniSpravne()
         {
             var status = LoginHelper.TryLogin(driver, wait);
             Assert.IsTrue(status);
         }
+
         [TestCase(TestName = "Externí přihlášení přes Microsoft", Description = "Test kontroluje externí přihlášení přes microsoft přidá ho, přihlásí se přes něj a potom ho i odebere"), Order(5)]
         public void PrihlaseniMicrosoft()
         {
@@ -87,6 +93,7 @@ namespace automatic_web_testing.AutomaticTests.ZakladniFunkce
             var deleteMicrosoft = driver.FindElements(By.ClassName("btn-primary")).First(e => e.GetAttribute("title") == "Remove this Microsoft login from your account");
             deleteMicrosoft.Click();
         }
+
         [TestCase(TestName = "Externí přihlášení přes Google", Description = "Test kontroluje externí přihlášení přes google přidá ho, přihlásí se přes něj a potom ho i odebere"), Order(6)]
         public void PrihlaseniGoogle()
         {
@@ -125,19 +132,23 @@ namespace automatic_web_testing.AutomaticTests.ZakladniFunkce
             var deleteGoogle = driver.FindElements(By.ClassName("btn-primary")).FirstOrDefault(e => e.GetAttribute("title") == "Remove this Google login from your account");
             deleteGoogle?.Click();
         }
+
         [TearDown]
         public void TearDown()
         {
             ChromeDriverSetup.Dispose(driver);
         }
+
+
         /*---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+
         /// <summary>
         /// Tato třída jde do nastavení uživatele => externího přihlášení
         /// </summary>
         /// <param name="driver">Využívá funkce Chromu (ChromeDriver)</param>
         /// <param name="wait">Vyčkává než se určitá věc objeví defaultně 5 vteřin</param>
         /// <returns>Vrací hodnotu driver. Kde tato hodnota obsahuje jestli se dostal test k nastavení externího přihlášení</returns>
-        public static ChromeDriver ExternalLogin(ChromeDriver driver, WebDriverWait wait)
+        private static ChromeDriver ExternalLogin(ChromeDriver driver, WebDriverWait wait)
         {
             try
             {
@@ -158,6 +169,7 @@ namespace automatic_web_testing.AutomaticTests.ZakladniFunkce
                 return null;
             }
         }
+
         /// <summary>
         /// Tato třída se přihlašuje špatným emailem (username).
         /// Kontroluje se zde chybová hláška.
@@ -165,7 +177,7 @@ namespace automatic_web_testing.AutomaticTests.ZakladniFunkce
         /// <param name="driver">Používá se pro ChromeDriver využívá funkce chromu</param>
         /// <param name="wait">Čekací parametr nastavený na 5 vteřin</param>
         /// <returns>Pokud je vše v pořádku vrací hodnotu true </returns>
-        public static bool BadLoginUsername(ChromeDriver driver, WebDriverWait wait)
+        private static bool BadLoginUsername(ChromeDriver driver, WebDriverWait wait)
         {
             try
             {
@@ -191,6 +203,7 @@ namespace automatic_web_testing.AutomaticTests.ZakladniFunkce
                 return false;
             }
         }
+
         /// <summary>
         /// Tato třída se přihlašuje špatným heslem.
         /// Taky se kontroluje chybová hláška.
@@ -198,7 +211,7 @@ namespace automatic_web_testing.AutomaticTests.ZakladniFunkce
         /// <param name="driver">Používá se pro ChromeDriver využívá funkce chromu</param>
         /// <param name="wait">Čekací parametr nastavený na 5 vteřin</param>
         /// <returns>Pokud je vše v pořádku vrátí hodnotu true</returns>
-        public static bool BadLoginPassword(ChromeDriver driver, WebDriverWait wait)
+        private static bool BadLoginPassword(ChromeDriver driver, WebDriverWait wait)
         {
             try
             {
@@ -224,6 +237,7 @@ namespace automatic_web_testing.AutomaticTests.ZakladniFunkce
                 return false;
             }
         }
+
         /// <summary>
         /// Tato třída zadává oba údaje špatně.
         /// Kontroluje se zde opět chybová hláška.
@@ -231,7 +245,7 @@ namespace automatic_web_testing.AutomaticTests.ZakladniFunkce
         /// <param name="driver">Používá se pro ChromeDriver využívá funkce chromu</param>
         /// <param name="wait">Čekací parametr nastavený na 5 vteřin</param>
         /// <returns>Pokud vše projde vrátí hodnotu true</returns>
-        public static bool BadLoginBoth(ChromeDriver driver, WebDriverWait wait)
+        private static bool BadLoginBoth(ChromeDriver driver, WebDriverWait wait)
         {
             try
             {
