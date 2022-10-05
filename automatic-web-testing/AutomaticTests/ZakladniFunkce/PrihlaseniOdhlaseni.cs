@@ -95,7 +95,7 @@ namespace automatic_web_testing.AutomaticTests.ZakladniFunkce
             
             var noRemember = driver.FindElement(By.Id("idBtn_Back"));
             noRemember?.Click();
-            
+
             var logoutIdentity = driver.FindElements(By.TagName("a")).FirstOrDefault(e => e.Text == "Odhlásit se");
             logoutIdentity?.Click();
             var logoutConfirm = driver.FindElements(By.TagName("button")).FirstOrDefault(e => e.Text == "Ano");
