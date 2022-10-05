@@ -25,10 +25,10 @@ namespace automatic_web_testing.AutomaticTests.ZakladniFunkce
             WebDriverWait _wait;
             driver = ChromeDriverSetup.Setup("https://dv1.aspehub.cz/Account", out _wait);
             Recorder = new ScreenRecorder();
-            
+
             wait = _wait;
         }
-        
+
         [TestCase(TestName = "Přihlášení chybný email", Description = "Test kontroluje přihlášení s chybným uživatelským emailem"), Order(1)]
         public void PrihlaseniChybneJmeno()
         {
@@ -36,7 +36,7 @@ namespace automatic_web_testing.AutomaticTests.ZakladniFunkce
             var status = BadLoginUsername(driver, wait);
             Assert.IsTrue(status);
         }
-        
+
         [TestCase(TestName = "Přihlášení chybné heslo", Description = "Test kontroluje přihlášení s chybným heslem"), Order(2)]
         public void PrihlaseniChybneHeslo()
         {
@@ -44,7 +44,7 @@ namespace automatic_web_testing.AutomaticTests.ZakladniFunkce
             var status = BadLoginPassword(driver, wait);
             Assert.IsTrue(status);
         }
-        
+
         [TestCase(TestName = "Přihlášení chybné heslo a email", Description = "Test kontroluje přihlášení s chybným heslem a mailem"), Order(3)]
         public void PrihlaseniObeChybne()
         {
@@ -60,7 +60,7 @@ namespace automatic_web_testing.AutomaticTests.ZakladniFunkce
             var status = LoginHelper.TryLogin(driver, wait);
             Assert.IsTrue(status);
         }
-        
+
         [TestCase(TestName = "Externí přihlášení přes Microsoft", Description = "Test kontroluje externí přihlášení přes microsoft přidá ho, přihlásí se přes něj a potom ho i odebere"), Order(5)]
         public void PrihlaseniMicrosoft()
         {
@@ -69,30 +69,30 @@ namespace automatic_web_testing.AutomaticTests.ZakladniFunkce
             Assert.NotNull(driver);
             driver = ExternalLogin(driver, wait);
             Assert.NotNull(driver);
-            
+
             var deleteMicrosoftsearch = driver.FindElements(By.ClassName("btn-primary")).FirstOrDefault(e => e.GetAttribute("title") == "Remove this Microsoft login from your account");
             if (deleteMicrosoftsearch is { Displayed: true })
                 deleteMicrosoftsearch.Click();
-            
+
             var addMicrosoft = driver.FindElements(By.ClassName("btn-primary")).First(e => e.GetAttribute("title") == "Log in using your Microsoft account");
             addMicrosoft.Click();
-            
+
             var usernameMicrosoft = SearchHelper.WaitForElementById("i0116", driver, 5, 250);
             usernameMicrosoft.SendKeys(UserHelper.MicrosoftUser.Email);
             Assert.AreEqual(UserHelper.MicrosoftUser.Email, usernameMicrosoft.GetAttribute("value"));
-            
+
             var confirmMicrosoft = driver.FindElements(By.TagName("input")).First(e => e.GetAttribute("type") == "submit");
             confirmMicrosoft.Click();
-            
+
             SearchHelper.WaitForElementById("idA_PWD_ForgotPassword", driver, 5, 250);
             var passwordMicrosoft = driver.FindElement(By.ClassName("ext-text-box"));
-            
+
             Assert.NotNull(passwordMicrosoft, "heslo neni");
             passwordMicrosoft.SendKeys(UserHelper.MicrosoftUser.Password);
             Assert.AreEqual(UserHelper.MicrosoftUser.Password, passwordMicrosoft.GetAttribute("value"));
             confirmMicrosoft = driver.FindElements(By.TagName("input")).First(e => e.GetAttribute("type") == "submit");
             confirmMicrosoft.Click();
-            
+
             var noRemember = driver.FindElement(By.Id("idBtn_Back"));
             noRemember?.Click();
 
@@ -100,13 +100,16 @@ namespace automatic_web_testing.AutomaticTests.ZakladniFunkce
             logoutIdentity?.Click();
             var logoutConfirm = driver.FindElements(By.TagName("button")).FirstOrDefault(e => e.Text == "Ano");
             logoutConfirm?.Click();
+
             driver.Navigate().GoToUrl("https://dv1.aspehub.cz/Account");
             var checkMicrosoft = SearchHelper.WaitForElementByTagName("a", driver, 5, 250);
             Console.WriteLine(checkMicrosoft.Text);
             var exterLoginMicrosoft = driver.FindElements(By.TagName("a")).FirstOrDefault(e => e.Text == "Microsoft");
             exterLoginMicrosoft?.Click();
+
             driver = ExternalLogin(driver, wait);
             Assert.NotNull(driver);
+
             var deleteMicrosoft = driver.FindElements(By.ClassName("btn-primary")).First(e => e.GetAttribute("title") == "Remove this Microsoft login from your account");
             deleteMicrosoft.Click();
         }
@@ -119,36 +122,46 @@ namespace automatic_web_testing.AutomaticTests.ZakladniFunkce
             Assert.NotNull(driver);
             driver = ExternalLogin(driver, wait);
             Assert.NotNull(driver);
+
             var deleteGooglesearch = driver.FindElements(By.ClassName("btn-primary")).FirstOrDefault(e => e.GetAttribute("title") == "Remove this Google login from your account");
             if (deleteGooglesearch is { Displayed: true })
                 deleteGooglesearch.Click();
+
             var addGoogle = driver.FindElements(By.ClassName("btn-primary")).FirstOrDefault(e => e.GetAttribute("title") == "Log in using your Google account");
             addGoogle?.Click();
+
             wait.Until(e => e.FindElement(By.Id("identifierId")));
             var usernameGoogle = driver.FindElement(By.Id("identifierId"));
             usernameGoogle.SendKeys(UserHelper.GoogleUser.Email);
             Assert.AreEqual(UserHelper.GoogleUser.Email, usernameGoogle.GetAttribute("value"));
+
             var nextLogin = driver.FindElements(By.TagName("button")).FirstOrDefault(e => e.Text == "Další");
             nextLogin?.Click();
+
             wait.Until(e => e.FindElements(By.TagName("span")).Where(f => f.Text == "Zapomněli jste heslo?"));
             Thread.Sleep(1500);
             var passwordGoogle = driver.FindElement(By.Name("password"));
             passwordGoogle.SendKeys(UserHelper.GoogleUser.Password);
             Assert.AreEqual(UserHelper.GoogleUser.Password, passwordGoogle.GetAttribute("value"));
+
             passwordGoogle.SendKeys(Keys.Enter);
             Thread.Sleep(1500);
+
             var logoutIdentity = driver.FindElements(By.TagName("a")).FirstOrDefault(e => e.Text == "Odhlásit se");
             logoutIdentity?.Click();
             var logoutConfirm = driver.FindElements(By.TagName("button")).FirstOrDefault(e => e.Text == "Ano");
             logoutConfirm?.Click();
+
             driver.Navigate().GoToUrl("https://dv1.aspehub.cz/Account");
-            //TODO: Tady ti padá Po přihlášení
             var username = SearchHelper.WaitForElementById("Username", driver, 5, 250);
             Assert.NotNull(username);
+
             var exterLoginGoogle = driver.FindElements(By.TagName("a")).FirstOrDefault(e => e.Text == "Google");
             exterLoginGoogle?.Click();
+
             driver = ExternalLogin(driver, wait);
             Assert.NotNull(driver);
+
             var deleteGoogle = driver.FindElements(By.ClassName("btn-primary")).FirstOrDefault(e => e.GetAttribute("title") == "Remove this Google login from your account");
             deleteGoogle?.Click();
         }
