@@ -105,7 +105,7 @@ namespace automatic_web_testing.AutomaticTests.ZakladniFunkce
             Console.WriteLine(checkMicrosoft.Text);
             var exterLoginMicrosoft = driver.FindElements(By.TagName("a")).FirstOrDefault(e => e.Text == "Microsoft");
             exterLoginMicrosoft?.Click();
-            driver = ExternalLogin(driver, wait); 
+            driver = ExternalLogin(driver, wait);
             Assert.NotNull(driver);
             var deleteMicrosoft = driver.FindElements(By.ClassName("btn-primary")).First(e => e.GetAttribute("title") == "Remove this Microsoft login from your account");
             deleteMicrosoft.Click();
