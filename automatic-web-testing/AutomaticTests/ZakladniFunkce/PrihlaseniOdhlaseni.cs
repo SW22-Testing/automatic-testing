@@ -9,7 +9,6 @@ using OpenQA.Selenium.Support.UI;
 using SeleniumExtras.WaitHelpers;
 using System.Linq;
 using System.Threading;
-using SeleniumExtras.WaitHelpers;
 using screen_recorder;
 
 namespace automatic_web_testing.AutomaticTests.ZakladniFunkce
@@ -17,6 +16,7 @@ namespace automatic_web_testing.AutomaticTests.ZakladniFunkce
     public class PrihlaseniOdhlaseni
     {
         ChromeDriver driver { get; set; }
+        private ScreenRecorder Recorder { get; set; }
         private WebDriverWait wait { get; set; }
 
         [SetUp]
@@ -24,12 +24,15 @@ namespace automatic_web_testing.AutomaticTests.ZakladniFunkce
         {
             WebDriverWait _wait;
             driver = ChromeDriverSetup.Setup("https://dv1.aspehub.cz/Account", out _wait);
+            Recorder = new ScreenRecorder();
+            
             wait = _wait;
         }
 
         [TestCase(TestName = "Přihlášení chybný email", Description = "Test kontroluje přihlášení s chybným uživatelským emailem"), Order(1)]
         public void PrihlaseniChybneJmeno()
         {
+            Recorder.StartRecording(TestContext.CurrentContext.Test.Name,"Základní funkce","","AspeHub");
             var status = BadLoginUsername(driver, wait);
             Assert.IsTrue(status);
         }
@@ -37,6 +40,7 @@ namespace automatic_web_testing.AutomaticTests.ZakladniFunkce
         [TestCase(TestName = "Přihlášení chybné heslo", Description = "Test kontroluje přihlášení s chybným heslem"), Order(2)]
         public void PrihlaseniChybneHeslo()
         {
+            Recorder.StartRecording(TestContext.CurrentContext.Test.Name,"Základní funkce","","AspeHub");
             var status = BadLoginPassword(driver, wait);
             Assert.IsTrue(status);
         }
@@ -44,6 +48,7 @@ namespace automatic_web_testing.AutomaticTests.ZakladniFunkce
         [TestCase(TestName = "Přihlášení chybné heslo a email", Description = "Test kontroluje přihlášení s chybným heslem a mailem"), Order(3)]
         public void PrihlaseniObeChybne()
         {
+            Recorder.StartRecording(TestContext.CurrentContext.Test.Name,"Základní funkce","","AspeHub");
             var status = BadLoginBoth(driver, wait);
             Assert.IsTrue(status);
         }
@@ -51,6 +56,7 @@ namespace automatic_web_testing.AutomaticTests.ZakladniFunkce
         [TestCase(TestName = "Přihlášení správnými údaji", Description = "Test se přihlásí správnými údaji"), Order(4)]
         public void PrihlaseniSpravne()
         {
+            Recorder.StartRecording(TestContext.CurrentContext.Test.Name,"Základní funkce","","AspeHub");
             var status = LoginHelper.TryLogin(driver, wait);
             Assert.IsTrue(status);
         }
@@ -58,11 +64,14 @@ namespace automatic_web_testing.AutomaticTests.ZakladniFunkce
         [TestCase(TestName = "Externí přihlášení přes Microsoft", Description = "Test kontroluje externí přihlášení přes microsoft přidá ho, přihlásí se přes něj a potom ho i odebere"), Order(5)]
         public void PrihlaseniMicrosoft()
         {
+            Recorder.StartRecording(TestContext.CurrentContext.Test.Name,"Základní funkce","","AspeHub");
             driver = LoginHelper.Login(driver, wait);
             Assert.NotNull(driver);
             driver = ExternalLogin(driver, wait);
             Assert.NotNull(driver);
-            ExternalAccounts.MicrosoftEdit(driver);
+            var deleteMicrosoftsearch = driver.FindElements(By.ClassName("btn-primary")).FirstOrDefault(e => e.GetAttribute("title") == "Remove this Microsoft login from your account");
+            if (deleteMicrosoftsearch is { Displayed: true })
+                deleteMicrosoftsearch.Click();
             var addMicrosoft = driver.FindElements(By.ClassName("btn-primary")).First(e => e.GetAttribute("title") == "Log in using your Microsoft account");
             addMicrosoft.Click();
             var usernameMicrosoft = SearchHelper.WaitForElementById("i0116", driver, 5, 250);
@@ -97,11 +106,14 @@ namespace automatic_web_testing.AutomaticTests.ZakladniFunkce
         [TestCase(TestName = "Externí přihlášení přes Google", Description = "Test kontroluje externí přihlášení přes google přidá ho, přihlásí se přes něj a potom ho i odebere"), Order(6)]
         public void PrihlaseniGoogle()
         {
+            Recorder.StartRecording(TestContext.CurrentContext.Test.Name,"Základní funkce","","AspeHub");
             driver = LoginHelper.Login(driver, wait);
             Assert.NotNull(driver);
             driver = ExternalLogin(driver, wait);
             Assert.NotNull(driver);
-            ExternalAccounts.GoogleEdit(driver);
+            var deleteGooglesearch = driver.FindElements(By.ClassName("btn-primary")).FirstOrDefault(e => e.GetAttribute("title") == "Remove this Google login from your account");
+            if (deleteGooglesearch is { Displayed: true })
+                deleteGooglesearch.Click();
             var addGoogle = driver.FindElements(By.ClassName("btn-primary")).FirstOrDefault(e => e.GetAttribute("title") == "Log in using your Google account");
             addGoogle?.Click();
             wait.Until(e => e.FindElement(By.Id("identifierId")));
@@ -136,6 +148,7 @@ namespace automatic_web_testing.AutomaticTests.ZakladniFunkce
         [TearDown]
         public void TearDown()
         {
+            Recorder.StopRecording();
             ChromeDriverSetup.Dispose(driver);
         }
 
