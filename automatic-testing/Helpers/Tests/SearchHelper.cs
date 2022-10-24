@@ -278,7 +278,27 @@ namespace automatic_testing.Helpers.Tests
             return els;
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="driver"></param>
+        /// <param name="accessibilityId"></param>
+        /// <param name="errorDesc"></param>
+        /// <param name="enabled"></param>
+        /// <returns></returns>
+        public static AppiumWebElement GetParentElementByAccessibilityId(WindowsDriver<WindowsElement> driver, string accessibilityId, string errorDesc, bool enabled = true)
+        {
+            var el = driver.FindElementByAccessibilityId(accessibilityId);
 
+            Assert.IsNotNull(el, errorDesc);
+            Assert.True(el.Displayed, errorDesc);
+            if (enabled)
+                Assert.True(el.Enabled, errorDesc);
+            else
+                Assert.False(el.Enabled, errorDesc);
+
+            return el;
+        }
 
         /// <summary>
         /// Vratí řadu element, které mají stejný AutomationId jako parametr: <c>automationId</c>
