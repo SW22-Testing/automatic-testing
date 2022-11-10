@@ -68,158 +68,11 @@ namespace automatic_web_testing.Helper.Tests
                 {
                     case RoleFunkce.Vytvoreni:
                         // Zkontroluje jestli roleButton je nebo neni
-                        if (!isCreated)
-                        {
-                            var vytvoritRole = driver.FindElements(By.TagName("button"))
-                                .FirstOrDefault(e => e.Text == "Přidat roli");
-                            Assert.NotNull(vytvoritRole);
-                            vytvoritRole.Click();
-
-                            var nazevRole = SearchHelper.WaitForElementById("name", driver, 5, 250);
-                            nazevRole.SendKeys("Autonom");
-                            Assert.AreEqual("Autonom", nazevRole.GetAttribute("value"));
-
-                            var popisRole = SearchHelper.WaitForElementById("description", driver, 5, 250);
-                            popisRole.SendKeys("Jsem automatický test který zapisuje do popisku!");
-                            Assert.AreEqual("Jsem automatický test který zapisuje do popisku!",
-                                popisRole.GetAttribute("value"));
-
-                            var uzivatelRole = SearchHelper.WaitForElementById("userId", driver, 5, 250);
-                            Assert.NotNull(uzivatelRole);
-                            uzivatelRole.Click();
-
-                            var vyberUzivatele = driver.FindElements(By.TagName("li"))
-                                .FirstOrDefault(e => e.Text == "Testerprohub@protonmail.com");
-                            Assert.NotNull(vyberUzivatele);
-                            vyberUzivatele.Click();
-
-                            var ulozitVytvor = driver.FindElements(By.TagName("button"))
-                                .FirstOrDefault(e => e.Text == "Uložit");
-                            Assert.NotNull(ulozitVytvor);
-                            ulozitVytvor.Click();
-                            break;
-                        }
-                        else
-                        {
-                            kontrolaRole?.Click();
-                            Assert.NotNull(kontrolaRole);
-                            //! Thread nemusí být, je spíš pro jistotu
-                            Thread.Sleep(500);
-                            //? Pokud bude dělat problémy, zkusit napsat index + 1
-                            var odstranit = driver.FindElements(By.ClassName("anticon-delete")).ElementAt(index);
-                            Assert.NotNull(odstranit);
-                            odstranit.Click();
-
-                            var odstranitPotvrdit =
-                                driver.FindElements(By.TagName("button")).First(e => e.Text == "Ano");
-                            Assert.NotNull(odstranitPotvrdit);
-                            odstranitPotvrdit.Click();
-
-                            var vytvoritRole = driver.FindElements(By.TagName("button"))
-                                .FirstOrDefault(e => e.Text == "Přidat roli");
-                            Assert.NotNull(vytvoritRole);
-                            vytvoritRole.Click();
-
-                            var nazevRole = SearchHelper.WaitForElementById("name", driver, 5, 250);
-                            nazevRole.SendKeys("Autonom");
-                            Assert.AreEqual("Autonom", nazevRole.GetAttribute("value"));
-
-                            var popisRole = SearchHelper.WaitForElementById("description", driver, 5, 250);
-                            popisRole.SendKeys("Jsem automatický test který zapisuje do popisku!");
-                            Assert.AreEqual("Jsem automatický test který zapisuje do popisku!",
-                                popisRole.GetAttribute("value"),
-                                "Pokud se tohle stalo tak je to proto že je v popisku napsáno něco navíc");
-
-                            var uzivatelRole = SearchHelper.WaitForElementById("userId", driver, 5, 250);
-                            Assert.NotNull(uzivatelRole);
-                            uzivatelRole.Click();
-
-                            var vyberUzivatele = driver.FindElements(By.TagName("li"))
-                                .FirstOrDefault(e => e.Text == "Testerprohub@protonmail.com");
-                            Assert.NotNull(vyberUzivatele);
-                            vyberUzivatele.Click();
-
-                            var ulozitVytvor = driver.FindElements(By.TagName("button"))
-                                .FirstOrDefault(e => e.Text == "Uložit");
-                            Assert.NotNull(ulozitVytvor);
-                            ulozitVytvor.Click();
-                            break;
-                        }
+                        ZalozeniSmazani(driver, index, isCreated, kontrolaRole);
+                        break;
                     case RoleFunkce.Editace:
-                        if (!isCreated)
-                        {
-                            var vytvoritRole = driver.FindElements(By.TagName("button"))
-                                .FirstOrDefault(e => e.Text == "Přidat roli");
-                            Assert.NotNull(vytvoritRole);
-                            vytvoritRole.Click();
-
-                            var nazevRole = SearchHelper.WaitForElementById("name", driver, 5, 250);
-                            nazevRole.SendKeys("Autonom");
-                            Assert.AreEqual("Autonom", nazevRole.GetAttribute("value"));
-
-                            var popisRole = SearchHelper.WaitForElementById("description", driver, 5, 250);
-                            popisRole.SendKeys("Jsem automatický test který zapisuje do popisku!");
-                            Assert.AreEqual("Jsem automatický test který zapisuje do popisku!",
-                                popisRole.GetAttribute("value"));
-
-                            var uzivatelRole = SearchHelper.WaitForElementById("userId", driver, 5, 250);
-                            Assert.NotNull(uzivatelRole);
-                            uzivatelRole.Click();
-
-                            var vyberUzivatele = driver.FindElements(By.TagName("li"))
-                                .FirstOrDefault(e => e.Text == "Testerprohub@protonmail.com");
-                            Assert.NotNull(vyberUzivatele);
-                            vyberUzivatele.Click();
-
-                            var ulozitVytvor = driver.FindElements(By.TagName("button"))
-                                .FirstOrDefault(e => e.Text == "Uložit");
-                            Assert.NotNull(ulozitVytvor);
-                            ulozitVytvor.Click();
-
-                            var roleVytvorena = SearchHelper
-                                .WaitForElementsByClassName("RoleInfo_roleName__3xBnw", driver, 5, 250)
-                                .FirstOrDefault(e => e.Text == "Autonom");
-                            Assert.NotNull(roleVytvorena);
-                            roleVytvorena.Click();
-
-                            var upravit = driver.FindElements(By.ClassName("anticon-edit")).ElementAt(index - 1);
-                            Assert.NotNull(upravit);
-                            upravit.Click();
-
-                            var dopsani = SearchHelper.WaitForElementById("description", driver, 5, 250);
-                            dopsani.SendKeys(" Hele dopsal jsem ti to :)");
-                            Assert.AreEqual(
-                                "Jsem automatický test který zapisuje do popisku! Hele dopsal jsem ti to :)",
-                                dopsani.GetAttribute("value"));
-
-                            var ulozitVytvorPopis = driver.FindElements(By.TagName("button"))
-                                .FirstOrDefault(e => e.Text == "Uložit");
-                            Assert.NotNull(ulozitVytvorPopis);
-                            ulozitVytvor.Click();
-                            break;
-                        }
-                        else
-                        {
-                            kontrolaRole?.Click();
-                            Assert.NotNull(kontrolaRole);
-
-                            var upravit = driver.FindElements(By.ClassName("anticon-edit")).ElementAt(index - 1);
-                            Assert.NotNull(upravit);
-                            upravit.Click();
-
-                            var dopsani = SearchHelper.WaitForElementById("description", driver, 5, 250);
-                            dopsani.SendKeys(" Hele dopsal jsem ti to :)");
-                            Assert.AreEqual(
-                                "Jsem automatický test který zapisuje do popisku! Hele dopsal jsem ti to :)",
-                                dopsani.GetAttribute("value"),
-                                "Pokud se objevila tady chyba tak je v popisku něco navíc");
-
-                            var ulozitVytvor = driver.FindElements(By.TagName("button"))
-                                .FirstOrDefault(e => e.Text == "Uložit");
-                            Assert.NotNull(ulozitVytvor);
-                            ulozitVytvor.Click();
-                            break;
-                        }
+                        Uprava(driver, index, isCreated, kontrolaRole);
+                        break;
                 }
 
                 return true;
@@ -227,6 +80,161 @@ namespace automatic_web_testing.Helper.Tests
             catch
             {
                 return false;
+            }
+        }
+
+        public static void Uprava(ChromeDriver driver, int index, bool isCreated, IWebElement? kontrolaRole)
+        {
+            if (!isCreated)
+            {
+                var vytvoritRole = driver.FindElements(By.TagName("button"))
+                    .FirstOrDefault(e => e.Text == "Přidat roli");
+                Assert.NotNull(vytvoritRole);
+                vytvoritRole.Click();
+
+                var nazevRole = SearchHelper.WaitForElementById("name", driver, 5, 250);
+                nazevRole.SendKeys("Autonom");
+                Assert.AreEqual("Autonom", nazevRole.GetAttribute("value"));
+
+                var popisRole = SearchHelper.WaitForElementById("description", driver, 5, 250);
+                popisRole.SendKeys("Jsem automatický test který zapisuje do popisku!");
+                Assert.AreEqual("Jsem automatický test který zapisuje do popisku!",
+                    popisRole.GetAttribute("value"));
+
+                var uzivatelRole = SearchHelper.WaitForElementById("userId", driver, 5, 250);
+                Assert.NotNull(uzivatelRole);
+                uzivatelRole.Click();
+
+                var vyberUzivatele = driver.FindElements(By.TagName("li"))
+                    .FirstOrDefault(e => e.Text == "Testerprohub@protonmail.com");
+                Assert.NotNull(vyberUzivatele);
+                vyberUzivatele.Click();
+
+                var ulozitVytvor = driver.FindElements(By.TagName("button"))
+                    .FirstOrDefault(e => e.Text == "Uložit");
+                Assert.NotNull(ulozitVytvor);
+                ulozitVytvor.Click();
+
+                var roleVytvorena = SearchHelper
+                    .WaitForElementsByClassName("RoleInfo_roleName__3xBnw", driver, 5, 250)
+                    .FirstOrDefault(e => e.Text == "Autonom");
+                Assert.NotNull(roleVytvorena);
+                roleVytvorena.Click();
+
+                var upravit = driver.FindElements(By.ClassName("anticon-edit")).ElementAt(index - 1);
+                Assert.NotNull(upravit);
+                upravit.Click();
+
+                var dopsani = SearchHelper.WaitForElementById("description", driver, 5, 250);
+                dopsani.SendKeys(" Hele dopsal jsem ti to :)");
+                Assert.AreEqual(
+                    "Jsem automatický test který zapisuje do popisku! Hele dopsal jsem ti to :)",
+                    dopsani.GetAttribute("value"));
+
+                var ulozitVytvorPopis = driver.FindElements(By.TagName("button"))
+                    .FirstOrDefault(e => e.Text == "Uložit");
+                Assert.NotNull(ulozitVytvorPopis);
+                ulozitVytvor.Click();
+            }
+            else
+            {
+                kontrolaRole?.Click();
+                Assert.NotNull(kontrolaRole);
+
+                var upravit = driver.FindElements(By.ClassName("anticon-edit")).ElementAt(index - 1);
+                Assert.NotNull(upravit);
+                upravit.Click();
+
+                var dopsani = SearchHelper.WaitForElementById("description", driver, 5, 250);
+                dopsani.SendKeys(" Hele dopsal jsem ti to :)");
+                Assert.AreEqual(
+                    "Jsem automatický test který zapisuje do popisku! Hele dopsal jsem ti to :)",
+                    dopsani.GetAttribute("value"),
+                    "Pokud se objevila tady chyba tak je v popisku něco navíc");
+
+                var ulozitVytvor = driver.FindElements(By.TagName("button"))
+                    .FirstOrDefault(e => e.Text == "Uložit");
+                Assert.NotNull(ulozitVytvor);
+                ulozitVytvor.Click();
+            }
+        }
+
+        public static void ZalozeniSmazani(ChromeDriver driver, int index, bool isCreated, IWebElement? kontrolaRole)
+        {
+            if (!isCreated)
+            {
+                var vytvoritRole = driver.FindElements(By.TagName("button"))
+                    .FirstOrDefault(e => e.Text == "Přidat roli");
+                Assert.NotNull(vytvoritRole);
+                vytvoritRole.Click();
+
+                var nazevRole = SearchHelper.WaitForElementById("name", driver, 5, 250);
+                nazevRole.SendKeys("Autonom");
+                Assert.AreEqual("Autonom", nazevRole.GetAttribute("value"));
+
+                var popisRole = SearchHelper.WaitForElementById("description", driver, 5, 250);
+                popisRole.SendKeys("Jsem automatický test který zapisuje do popisku!");
+                Assert.AreEqual("Jsem automatický test který zapisuje do popisku!",
+                    popisRole.GetAttribute("value"));
+
+                var uzivatelRole = SearchHelper.WaitForElementById("userId", driver, 5, 250);
+                Assert.NotNull(uzivatelRole);
+                uzivatelRole.Click();
+
+                var vyberUzivatele = driver.FindElements(By.TagName("li"))
+                    .FirstOrDefault(e => e.Text == "Testerprohub@protonmail.com");
+                Assert.NotNull(vyberUzivatele);
+                vyberUzivatele.Click();
+
+                var ulozitVytvor = driver.FindElements(By.TagName("button"))
+                    .FirstOrDefault(e => e.Text == "Uložit");
+                Assert.NotNull(ulozitVytvor);
+                ulozitVytvor.Click();
+            }
+            else
+            {
+                kontrolaRole?.Click();
+                Assert.NotNull(kontrolaRole);
+                //! Thread nemusí být, je spíš pro jistotu
+                Thread.Sleep(500);
+                //? Pokud bude dělat problémy, zkusit napsat index + 1
+                var odstranit = driver.FindElements(By.ClassName("anticon-delete")).ElementAt(index);
+                Assert.NotNull(odstranit);
+                odstranit.Click();
+
+                var odstranitPotvrdit =
+                    driver.FindElements(By.TagName("button")).First(e => e.Text == "Ano");
+                Assert.NotNull(odstranitPotvrdit);
+                odstranitPotvrdit.Click();
+
+                var vytvoritRole = driver.FindElements(By.TagName("button"))
+                    .FirstOrDefault(e => e.Text == "Přidat roli");
+                Assert.NotNull(vytvoritRole);
+                vytvoritRole.Click();
+
+                var nazevRole = SearchHelper.WaitForElementById("name", driver, 5, 250);
+                nazevRole.SendKeys("Autonom");
+                Assert.AreEqual("Autonom", nazevRole.GetAttribute("value"));
+
+                var popisRole = SearchHelper.WaitForElementById("description", driver, 5, 250);
+                popisRole.SendKeys("Jsem automatický test který zapisuje do popisku!");
+                Assert.AreEqual("Jsem automatický test který zapisuje do popisku!",
+                    popisRole.GetAttribute("value"),
+                    "Pokud se tohle stalo tak je to proto že je v popisku napsáno něco navíc");
+
+                var uzivatelRole = SearchHelper.WaitForElementById("userId", driver, 5, 250);
+                Assert.NotNull(uzivatelRole);
+                uzivatelRole.Click();
+
+                var vyberUzivatele = driver.FindElements(By.TagName("li"))
+                    .FirstOrDefault(e => e.Text == "Testerprohub@protonmail.com");
+                Assert.NotNull(vyberUzivatele);
+                vyberUzivatele.Click();
+
+                var ulozitVytvor = driver.FindElements(By.TagName("button"))
+                    .FirstOrDefault(e => e.Text == "Uložit");
+                Assert.NotNull(ulozitVytvor);
+                ulozitVytvor.Click();
             }
         }
     }
