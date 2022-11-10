@@ -33,10 +33,9 @@ namespace automatic_web_testing.Helper.Setup
         /// <summary>
         /// Tato metoda nám zavírá session a zbavuje se zbytků co můžou zůstat
         /// </summary>
-        /// <param name="driver">Vyvolá příkaz na uzavření a zbavení se historie</param>
+        /// <param name="driver">Vyvolá příkaz na uzavření a zbaví se historie</param>
         public static void Dispose(ChromeDriver driver)
         {
-            driver.Dispose();
             driver.Quit();
         }
     }
