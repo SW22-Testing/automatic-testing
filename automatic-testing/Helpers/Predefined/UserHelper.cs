@@ -22,6 +22,6 @@ namespace automatic_testing.Helpers.Predefined
         /// Účet, kterým se kontroluje založení nového uživatele
         /// </summary>
         public static readonly UserProfile NewUserProfile = new UserProfile("Nový uživatel", "Heslo nového uživatele", "novyKod", "Nový účet", "Přijmení", "novy@novy.test");
-        public static readonly UserProfile WindowsUser = new UserProfile($@"{Environment.UserDomainName}\{Environment.UserName}", "", Environment.UserName, "", "", "");
+        public static readonly UserProfile WindowsUser = new UserProfile($@"{Environment.UserDomainName}\{Environment.UserName}", "", Environment.UserName, "test", "test", "test@test.test");
     }
 }

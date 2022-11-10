@@ -483,12 +483,16 @@ Kontaktujte administrátora.", errorText.Text);
             AppiumWebElement emailInput = null;
             var passwordInputs = SearchHelper.GetClickableElementsByClassName(newUserWindow, "PasswordBoxEdit", "");
 
-            Task.Run(() =>
+            var task = new Task(() =>
             {
                 jmenoInput = newUserWindow.FindElementByXPath("//*[@Name='Jméno']/following-sibling::*");
                 prijmeniInput = newUserWindow.FindElementByXPath("//*[@Name='Příjmení']/following-sibling::*");
                 emailInput = newUserWindow.FindElementByXPath("//*[@Name='Email']/following-sibling::*");
             });
+            task.Start();
+            //Task.Run(() =>
+            //{
+            //});
 
             switch (userType)
             {
@@ -516,8 +520,6 @@ Kontaktujte administrátora.", errorText.Text);
 
                     var windowsInput = newUserWindow.FindElementByClassName("ButtonEdit");
                     Assert.NotNull(windowsInput);
-                    //! SendKeys má definovanou US klávesnici a nejde změnit
-                    //! Opravit šlo buď ALT kódem, nebo schránkou (před každým psaní by se string uložil do schránky a přes ctrl + V by se vložil
                     windowsInput.SendKeys(profile.Login.Replace(@"\", Keys.Alt + Keys.NumberPad9 + Keys.NumberPad2 + Keys.Alt));
                     Assert.AreEqual(profile.Login, windowsInput.Text);
 
@@ -525,6 +527,7 @@ Kontaktujte administrátora.", errorText.Text);
             }
 
             var kodInput = newUserWindow.FindElementByXPath("//*[@Name='Kód']/following-sibling::*");
+            task.Wait();
             kodInput.SendKeys(profile.Kod);
             jmenoInput.SendKeys(profile.FirstName);
             prijmeniInput.SendKeys(profile.LastName);
