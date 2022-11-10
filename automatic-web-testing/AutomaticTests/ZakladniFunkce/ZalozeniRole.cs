@@ -73,15 +73,13 @@ namespace automatic_web_testing.AutomaticTests.ZakladniFunkce
                 .FirstOrDefault(e => e.Text == "Autonom");
 
             var role = SearchHelper.WaitForElementsByClassName("RoleInfo_roleName__3xBnw", driver, 5, 250);
-            
+
             for (var i = 0; i < role.Count; i++)
-            {
                 if (role[i].Text == "Autonom")
                     isCreated = true;
-            }
-            
-            RoleHelper.Uprava(driver,indexOfRole,isCreated,kontrolaRole);
-            
+
+            RoleHelper.Uprava(driver, indexOfRole, isCreated, kontrolaRole);
+
             TestContext.WriteLine(isCreated);
 
             if (isCreated)
