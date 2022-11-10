@@ -37,7 +37,6 @@ namespace automatic_web_testing.Helper.Setup
         public static void Dispose(ChromeDriver driver)
         {
             driver.Quit();
-            //driver.Dispose();
         }
     }
 }
