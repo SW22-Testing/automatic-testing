@@ -36,7 +36,6 @@ namespace automatic_web_testing.Helper.Setup
         /// <param name="driver">Vyvolá příkaz na uzavření a zbavení se historie</param>
         public static void Dispose(ChromeDriver driver)
         {
-            driver.Dispose();
             driver.Quit();
         }
     }
