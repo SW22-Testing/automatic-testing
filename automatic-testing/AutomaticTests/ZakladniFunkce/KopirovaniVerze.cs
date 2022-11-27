@@ -46,6 +46,7 @@ namespace automatic_testing.AutomaticTests.ZakladniFunkce
             ScreenRecorder = new ScreenRecorder();
             RootSession = Setup.GetRootSession();
             EsticonSession = Setup.GetEsticonSession();
+
             Version = SearchHelper.WaitForElementByAccessibilityId("lblVersion", EsticonSession, 5, 100);
         }
 
