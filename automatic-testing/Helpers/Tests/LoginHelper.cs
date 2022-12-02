@@ -1,6 +1,8 @@
 ﻿using NUnit.Framework;
 using OpenQA.Selenium.Appium.Windows;
 using System;
+using automatic_testing.Helpers.Elements;
+using OpenQA.Selenium.Appium;
 
 namespace automatic_testing.Helpers.Tests
 {
@@ -89,9 +91,8 @@ namespace automatic_testing.Helpers.Tests
                 var passwordBox = session.FindElementByAccessibilityId("passwordBox");
                 passwordBox.SendKeys(password);
 
-                var login = SearchHelper.GetClickableElementByAccessibilityId(session, "btnOk", "Nepovedlo se najít tlačítko pro login");
-                login.Click();
-
+                ButtonHelper.ClickByAccessibilityId(session, "btnOk");
+                
                 return session;
             }
             catch (Exception)
