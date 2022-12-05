@@ -138,7 +138,6 @@ namespace automatic_web_testing.Helper.Tests
                 Assert.NotNull(kontrolaRole);
                 kontrolaRole?.Click();
 
-                Thread.Sleep(250);
                 var upravit = driver.FindElements(By.ClassName("anticon-edit")).ElementAt(index - 1);
                 Assert.NotNull(upravit);
                 upravit.Click();
