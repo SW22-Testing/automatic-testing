@@ -542,7 +542,7 @@ namespace automatic_testing.Helpers.Tests
         /// <param name="timeOut">Timeout v sekundách</param>
         /// <param name="pollingInterval">Interval, ve kterém se bude pokoušet hledat v milisekundách</param>
         /// <returns></returns>
-        public static AppiumWebElement WaitForElementByName(string name, WindowsDriver<AppiumWebElement> driver, int timeOut, int pollingInterval)
+        public static AppiumWebElement WaitForElementByName(string name, WindowsDriver<WindowsElement> driver, int timeOut, int pollingInterval)
         {
             if (driver == null) return null;
 

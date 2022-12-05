@@ -120,11 +120,11 @@ namespace automatic_testing.AutomaticTests.ZakladniFunkce
         /// </summary>
         private void KontrolaNapoveda()
         {
-            var napovedaButton = SearchHelper.WaitForElementByName("Nápověda", EsticonSession, 10, 100);
+            var napovedaButton = SearchHelper.WaitForElementByName("Nápověda", EsticonSession, 10, 250);
             napovedaButton?.Click();
 
             var napovedaOkno =
-                SearchHelper.GetParentElementByName(RootSession, "Nápověda", "Nepovedlo se najít okno Nápověda");
+                SearchHelper.GetParentElementByName(EsticonSession, "Nápověda", "Nepovedlo se najít okno Nápověda");
 
             var versionLabel = SearchHelper.GetClickableElementsByClassName(napovedaOkno, "TextBox", "Nepovedlo se najít verzi")
                 .FirstOrDefault(e => e.GetAttribute("HelpText") == "Dvojklikem zkopírujete číslo verze");

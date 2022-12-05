@@ -108,8 +108,9 @@ namespace automatic_testing.Helpers.Tests
 
                 userCheckBox.Click();
 
-                var login = session.FindElementByAccessibilityId("btnOk");
-                login.Click();
+                ButtonHelper.ClickByAccessibilityId(session, "btnOk");
+                //var login = session.FindElementByAccessibilityId("btnOk");
+                //login.Click();
 
                 return session;
             }
