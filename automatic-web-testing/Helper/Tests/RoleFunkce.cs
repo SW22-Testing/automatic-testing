@@ -141,6 +141,7 @@ namespace automatic_web_testing.Helper.Tests
                 kontrolaRole?.Click();
                 Assert.NotNull(kontrolaRole);
 
+                Thread.Sleep(250);
                 var upravit = driver.FindElements(By.ClassName("anticon-edit")).ElementAt(index - 1);
                 Assert.NotNull(upravit);
                 upravit.Click();
@@ -180,11 +181,7 @@ namespace automatic_web_testing.Helper.Tests
                 var uzivatelRole = SearchHelper.WaitForElementById("userId", driver, 5, 250);
                 Assert.NotNull(uzivatelRole);
                 uzivatelRole.Click();
-
-                var vyberUzivatele = driver.FindElements(By.TagName("li"))
-                    .FirstOrDefault(e => e.Text == "Testerprohub@protonmail.com");
-                Assert.NotNull(vyberUzivatele);
-                vyberUzivatele.Click();
+                uzivatelRole.SendKeys("Testerprohub@protonmail.com" + Keys.Enter);
 
                 var ulozitVytvor = driver.FindElements(By.TagName("button"))
                     .FirstOrDefault(e => e.Text == "Uložit");
@@ -226,10 +223,7 @@ namespace automatic_web_testing.Helper.Tests
                 Assert.NotNull(uzivatelRole);
                 uzivatelRole.Click();
 
-                var vyberUzivatele = driver.FindElements(By.TagName("li"))
-                    .FirstOrDefault(e => e.Text == "Testerprohub@protonmail.com");
-                Assert.NotNull(vyberUzivatele);
-                vyberUzivatele.Click();
+                uzivatelRole.SendKeys("Testerprohub@protonmail.com" + Keys.Enter);
 
                 var ulozitVytvor = driver.FindElements(By.TagName("button"))
                     .FirstOrDefault(e => e.Text == "Uložit");
