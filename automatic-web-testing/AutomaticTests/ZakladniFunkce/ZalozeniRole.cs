@@ -84,8 +84,8 @@ namespace automatic_web_testing.AutomaticTests.ZakladniFunkce
 
             if (isCreated)
             {
-                kontrolaRole?.Click();
                 Assert.NotNull(kontrolaRole);
+                kontrolaRole?.Click();
 
                 var aktivita = driver.FindElements(By.ClassName("anticon-history")).ElementAt(3);
                 Assert.NotNull(aktivita);
