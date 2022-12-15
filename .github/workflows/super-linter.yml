@@ -69,10 +69,6 @@ super-linter/lib/linter.sh
    OUTPUT_CONTENTS_CMD=$(ls "${REPORT_OUTPUT_FOLDER}") 
    info "$OUTPUT_CONTENTS_CMD" 
  fi 
-I was running into the same problem and came across this issue (thanks for opening it!)
-
-This excerpt works for me:
-
       - name: Check coding standards
         uses: github/super-linter@v3
         env:
