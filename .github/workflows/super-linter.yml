@@ -54,34 +54,34 @@ jobs:
           DEFAULT_BRANCH: dev
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           
-# brunomartinspro I think the OUTPUT_FORMAT parameter is required for a file to be generated.
-super-linter/lib/linter.sh
+#brunomartinspro I think the OUTPUT_FORMAT parameter is required for a file to be generated.
+#super-linter/lib/linter.sh
 
 
  # Prints output report if enabled # 
  ################################### 
- if [ -z "${FORMAT_REPORT}" ]; then 
-   info "Reports generated in folder ${REPORT_OUTPUT_FOLDER}" 
-   ############################################# 
+ #if [ -z "${FORMAT_REPORT}" ]; then 
+  # info "Reports generated in folder ${REPORT_OUTPUT_FOLDER}" 
+   ############################################## 
    # Print info on reports that were generated # 
    ############################################# 
-   info "Contents of report folder:" 
-   OUTPUT_CONTENTS_CMD=$(ls "${REPORT_OUTPUT_FOLDER}") 
-   info "$OUTPUT_CONTENTS_CMD" 
- fi 
-      - name: Check coding standards
-        uses: github/super-linter@v3
-        env:
-          VALIDATE_ALL_CODEBASE: false
-          VALIDATE_PHP_PHPCS: true
-          DEFAULT_BRANCH: main
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          DISABLE_ERRORS: true
-          OUTPUT_DETAILS: detailed
-          OUTPUT_FORMAT: tap
-      - name: Upload Report as an artifact
-        uses: actions/upload-artifact@master
-        with:
-          name: linter-report
-          path: "${{ github.workspace }}/super-linter.report/"
+   #info "Contents of report folder:" 
+   #OUTPUT_CONTENTS_CMD=$(ls "${REPORT_OUTPUT_FOLDER}") 
+   #info "$OUTPUT_CONTENTS_CMD" 
+ #fi 
+  #    - name: Check coding standards
+   #     uses: github/super-linter@v3
+    #    env:
+     #     VALIDATE_ALL_CODEBASE: false
+      #    VALIDATE_PHP_PHPCS: true
+       #   DEFAULT_BRANCH: main
+        #  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+         # DISABLE_ERRORS: true
+          #OUTPUT_DETAILS: detailed
+          #OUTPUT_FORMAT: tap
+      #- name: Upload Report as an artifact
+       # uses: actions/upload-artifact@master
+        #with:
+         # name: linter-report
+          #path: "${{ github.workspace }}/super-linter.report/"
 
