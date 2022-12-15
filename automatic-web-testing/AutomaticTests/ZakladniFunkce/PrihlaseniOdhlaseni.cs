@@ -29,9 +29,9 @@ namespace automatic_web_testing.AutomaticTests.ZakladniFunkce
             wait = _wait;
         }
 
-        [ TestCase(TestName = "Přihlášení chybný email",
+        [TestCase(TestName = "Přihlášení chybný email",
             Description = "Test kontroluje přihlášení s chybným uživatelským emailem")]
-        [ Order(1)]
+        [Order(1)]
         public void PrihlaseniChybneJmeno()
         {
             Recorder.StartRecording(TestContext.CurrentContext.Test.Name, "Základní funkce", "", "AspeHub");
@@ -39,8 +39,8 @@ namespace automatic_web_testing.AutomaticTests.ZakladniFunkce
             Assert.IsTrue(status);
         }
 
-        [ TestCase(TestName = "Přihlášení chybné heslo", Description = "Test kontroluje přihlášení s chybným heslem")]
-        [ Order(2)]
+        [TestCase(TestName = "Přihlášení chybné heslo", Description = "Test kontroluje přihlášení s chybným heslem")]
+        [Order(2)]
         public void PrihlaseniChybneHeslo()
         {
             Recorder.StartRecording(TestContext.CurrentContext.Test.Name, "Základní funkce", "", "AspeHub");
@@ -48,9 +48,9 @@ namespace automatic_web_testing.AutomaticTests.ZakladniFunkce
             Assert.IsTrue(status);
         }
 
-        [ TestCase(TestName = "Přihlášení chybné heslo a email",
+        [TestCase(TestName = "Přihlášení chybné heslo a email",
             Description = "Test kontroluje přihlášení s chybným heslem a mailem")]
-        [ Order(3)]
+        [Order(3)]
         public void PrihlaseniObeChybne()
         {
             Recorder.StartRecording(TestContext.CurrentContext.Test.Name, "Základní funkce", "", "AspeHub");
@@ -58,8 +58,8 @@ namespace automatic_web_testing.AutomaticTests.ZakladniFunkce
             Assert.IsTrue(status);
         }
 
-        [ TestCase(TestName = "Přihlášení správnými údaji", Description = "Test se přihlásí správnými údaji")]
-        [ Order(4)]
+        [TestCase(TestName = "Přihlášení správnými údaji", Description = "Test se přihlásí správnými údaji")]
+        [Order(4)]
         public void PrihlaseniSpravne()
         {
             Recorder.StartRecording(TestContext.CurrentContext.Test.Name, "Základní funkce", "", "AspeHub");
@@ -67,10 +67,10 @@ namespace automatic_web_testing.AutomaticTests.ZakladniFunkce
             Assert.IsTrue(status);
         }
 
-        [ TestCase(TestName = "Externí přihlášení přes Microsoft",
+        [TestCase(TestName = "Externí přihlášení přes Microsoft",
             Description =
                 "Test kontroluje externí přihlášení přes microsoft přidá ho, přihlásí se přes něj a potom ho i odebere")]
-        [ Order(5)]
+        [Order(5)]
         public void PrihlaseniMicrosoft()
         {
             Recorder.StartRecording(TestContext.CurrentContext.Test.Name, "Základní funkce", "", "AspeHub");
@@ -127,10 +127,10 @@ namespace automatic_web_testing.AutomaticTests.ZakladniFunkce
             deleteMicrosoft.Click();
         }
 
-        [ TestCase(TestName = "Externí přihlášení přes Google",
+        [TestCase(TestName = "Externí přihlášení přes Google",
             Description =
                 "Test kontroluje externí přihlášení přes google přidá ho, přihlásí se přes něj a potom ho i odebere")]
-        [ Order(6)]
+        [Order(6)]
         public void PrihlaseniGoogle()
         {
             Recorder.StartRecording(TestContext.CurrentContext.Test.Name, "Základní funkce", "", "AspeHub");
