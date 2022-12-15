@@ -83,4 +83,3 @@ jobs:
         #with:
          # name: linter-report
           #path: "${{ github.workspace }}/super-linter.report/"
-
