@@ -76,7 +76,7 @@ namespace automatic_web_testing.AutomaticTests.ZakladniFunkce
             for (var i = 0; i < role.Count; i++)
                 if (role[i].Text == "Autonom")
                     isCreated = true;
-            
+
             //TODO: Předělat funkci
             RoleHelper.Uprava(driver, indexOfRole, isCreated, kontrolaRole);
 
@@ -86,14 +86,14 @@ namespace automatic_web_testing.AutomaticTests.ZakladniFunkce
             if (isCreated)
             {
                 driver.Navigate().Refresh();
-                
+
                 Assert.NotNull(kontrolaRole);
                 kontrolaRole?.Click();
-                
+
                 var kontrolaAktivita = SearchHelper.WaitForElementByClassName("anticon-history", driver, 10, 250);
                 Assert.NotNull(kontrolaAktivita);
-                
-                
+
+
                 var aktivita = driver.FindElements(By.ClassName("anticon-history")).ElementAt(3);
                 Assert.NotNull(aktivita);
                 // Tady je potřeba taky.

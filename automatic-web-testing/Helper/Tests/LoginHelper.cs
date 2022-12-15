@@ -1,16 +1,16 @@
-﻿using automatic_web_testing.Helper.Predefined;
+﻿using System.Linq;
+using automatic_web_testing.Helper.Predefined;
 using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Support.UI;
-using System.Linq;
 
 namespace automatic_web_testing.Helper.Tests
 {
     public static class LoginHelper
     {
         /// <summary>
-        /// Tato třída se přihlašuje správným loginem (s asserty).
+        ///     Tato třída se přihlašuje správným loginem (s asserty).
         /// </summary>
         /// <param name="driver">Používá se pro ChromeDriver využívá funkce chromu</param>
         /// <param name="wait">Čekací parametr nastavený na 5 vteřin</param>
@@ -24,14 +24,18 @@ namespace automatic_web_testing.Helper.Tests
                 var password = driver.FindElement(By.Id("Password"));
                 Assert.IsNotNull(password, "Nenašel se input pro heslo míra ocas");
                 username.SendKeys(UserHelper.CorrectUser.Email);
-                Assert.AreEqual(UserHelper.CorrectUser.Email, username.GetAttribute("value"), "Zadané hodnoty nesouhlasí s obdrženými");
+                Assert.AreEqual(UserHelper.CorrectUser.Email, username.GetAttribute("value"),
+                    "Zadané hodnoty nesouhlasí s obdrženými");
                 password.SendKeys(UserHelper.CorrectUser.Password);
-                Assert.AreEqual(UserHelper.CorrectUser.Password, password.GetAttribute("value"), "Zadané hodnoty nesouhlasí s obdrženými");
+                Assert.AreEqual(UserHelper.CorrectUser.Password, password.GetAttribute("value"),
+                    "Zadané hodnoty nesouhlasí s obdrženými");
                 var prihlasitButton = driver.FindElement(By.Name("button"));
                 Assert.IsNotNull(prihlasitButton, "Nenašlo se tlačítko pro přihlášení");
                 prihlasitButton.Click();
-                wait.Until(e => e.FindElements(By.TagName("button")).FirstOrDefault(f => f.Text == "Zobrazit všechny projekty"));
-                var poPrihlaseni = driver.FindElements(By.TagName("button")).First(e => e.Text == "Zobrazit všechny projekty");
+                wait.Until(e =>
+                    e.FindElements(By.TagName("button")).FirstOrDefault(f => f.Text == "Zobrazit všechny projekty"));
+                var poPrihlaseni = driver.FindElements(By.TagName("button"))
+                    .First(e => e.Text == "Zobrazit všechny projekty");
                 Assert.IsTrue(poPrihlaseni.Displayed, "Nenašel se element pro tlačítka (Zobrazit všechny projekty)");
                 return true;
             }
@@ -40,8 +44,9 @@ namespace automatic_web_testing.Helper.Tests
                 return false;
             }
         }
+
         /// <summary>
-        /// Tato třída se přihlašuje správným loginem (bez assertu)
+        ///     Tato třída se přihlašuje správným loginem (bez assertu)
         /// </summary>
         /// <param name="driver">Používá se pro ChromeDriver využívá funkce chromu</param>
         /// <param name="wait">Čekací parametr nastavený na 5 vteřin</param>
@@ -56,8 +61,10 @@ namespace automatic_web_testing.Helper.Tests
                 password.SendKeys(UserHelper.CorrectUser.Password);
                 var prihlasitButton = driver.FindElement(By.Name("button"));
                 prihlasitButton.Click();
-                wait.Until(e => e.FindElements(By.TagName("button")).FirstOrDefault(f => f.Text == "Zobrazit všechny projekty"));
-                var poPrihlaseni = driver.FindElements(By.TagName("button")).First(e => e.Text == "Zobrazit všechny projekty");
+                wait.Until(e =>
+                    e.FindElements(By.TagName("button")).FirstOrDefault(f => f.Text == "Zobrazit všechny projekty"));
+                var poPrihlaseni = driver.FindElements(By.TagName("button"))
+                    .First(e => e.Text == "Zobrazit všechny projekty");
                 Assert.NotNull(poPrihlaseni);
                 return driver;
             }
