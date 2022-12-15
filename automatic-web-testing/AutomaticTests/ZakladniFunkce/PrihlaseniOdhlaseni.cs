@@ -145,11 +145,11 @@ namespace automatic_web_testing.AutomaticTests.ZakladniFunkce
             Assert.AreEqual(UserHelper.GoogleUser.Password, passwordGoogle.GetAttribute("value"));
 
             passwordGoogle.SendKeys(Keys.Enter);
-            Thread.Sleep(1500);
 
-            var logoutIdentity = driver.FindElements(By.TagName("a")).FirstOrDefault(e => e.Text == "Odhlásit se");
+            //TODO: Dodělej Asserty
+            var logoutIdentity = SearchHelper.WaitForElementByClassName("btn-outline-primary", driver, 5, 250);
             logoutIdentity?.Click();
-            var logoutConfirm = driver.FindElements(By.TagName("button")).FirstOrDefault(e => e.Text == "Ano");
+            var logoutConfirm = driver.FindElement(By.XPath("//div[@class='form-group']//button"));
             logoutConfirm?.Click();
 
             driver.Navigate().GoToUrl("https://dv1.aspehub.cz/Account");
