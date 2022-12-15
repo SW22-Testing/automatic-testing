@@ -57,7 +57,6 @@ jobs:
 #brunomartinspro I think the OUTPUT_FORMAT parameter is required for a file to be generated.
 #super-linter/lib/linter.sh
 
-
  # Prints output report if enabled # 
  ################################### 
  #if [ -z "${FORMAT_REPORT}" ]; then 
