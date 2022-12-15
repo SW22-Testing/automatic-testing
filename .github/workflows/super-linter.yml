@@ -54,7 +54,7 @@ jobs:
           DEFAULT_BRANCH: dev
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           
-@brunomartinspro I think the OUTPUT_FORMAT parameter is required for a file to be generated.
+#brunomartinspro I think the OUTPUT_FORMAT parameter is required for a file to be generated.
 super-linter/lib/linter.sh
 
 Lines 1028 to 1038 in f5752cf
