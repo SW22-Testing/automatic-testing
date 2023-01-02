@@ -2,6 +2,7 @@
 using OpenQA.Selenium.Appium.Windows;
 using System;
 using automatic_testing.Helpers.Elements;
+using NUnit.Framework.Interfaces;
 using OpenQA.Selenium.Appium;
 
 namespace automatic_testing.Helpers.Tests
@@ -13,34 +14,36 @@ namespace automatic_testing.Helpers.Tests
         /// <summary>
         /// Kontrola přihlášení s Asserty
         /// </summary>
-        /// <param name="session">Session, ve které se bude hledat přihlašovací okno pro AspeEsticon</param>
+        /// <param name="driver">Session, ve které se bude hledat přihlašovací okno pro AspeEsticon</param>
         /// <param name="username"></param>
         /// <param name="password"></param>
-        public static bool TryLogin(WindowsDriver<WindowsElement> session, string username, string password)
+        public static bool TryLogin(WindowsDriver<WindowsElement> driver, string username, string password)
         {
             try
             {
-                // Kontrola jestli session není null
-                Assert.IsNotNull(session);
+                // Kontrola jestli driver není null
+                Assert.IsNotNull(driver);
 
                 // Přepne na login s heslem
-                var userCheckBox = SearchHelper.GetClickableElementByName(session, "Přihlásit pomocí jména a hesla", "Nepovedlo se kliknout na checkbox pro přihlášení heslem");
+                InteractableElement.CheckByName(driver, "Přihlásit pomocí jména a hesla");
+                //var userCheckBox = SearchHelper.GetClickableElementByName(driver, "Přihlásit pomocí jména a hesla", "Nepovedlo se kliknout na checkbox pro přihlášení heslem");
+                //userCheckBox.Click();
+                //Assert.True(userCheckBox.GetAttribute("SelectionItem.IsSelected").Equals("True"));
 
-                userCheckBox.Click();
-                Assert.True(userCheckBox.GetAttribute("SelectionItem.IsSelected").Equals("True"));
+                InteractableElement.WriteByAccessibilityId(driver, "PART_Editor", username);
 
-                var userNameBox = SearchHelper.GetClickableElementByAccessibilityId(session, "PART_Editor", "Nepovedlo se najít input pro UserName");
+                //var userNameBox = SearchHelper.GetClickableElementByAccessibilityId(driver, "PART_Editor", "Nepovedlo se najít input pro UserName");
+                //userNameBox.SendKeys(username);
+                //Assert.AreEqual(username, userNameBox.Text);
 
-                userNameBox.SendKeys(username);
-                Assert.AreEqual(username, userNameBox.Text);
+                InteractableElement.WriteByAccessibilityId(driver, "passwordBox", password);
+                //var passwordBox = SearchHelper.GetClickableElementByAccessibilityId(driver, "passwordBox", "Nepovedlo se najít input pro heslo");
+                //passwordBox.SendKeys(password);
+                //Assert.AreEqual(password.Length, passwordBox.Text.Length);
 
-                var passwordBox = SearchHelper.GetClickableElementByAccessibilityId(session, "passwordBox", "Nepovedlo se najít input pro heslo");
-
-                passwordBox.SendKeys(password);
-                Assert.AreEqual(password.Length, passwordBox.Text.Length);
-
-                var login = SearchHelper.GetClickableElementByAccessibilityId(session, "btnOk", "Nepovedlo se najít tlačítko pro login");
-                login.Click();
+                InteractableElement.ClickByAccessibilityId(driver, "btnOk");
+                //var login = SearchHelper.GetClickableElementByAccessibilityId(driver, "btnOk", "Nepovedlo se najít tlačítko pro login");
+                //login.Click();
 
                 return true;
             }
@@ -49,17 +52,14 @@ namespace automatic_testing.Helpers.Tests
                 return false;
             }
         }
-        public static bool TryLogin(WindowsDriver<WindowsElement> session)
+        public static bool TryLogin(WindowsDriver<WindowsElement> driver)
         {
             try
             {
-                var userCheckBox = SearchHelper.GetClickableElementByName(session, "Přihlásit pomocí Windows ověření", "Nepovedlo se kliknout na checkbox pro přihlášení heslem");
+                InteractableElement.CheckByName(driver, "Přihlásit pomocí Windows ověření");
 
-                userCheckBox.Click();
-                Assert.True(userCheckBox.GetAttribute("SelectionItem.IsSelected").Equals("True"));
-
-                var login = SearchHelper.GetClickableElementByAccessibilityId(session, "btnOk", "Nepovedlo se najít tlačítko pro login");
-                login.Click();
+                //Assert.True(userCheckBox.GetAttribute("SelectionItem.IsSelected").Equals("True"));
+                InteractableElement.ClickByAccessibilityId(driver, "btnOk");
 
                 return true;
             }
@@ -75,44 +75,35 @@ namespace automatic_testing.Helpers.Tests
         /// <summary>
         /// Kontrola přihlášení bez Assertu
         /// </summary>
-        /// <param name="session">Session, ve které se bude hledat přihlašovací okno pro AspeEsticon</param>
+        /// <param name="driver">Session, ve které se bude hledat přihlašovací okno pro AspeEsticon</param>
         /// <param name="username"></param>
         /// <param name="password"></param>
-        public static WindowsDriver<WindowsElement> Login(WindowsDriver<WindowsElement> session, string username, string password)
+        public static void Login(WindowsDriver<WindowsElement> driver, string username, string password)
         {
             try
             {
-                var userCheckBox = session.FindElementByName("Přihlásit pomocí jména a hesla");
-                userCheckBox.Click();
+                InteractableElement.CheckByName(driver, "Přihlásit pomocí jména a hesla");
 
-                var userNameBox = session.FindElementByAccessibilityId("PART_Editor");
-                userNameBox.SendKeys(username);
+                InteractableElement.WriteByAccessibilityId(driver, "PART_Editor", username);
 
-                var passwordBox = session.FindElementByAccessibilityId("passwordBox");
-                passwordBox.SendKeys(password);
+                InteractableElement.WriteByAccessibilityId(driver, "passwordBox", password);
 
-                ButtonHelper.ClickByAccessibilityId(session, "btnOk");
-                
-                return session;
+                InteractableElement.ClickByAccessibilityId(driver, "btnOk");
             }
             catch (Exception)
             {
-                return null;
+                Assert.Fail("Login failed");
             }
         }
-        public static WindowsDriver<WindowsElement> Login(WindowsDriver<WindowsElement> session)
+        public static WindowsDriver<WindowsElement> Login(WindowsDriver<WindowsElement> driver)
         {
             try
             {
-                var userCheckBox = session.FindElementByAccessibilityId("Přihlásit pomocí Windows ověření");
+                InteractableElement.CheckByName(driver, "Přihlásit pomocí Windows ověření");
 
-                userCheckBox.Click();
+                InteractableElement.ClickByAccessibilityId(driver, "btnOk");
 
-                ButtonHelper.ClickByAccessibilityId(session, "btnOk");
-                //var login = session.FindElementByAccessibilityId("btnOk");
-                //login.Click();
-
-                return session;
+                return driver;
             }
             catch (Exception)
             {

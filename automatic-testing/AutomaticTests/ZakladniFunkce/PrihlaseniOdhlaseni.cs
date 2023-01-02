@@ -9,6 +9,7 @@ using OpenQA.Selenium.Appium.Windows;
 using OpenQA.Selenium.Appium;
 using System.Threading.Tasks;
 using System.Linq;
+using automatic_testing.Helpers.Elements;
 using OpenQA.Selenium;
 
 namespace automatic_testing.AutomaticTests.ZakladniFunkce
@@ -52,7 +53,7 @@ namespace automatic_testing.AutomaticTests.ZakladniFunkce
             Assert.NotNull(EsticonSession, "Esticon session byla prázdná");
             ScreenRecorder.StartRecording(TestContext.CurrentContext.Test.Name, "Základní funkce", Version, "AspeEsticon");
             #region Testovací metodu a data
-            LoginHelper.TryLogin(EsticonSession, UserHelper.EsticonUser.Login, UserHelper.EsticonUser.Password);
+            LoginHelper.Login(EsticonSession, UserHelper.EsticonUser.Login, UserHelper.EsticonUser.Password);
 
             EsticonSession = Setup.ConnectToRunningProcess(RootSession, "AspeEsticon");
             Assert.NotNull(EsticonSession, "Nenašlo se okno AspeEsticon");
@@ -69,26 +70,25 @@ namespace automatic_testing.AutomaticTests.ZakladniFunkce
             ScreenRecorder.StartRecording(TestContext.CurrentContext.Test.Name, "Základní funkce", Version, "AspeEsticon");
             Assert.NotNull(EsticonSession, "Esticon session byla prázdná");
 
-            var login = LoginHelper.TryLogin(EsticonSession, UserHelper.EsticonUser.Login, UserHelper.EsticonUser.Password);
-            Assert.IsTrue(login);
+            LoginHelper.Login(EsticonSession, UserHelper.EsticonUser.Login, UserHelper.EsticonUser.Password);
 
+            //TODO: Add Assert to method
             EsticonSession = Setup.ConnectToRunningProcess(RootSession, "AspeEsticon");
             Assert.NotNull(EsticonSession, "Nepovedlo se napojit na instance AspeEsticon");
 
-            var adminButton = SearchHelper.GetClickableElementByName(EsticonSession, "Admin", "Nepovedlo se najít tlačítko Admin");
-            adminButton.Click();
+            InteractableElement.ClickByName(EsticonSession, "Admin");
 
-            var adminWindow = SearchHelper.WaitForElementByName("Administrátor", EsticonSession, 5, 100);
+            var adminWindow = ParentElement.WaitForElementByName(EsticonSession, "Administrátor", 5, 100);
+            //var adminWindow = SearchHelper.WaitForElementByName("Administrátor", EsticonSession, 5, 100);
             Assert.NotNull(adminWindow);
 
-            var uzivateleTab = SearchHelper.GetClickableElementByName(adminWindow, "Uživatelé", "Nepoedlo se najít tlačítko Uživatelé");
-            uzivateleTab.Click();
+            InteractableElement.ClickByName(adminWindow, "Uživatelé");
 
             //TODO: Předělat část kódu, aby fungovala s AppiumWebElement
             var gridData = (WindowsElement)SearchHelper.FindElementByAccessibilityId("gcGrid", adminWindow);
             var isCreated = false;
 
-            TestContext.WriteLine(SearchHelper.FindElementsByAccessibilityId("RowData.Row.DataDto", gridData).Count(e => e.GetAttribute("Value.Value") == UserHelper.WindowsUser.Login));
+            //TestContext.WriteLine(SearchHelper.FindElementsByAccessibilityId("RowData.Row.DataDto", gridData).Count(e => e.GetAttribute("Value.Value") == UserHelper.WindowsUser.Login));
             Parallel.For(0, SearchHelper.FindElementsByAccessibilityId("RowData.Row.DataDto", gridData).Count(), e =>
             {
                 isCreated = SearchHelper.FindElementsByAccessibilityId("RowData.Row.DataDto", gridData).Count(f => f.GetAttribute("Value.Value") == UserHelper.WindowsUser.Login) != 0;
@@ -138,8 +138,7 @@ namespace automatic_testing.AutomaticTests.ZakladniFunkce
             Logout();
 
             var loginWindow = Setup.ConnectToRunningProcess(RootSession, "Přihlášení");
-            login = LoginHelper.TryLogin(loginWindow);
-            Assert.IsTrue(login);
+            LoginHelper.Login(loginWindow);
 
             DisabledDataDialog(loginWindow);
         }
@@ -408,12 +407,12 @@ namespace automatic_testing.AutomaticTests.ZakladniFunkce
         [TearDown]
         public void TearDown()
         {
-            //EsticonSession.Quit();
-            EsticonSession?.Dispose();
+            EsticonSession.Quit();
+            //EsticonSession?.Dispose();
 
 
             RootSession.Quit();
-            RootSession.Dispose();
+            //RootSession.Dispose();
 
             Setup.WinAppDriverProcessClose();
             Setup.KillEveryInstance();

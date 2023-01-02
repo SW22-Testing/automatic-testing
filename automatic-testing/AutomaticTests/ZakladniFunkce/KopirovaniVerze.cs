@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using System.Linq;
 using OpenQA.Selenium;
 using System.Windows;
+using automatic_testing.Helpers.Elements;
 using TextCopy;
 
 
@@ -52,7 +53,6 @@ namespace automatic_testing.AutomaticTests.ZakladniFunkce
 
         [TestCase(TestName = "Kontrola kopírování verze v hlavním okně", Description = "Automatický test kontroluje kopírování"), Timeout(60000)]
         [STAThread]
-        //[Ignore("Nefunguje nalezení okna AspeEsticon")]
         public void KontrolaKopirovaniHlavniOkno()
         {
             LoginHelper.Login(EsticonSession, UserHelper.EsticonUser.Login,
@@ -60,9 +60,13 @@ namespace automatic_testing.AutomaticTests.ZakladniFunkce
 
             EsticonSession = Setup.ConnectToRunningProcess(RootSession, "AspeEsticon");
 
-            var versionLabel = SearchHelper.WaitForElementByAccessibilityId("lblVersionPrefix", EsticonSession, 5, 100);
+
+            //TODO: v InteractableElement.cs přidat Double Click
+            //TODO: Přidat metody pro vrácení listu elementů
+            var versionLabel = InteractableElement.GetElementByAccessibilityId(EsticonSession, "lblVersionPrefix");
             MouseActionsHelper.DoubleClick(versionLabel);
 
+            TestContext.WriteLine(Clipboard.GetText());
             Assert.AreEqual(Version.Text.Replace("ver. ", ""), Clipboard.GetText());
         }
 
@@ -90,12 +94,10 @@ namespace automatic_testing.AutomaticTests.ZakladniFunkce
         public void TearDown()
         {
             Logout();
-            //EsticonSession.Quit();
-            EsticonSession?.Dispose();
+            EsticonSession.Quit();
 
 
             RootSession.Quit();
-            RootSession.Dispose();
 
             Setup.WinAppDriverProcessClose();
             Setup.KillEveryInstance();
@@ -109,28 +111,23 @@ namespace automatic_testing.AutomaticTests.ZakladniFunkce
         private void Logout()
         {
             if (TestContext.CurrentContext.Test.Name == "Kontrola kopírování verze v okně nápověda před přihlášením") return;
-            var ucetButton = SearchHelper.WaitForElementByName("Účet", EsticonSession, 5, 100);
-            Assert.NotNull(ucetButton, "Tlačítko Účet");
-            ucetButton.Click();
-            AppiumWebElement odhlasitButton = SearchHelper.GetClickableElementByName(EsticonSession, "Odhlásit", "Nepovedlo se najít tlačítko Odhlásit");
-            odhlasitButton.Click();
+            InteractableElement.ClickByName(EsticonSession, "Účet");
+            InteractableElement.ClickByName(EsticonSession, "Odhlásit");
         }
         /// <summary>
         ///
         /// </summary>
         private void KontrolaNapoveda()
         {
-            var napovedaButton = SearchHelper.WaitForElementByName("Nápověda", EsticonSession, 10, 250);
-            napovedaButton?.Click();
+            InteractableElement.ClickByName(EsticonSession, "Nápověda");
 
-            var napovedaOkno =
-                SearchHelper.GetParentElementByName(EsticonSession, "Nápověda", "Nepovedlo se najít okno Nápověda");
+            var napovedaOkno = ParentElement.GetElementByName(RootSession, "Nápověda");
+            //SearchHelper.GetParentElementByName(RootSession, "Nápověda", "Nepovedlo se najít okno Nápověda");
 
-            var versionLabel = SearchHelper.GetClickableElementsByClassName(napovedaOkno, "TextBox", "Nepovedlo se najít verzi")
-                .FirstOrDefault(e => e.GetAttribute("HelpText") == "Dvojklikem zkopírujete číslo verze");
+            var versionLabel = napovedaOkno.FindElementsByClassName("TextBox").FirstOrDefault(e => e.GetAttribute("HelpText") == "Dvojklikem zkopírujete číslo verze");
             MouseActionsHelper.DoubleClick(versionLabel);
 
-            TestContext.WriteLine(versionLabel?.GetAttribute("Value.Value"));
+            TestContext.WriteLine(Clipboard.GetText());
             Assert.AreEqual(versionLabel?.Text.Replace("ver. ", ""), Clipboard.GetText());
 
             var okButton = SearchHelper.GetClickableElementByName(napovedaOkno, "OK", "Nepovedlo se najít Tlačítko OK");
