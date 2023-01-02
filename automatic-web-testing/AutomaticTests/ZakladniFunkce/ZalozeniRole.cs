@@ -40,7 +40,6 @@ namespace automatic_web_testing.AutomaticTests.ZakladniFunkce
 
             var roleStatus = RoleHelper.VytvoreniRole(driver, wait, out var indexOfRole, RoleFunkce.Vytvoreni);
             Assert.True(roleStatus);
-            //Thread.Sleep(2000);
         }
 
         [TestCase(TestName = "Úprava role",
@@ -52,7 +51,6 @@ namespace automatic_web_testing.AutomaticTests.ZakladniFunkce
             Assert.NotNull(driver);
 
             var roleStatus = RoleHelper.VytvoreniRole(driver, wait, out var indexOfRole, RoleFunkce.Editace);
-            Thread.Sleep(200);
             Assert.True(roleStatus);
         }
 
@@ -66,6 +64,7 @@ namespace automatic_web_testing.AutomaticTests.ZakladniFunkce
 
             var roleStatus = RoleHelper.VytvoreniRole(driver, wait, out var indexOfRole, RoleFunkce.Vytvoreni);
             Assert.True(roleStatus);
+            //Tady je potřeba sleep. Tlačítko je klikatelný ale selenium na něj spadne i tak. pokud tam chvíli počká tak to jede v pohodě. 
             Thread.Sleep(2000);
 
             var isCreated = false;
@@ -78,17 +77,26 @@ namespace automatic_web_testing.AutomaticTests.ZakladniFunkce
                 if (role[i].Text == "Autonom")
                     isCreated = true;
 
+            //TODO: Předělat funkci
             RoleHelper.Uprava(driver, indexOfRole, isCreated, kontrolaRole);
 
             TestContext.WriteLine(isCreated);
 
+            //TODO: If (kontrolaRole == null) Assert.Fail("");
             if (isCreated)
             {
+                driver.Navigate().Refresh();
+
                 Assert.NotNull(kontrolaRole);
                 kontrolaRole?.Click();
 
+                var kontrolaAktivita = SearchHelper.WaitForElementByClassName("anticon-history", driver, 10, 250);
+                Assert.NotNull(kontrolaAktivita);
+
+
                 var aktivita = driver.FindElements(By.ClassName("anticon-history")).ElementAt(3);
                 Assert.NotNull(aktivita);
+                // Tady je potřeba taky.
                 Thread.Sleep(200);
                 aktivita.Click();
 
@@ -103,6 +111,7 @@ namespace automatic_web_testing.AutomaticTests.ZakladniFunkce
 
                 var popisZmeny = historieAktivit[0].FindElements(By.TagName("td"));
                 var autorZmeny = historieAktivit[1].FindElements(By.TagName("td"));
+                //To stejné.
                 Thread.Sleep(500);
 
                 var task = Task.Run(() =>

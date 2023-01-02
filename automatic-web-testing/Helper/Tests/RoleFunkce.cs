@@ -1,6 +1,5 @@
 ﻿#nullable enable
 using System.Linq;
-using System.Threading;
 using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
@@ -189,8 +188,6 @@ namespace automatic_web_testing.Helper.Tests
             {
                 kontrolaRole?.Click();
                 Assert.NotNull(kontrolaRole);
-                //! Thread nemusí být, je spíš pro jistotu
-                Thread.Sleep(500);
                 //? Pokud bude dělat problémy, zkusit napsat index + 1
                 var odstranit = driver.FindElements(By.ClassName("anticon-delete")).ElementAt(index);
                 Assert.NotNull(odstranit);
