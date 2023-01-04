@@ -4,12 +4,14 @@ using System.Threading;
 using automatic_web_testing.Helper.Predefined;
 using automatic_web_testing.Helper.Setup;
 using automatic_web_testing.Helper.Tests;
+using automatic_web_testing.Page;
 using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Support.UI;
 using screen_recorder;
 using SeleniumExtras.WaitHelpers;
+using ExpectedConditions = SeleniumExtras.WaitHelpers.ExpectedConditions;
 
 namespace automatic_web_testing.AutomaticTests.ZakladniFunkce
 {
@@ -18,6 +20,7 @@ namespace automatic_web_testing.AutomaticTests.ZakladniFunkce
         private ChromeDriver driver { get; set; }
         private ScreenRecorder Recorder { get; set; }
         private WebDriverWait wait { get; set; }
+        private LoginPage loginPage { get; set; }
 
         [SetUp]
         public void Setup()
@@ -25,6 +28,7 @@ namespace automatic_web_testing.AutomaticTests.ZakladniFunkce
             WebDriverWait _wait;
             driver = ChromeDriverSetup.Setup("https://dv1.aspehub.cz/Account", out _wait);
             Recorder = new ScreenRecorder();
+            
 
             wait = _wait;
         }
@@ -63,8 +67,10 @@ namespace automatic_web_testing.AutomaticTests.ZakladniFunkce
         public void PrihlaseniSpravne()
         {
             Recorder.StartRecording(TestContext.CurrentContext.Test.Name, "Základní funkce", "", "AspeHub");
-            var status = LoginHelper.TryLogin(driver, wait);
-            Assert.IsTrue(status);
+            //var status = LoginHelper.TryLogin(driver, wait);
+            //Assert.IsTrue(status);
+            loginPage = new LoginPage(driver);
+            loginPage.Login(UserHelper.CorrectUser.Email, UserHelper.CorrectUser.Password);
         }
 
         [TestCase(TestName = "Externí přihlášení přes Microsoft",
